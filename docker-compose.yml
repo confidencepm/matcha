@@ -1,0 +1,57 @@
+version: "3.7"
+
+services:
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    # Username and password user for local development. Change to something suitable for production
+    # Be sure to update __init__.py located in /flask/app when you change the username & password
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: root
+    #   MONGO_INITDB_ROOT_PASSWORD: example
+    # Specify a local volume to store the db data & logging info
+    ports:
+      - 27017:27017
+    volumes:
+      - "~/container_volumes/mongo/data/db:/data/db"
+      - "~/container_logs/mongo/log:/var/log/mongodb"
+    # If using a GCP VM. Log to stackdriver
+    # logging:
+    #   driver: gcplogs
+
+  # redis:
+  #   image: redis
+  #   # Change password `example` to something suitable
+  #   # Be sure to update __init__.py located in /flask/app when you change the password
+  #   command: redis-server --requirepass example
+  #   container_name: redis
+  #   restart: always
+  #   # If using a GCP VM. Log to stackdriver
+  #   # logging:
+  #   #   driver: gcplogs
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+    # Specify a local volume to store logging info
+    volumes:
+      - "~/container_logs/nginx/log:/var/log/nginx"
+    # If using a GCP VM. Log to stackdriver
+    # logging:
+    #   driver: gcplogs
+
+  flask:
+    build: ./flask
+    container_name: flask
+    restart: always
+    # Specify a local volume to store logging info
+    volumes:
+      - "~/container_logs/flask/log:/var/log/wsgi"
+    # If using a GCP VM. Log to stackdriver
+    # logging:
+    #   driver: gcplogs
