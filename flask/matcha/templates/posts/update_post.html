@@ -1,0 +1,55 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <form action="" method='POST' class="needs-validation" novalidate>
+        <fieldset class="form-group">
+        <legend class="form-goup border-bottom">
+            Create Post
+        </legend>
+        <div class="form-group">
+            <label class="form-control-label">Title</label>
+            <input type="text" id="title" class="form-control form-control-lg" name="title"  value='{{ post["title"] }}' required>
+            <div class="invalid-feedback">
+                The post cannot be empty
+            </div>
+        </div>
+         <div class="form-group">
+            <label class="form-contol-label">Post</label>
+            <textarea name="content" id="content" class="form-control form-control-lg">{{ post["content"] }}</textarea>
+            <div class="invalid-feedback">
+                Please enter a post body
+            </div>
+        </div>
+    </fieldset>
+    <div class="form-group">
+        <input type="submit" value="post" name="submit" class="btn btn-outline-info btn-md">
+    </div>
+    </form>
+</div>
+{% endblock content %}
+
+
+{% block js %}
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+</script>
+{% endblock js %}
