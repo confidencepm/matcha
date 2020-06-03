@@ -1,11 +1,12 @@
 from pymongo import MongoClient
 from bson.objectid import ObjectId
+import urllib 
 
 class DB:
 
 	def __init__(self):
-		client = MongoClient('mongodb://mongo:27017/',connect=False,)
-		db = client['matcha']
+		client = MongoClient("mongodb+srv://pmalope:martian143281@matcha-2ordl.mongodb.net/test?retryWrites=true&w=majority",connect=False,)
+		db = client['Matcha']
 		self.__users = db['users']
 		self.__posts = db['posts']
 		self.__chats = db['chats']
