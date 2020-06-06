@@ -23,19 +23,18 @@
     <header class="site-header">
         <nav style="background: #007bfe!important;" class="navbar d-print navbar-expand-md navbar-dark bg-dark fixed-top">
             <div class="container">
-                <img src="{{ url_for('static', filename='../static/logos/logowhite.png') }}" alt="logo" width="5%"><a class="navbar-brand mr-4" href="/">Matcha</a>
+                <img src="{{ url_for('static', filename='../static/logos/matchalogo.png') }}" alt="logo" width="5%"><a class="navbar-brand mr-4" href="/">Matcha</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarToggle">
                     <div class="navbar-nav mr-auto">
                         <a class="nav-item nav-link" href="{{ url_for('main.home') }}">Home</a>
-                        <a class="nav-item nav-link" href="#">Help</a>
                     </div>
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
                         {% if logged_in %}
-                        <a class="nav-item nav-link" href="{{  url_for('posts.new_post') }}">Post</a>
+                        <a class="nav-item nav-link" href="{{  url_for('main.users') }}">Users</a>
                         <a href="{{ url_for('profile.profile') }}" class="nav-item nav-link">Profile</a>
                         <a href="{{ url_for('auth.logout') }}" class="nav-item nav-link">Logout</a>
 
@@ -138,7 +137,7 @@
         </div>
     </main>
     <div class="footer">
-        <p style="font-size: 1.5vh;"><img src="{{ url_for('static', filename='../static/logos/logowhite.png') }}" alt="logo" width="1.5%">Matcha 2019</p>
+        <p style="font-size: 1.5vh;"><img src="{{ url_for('static', filename='../static/logos/matchalogo.png') }}" alt="logo" width="1.5%">Matcha 2020</p>
     </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
