@@ -14,12 +14,12 @@
 
     <!-- Custom css -->
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='../static/logos/logoblk.ico') }}" type="image/x-icon" />
+    <!-- <link rel="shortcut icon" href="{{ url_for('static', filename='../static/logos/logoblk.ico') }}" type="image/x-icon" /> -->
     <title>Matcha</title>
 </head>
 <p id='username' class='d-none'> {{ logged_in }}</p>
 
-<body style="background-image: url('../static/back.png');">
+<body>
     <header class="site-header">
         <nav style="background: #007bfe!important;" class="navbar d-print navbar-expand-md navbar-dark bg-dark fixed-top">
             <div class="container">
@@ -57,14 +57,14 @@
     <div class="bannerbig"></div>
     <main role="main" class="container">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-8">
                 {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
                 <div class="alert alert-{{ category }}">
                     {{ message }}
                 </div>
                 {% endfor %} {% endif %} {% endwith %} {% block content %}{% endblock %}
             </div>
-            <div class="col-md-4" style="margin-left: 16%;">
+            <div class="col-md-4">
                 <div class="content-section">
                     <!-- notifications -->
                     {% if current_user %}
@@ -108,8 +108,7 @@
                             <li class="list-group-item list-group-item-light">
                                 <form action="{{ url_for('main.search_age') }}" method="POST">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" id='age' placeholder='by location' name='age'>
-
+                                        <input type="text" class="form-control" id='age' placeholder='by age' name='age'>
                                     </div>
                                     <input type="submit" name='submit' value='search_age' class='btn btn-sm btn-outline-info'>
                                 </form>
@@ -117,20 +116,7 @@
                         </ul>
                     </p>
                     {% else %}
-                    <h3>Our Sidebar</h3>
 
-                    <!-- sidebar content -->
-                    <p class='text-muted'>
-                        <ul class="list-group">
-                            <li class="list-group-item list-group-item-light"><a class="side-bar-link" href="{{ url_for('main.users') }}">Users</a></li>
-                            <!-- <li class="list-group-item list-group-item-light">Find users(There can be a better way to phrase this)</li> -->
-                            {% if admin %}
-                            <li class="list-group-item list-group-item-light"><a class="side-bar-link" href="{{ url_for('main.blocked') }}">Blocked list</a></li>
-                            {% endif %}
-                            <li class="list-group-item list-group-item-light"><a class="side-bar-link" href="{{ url_for('chat.chat') }}">Chat</a></li>
-                            <li class="list-group-item list-group-item-light">Your rating</li>
-                        </ul>
-                    </p>
                     {% endif %}
                 </div>
             </div>
