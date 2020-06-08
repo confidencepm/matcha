@@ -1,0 +1,121 @@
+body {
+    background: #fafafa;
+    color: #333333;
+    margin-top: 5rem;
+    background-size: 265%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #007bfe;
+    color: white;
+    text-align: center;
+    height: 3%;
+}
+
+.content-section {
+    background: #ffffff;
+    padding: 10px 20px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    margin-bottom: 20px;
+}
+
+.account-img {
+    height: 100px;
+    width: 100px;
+    margin-right: 20px;
+    margin-bottom: 16px;
+}
+
+.account-heading {
+    font-size: 2.5rem;
+}
+
+.article-img {
+    height: 100px;
+    width: 100px;
+    margin-right: 20px;
+    margin-bottom: 16px;
+}
+
+.article-metadata {
+    padding-bottom: 1px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid #e3e3e3
+}
+
+.article-metadata a:hover {
+    color: #333;
+    text-decoration: none;
+}
+
+.article-svg {
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+}
+
+.article-title {
+    color: #444444;
+}
+
+a.article-title:hover {
+    color: #428bca;
+    text-decoration: none;
+}
+
+.article-content {
+    white-space: pre-line;
+}
+
+.side-bar-link {
+    color: grey;
+    text-decoration: none;
+}
+
+.side-bar-link:hover {
+    text-decoration: none;
+}
+
+.messages {
+    height: 100%;
+    overflow: scroll;
+}
+
+.chat-img {
+    height: 40px;
+    width: 40px;
+    margin-right: 20px;
+    margin-bottom: 16px;
+}
+
+.notification {
+    /* background-color: #555; */
+    color: white;
+    text-decoration: none;
+    /* padding: 15px 26px; */
+    position: relative;
+    display: inline-block;
+    border-radius: 2px;
+}
+
+.notification:hover {
+    background: white;
+}
+
+.notification .badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    padding: 5px 10px;
+    border-radius: 50%;
+    background: #556;
+    color: white;
+}

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content-sections">
+    {% for user in users %}
+      {% if user['blocked'][0]%}
+      <article class="media content-section ">
+        <div class="media-body">
+          <div class="media-body">
+            <h2> {{user['username']}} blocked : </h2>
+            <br>
+            {% for block in user['blocked'] %}
+              <p class="text-muted">{{ block }}</p>
+              <a href="{{ url_for('main.block_for_all', b_id=block) }}" class='btn btn-secondary btn-sm m-1'>Block for all</a>
+            {% endfor %}
+            <br>
+          </div>
+        </div>
+      </article>
+      {% endif %}
+    {% endfor %}
+</div>
+{% endblock content %}
+
+
+{% block js %}
+<script>
+  socket = io.connect("http://localhost:5000")
+  user_name = $('#username').text();
+
+  socket.on('flirt', function(data){
+      alert(data['from'] + ' Flirted with you.');
+  });
+
+  socket.on('matched', function(){
+    alert(data['from'] +' and you can now chat');
+  });
+
+  socket.on('notif_chat', function(data){
+    alert(data['from'] + ' sent you a message')
+  });
+
+  console.log(user_name)
+</script>
+{% endblock js %}

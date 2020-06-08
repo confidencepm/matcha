@@ -1,0 +1,40 @@
+{% extends 'base.html' %} {% block content %}
+
+<p hidden id='user_id'>{{ user['_id'] }}</p>
+<p hidden id='current_user_id'>{{ current_user['_id'] }}</p>
+<div class="container">
+    <div class="media">
+        <img src="{{ url_for('static', filename='profile_pics/' + user['image_name'])}}" alt="profile"
+            class="rounded-circle account-img">
+        <div class="media-body">
+            <div class="article-metadata border-bottom">
+                <a class="mr-2" href="#">{{ user['firstname'] }}</a>
+                <small class="text-muted">{{ user['gender'] }}-{{ user['location'][2] }}-{{ user['fame-rating'] }}-{{ user['sex'] }}</small>
+            </div>
+            {% if user['username'] in online_users %}
+            <p class='text-muted text-primary'>Online</p>
+            {% else %}
+            <p class='text-muted text-secondary'>{{ user['last-seen'].strftime("%H:%M %Y-%m-%d") }}</p>
+            {% endif %}
+            <h2 class='account-heading'>{{ user['username'] }}</h2>
+            <p class="text-muted text-secondary">{{ user['lastname'] }}</p>
+            <h4 class='text-muted text-secondary'>My Bio</h4>
+            <p class="article-content">{{ user['bio'] }}</p>
+            <h4 class='text-muted text-secondary'>My Interest</h4>
+            {% for interest in user['interests'] %}
+            <p>{{ interest }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    
+</div>
+{% endblock content %}
+{% block js %}
+<script>
+    socket = io('http://localhost:5000');
+
+    $(document).ready(function(){
+        socket.emit('view', {'viewer': $('#current_user_id').text(), 'viewed': $('#user_id').text()});
+    });
+</script>
+{% endblock js %}

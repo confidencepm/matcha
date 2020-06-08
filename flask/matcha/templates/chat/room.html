@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<p id='room' hidden>{{ room }}</p>
+<div class="content-section messages">
+    {% for chat in history %}
+        {% if chat[0] == logged_in %}
+        <p class='alert-info'>{{ chat[1] }}</p>
+        {% else %}
+        <p class='alert-primary'>{{ chat[1] }}</p>
+        {% endif %}
+    {% endfor %}
+</div>
+<div class="input-group mb-3">
+    <input type="text" class="form-control form-control-sm" placeholder=".." aria-label="Send"
+        aria-describedby="send_message" id='message'>
+    <div class="input-group-append">
+        <button class="btn btn-outline-primary btn-sm" type="button" id="send" value="{{ logged_in }}">send</button>
+    </div>
+</div>
+{% endblock content %}
+
+{% block js %}
+<script>
+    socket = io('http://localhost:5000')
+    room = $('#room').text();
+
+    socket.on('connect', function(){
+        socket.emit('join', room);
+    });
+    socket.on('disconnect', function(){
+        socket.emit('leave', room)
+    });
+
+    $('#send').on('click', function(){
+        socket.emit('send', {'from': $(this).val(), 'message': $('#message').val(), 'room': room});
+        $('.messages').append('<p class="alert-info">' + $("#message").val() + '</p>');
+        $('#message').val('')
+    });
+
+    socket.on('recieve', function(data){
+        $('.messages').append('<p class="alert-primary">' + data['message'] + '</p>');
+    });
+</script>
+{% endblock js %}
