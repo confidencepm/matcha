@@ -75,7 +75,7 @@
         </div>
     </div>
     <div class="btn-group" role="group" aria-label="Basic example" style="width: 100%;">
-        <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#bio" aria-expanded="false" aria-controls="collapse">Profile details</button>
+        <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#profile" aria-expanded="false" aria-controls="collapse">Profile details</button>
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#user_details" aria-expanded="false" aria-controls="collapse">Account details</button>
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#gallery" aria-expanded="false" aria-controls="collapse">Gallery (FIX ME)</button>
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#pnm" aria-expanded="false" aria-controls="collapse">People near me</button>
@@ -146,25 +146,26 @@
     </div>
 </div>
 
-<div class="collapse" id='bio'>
+<div class="collapse" id='profile'>
     <form method="POST" action="" enctype="multipart/form-data">
         <div class="container" style="display: flex;flex-direction: column; padding-left: 4%;">
             <legend class="form-goup border-bottom">My Profile</legend>
             <p>Before we can match you, you need to complete your profile</p>
             <form action="" method="POST">
-                <label for="gender"><b>I identify as a:</b></label>
+                <label for="gender"><b>Gender:</b></label>
                 <select name="gender">
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                     </select>
                 <br />
-                <label for="sexo"><b>My sexual orientation is:</b></label>
+                <label for="sexo"><b>Sexual orientation:</b></label>
                 <select name="sexo">
                             <option value="bisexual">Bisexual</option>
                         <option value="heterosexual">HeteroSexual</option>
                         <option value="homosexual">HomoSexual</option>
                     </select>
                 <br />
+                <label for="sexo"><b>Interests: </b></label>
                 <fieldset>
                     {% if current_user['interests'] %}
                         {% if 'Animals' in current_user['interests'] %}
@@ -250,28 +251,30 @@
             <hr>
             <input id='location' type='text' value='' name="location" style='display: none'>
             <input id='latlon' type='text' value='' name="latlon" style='display: none;'>
-            <button type="submit" class="btn btn-outline-info btn-md" name='submit' value='bioupdate'>Done</button>
+            <button type="submit" class="btn btn-outline-info btn-md" name='submit' value='bioupdate'>Update</button>
         </div>
 
     </form>
 </div>
 <div class="collapse" id='viewers'>
+<legend class="form-goup border-bottom" style="padding-left: 4%;">Views on your profile</legend>
  {% for views in viewers %}
   <article class="media content-section ">
     <img class="article-img rounded"
       src="{{ url_for('static', filename='profile_pics/' + views['image_name']) }}" alt="Profile Pic">
     <div class="media-body">
-      <div class="article-metadata border-bottom">
-        <a class="mr-2" href="{{ url_for('profile.view_profile', user_id=views['_id'])}}">{{ views['username'] }}</a>
-      </div>
-      <p class="article-content">{{ views['firstname'] }}</p>
+        <div class="article-metadata border-bottom">
+            <small>Username: <a class="mr-2" href="#"> {{ views['username'] }}</a></small>
+            <small class="text-muted">Email: {{ views['email'] }}</small>
+        </div>
+      <h3><a class="article-title" href="{{ url_for('profile.view_profile', user_id=views['_id'])}}">{{ views['firstname'] }}</a></h3>
     </div>
   </article>
   {% endfor %}
 </div>
 
 <div class="collapse" id='flirts'>
-    <p>Testing {flirts}</p>
+    <legend class="form-goup border-bottom" style="padding-left: 4%;">Flirts on your profile</legend>
     {% for flirt in flirts %}
         <img class="article-img rounded" src="{{ url_for('static', filename='profile_pics/' + flirts[0]['image_name']) }}"
             alt="Profile Pic">
@@ -283,6 +286,7 @@
 
 
 <div class="collapse" id='gallery'>
+    <legend class="form-goup border-bottom" style="padding-left: 4%;">Gallery</legend>
     <br/>
     <div class="container" style="display: flex; width: 107%;">
         {% for pic in current_user['gallery'] %}
@@ -314,11 +318,11 @@
         <img class="article-img rounded" src="{{ url_for('static', filename='profile_pics/' + people['image_name']) }}" alt="Profile Pic">
         <div class="media-body">
             <div class="article-metadata border-bottom">
-                <a class="mr-2" href="#">{{ people['username'] }}</a>
-                <small class="text-muted">{{ people['email'] }}</small>
+                <small>Username: <a class="mr-2" href="#"> {{ people['username'] }}</a></small>
+                <small class="text-muted">Email: {{ people['email'] }}</small>
             </div>
             <h2><a class="article-title" href="#">{{ people['firstname'] }}</a></h2>
-            <p class="article-content">{{ people['sex'] }}</p>
+            <p>Location: {{people['location'][2]}}</p>
         </div>
     </article>
     {% endif %} {% endfor %}
