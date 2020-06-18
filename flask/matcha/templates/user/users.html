@@ -75,14 +75,11 @@
     <div class="media-body">
       <div class="article-metadata border-bottom">
         <h2><a class="mr-2" href="{{ url_for('profile.view_profile', user_id=user['_id'])}}">{{ user['username'] }}</a></h2>
-        
-        
-
         <!-- The like and comment system -->
         {% if logged_in in user['flirted'] %}
         <div>
           {% if user['username'] in current_user['flirted'] %}
-          <a href="#" class='btn btn-outline-info btn-sm m-1 disabled'>Chat</a>
+          <a href="{{ url_for('chat.chat')}}" class='btn btn-outline-info btn-sm m-1'>Chat</a>
           {% else %}
           <a href="#" class='pending btn btn-secondary btn-sm m-1 disabled'>Pending</a>
           {% endif %}

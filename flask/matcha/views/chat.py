@@ -10,6 +10,8 @@ chatting = Blueprint('chat', __name__)
 def chat():
     users = db.users()
     current_user = db.get_user({'username': session.get('username')}, {'matched': 1})
+    print(f"Debug1: {users}")
+    print(f"Debug2: {current_user}")
     return render_template('chat/chat.html', logged_in=session.get('username'), users=users, current_user=current_user)
 
 
