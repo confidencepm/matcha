@@ -256,15 +256,17 @@
     </form>
 </div>
 <div class="collapse" id='viewers'>
+    <legend class="form-goup border-bottom" style="padding-left: 4%;">People who viewed your profile</legend>
  {% for views in viewers %}
   <article class="media content-section ">
     <img class="article-img rounded"
       src="{{ url_for('static', filename='profile_pics/' + views['image_name']) }}" alt="Profile Pic">
     <div class="media-body">
       <div class="article-metadata border-bottom">
-        <a class="mr-2" href="{{ url_for('profile.view_profile', user_id=views['_id'])}}">{{ views['username'] }}</a>
+        <small class="text-muted">{{ views['email'] }}</small>
       </div>
-      <p class="article-content">{{ views['firstname'] }}</p>
+        <h2><a class="article-title" href="{{ url_for('profile.view_profile', user_id=views['_id'])}}">{{ views['username'] }}</a></h2>
+        <p class="article-content">{{ views['sex'] }}</p>
     </div>
   </article>
   {% endfor %}
@@ -314,11 +316,10 @@
         <img class="article-img rounded" src="{{ url_for('static', filename='profile_pics/' + people['image_name']) }}" alt="Profile Pic">
         <div class="media-body">
             <div class="article-metadata border-bottom">
-                <a class="mr-2" href="#">{{ people['username'] }}</a>
                 <small class="text-muted">{{ people['email'] }}</small>
             </div>
-            <h2><a class="article-title" href="#">{{ people['firstname'] }}</a></h2>
-            <p class="article-content">{{ people['sex'] }}</p>
+            <h2><a class="article-title" href="#">{{ people['username'] }}</a></h2>
+            <p class="article-content">{{ people['location'][2] }}</p>
         </div>
     </article>
     {% endif %} {% endfor %}
