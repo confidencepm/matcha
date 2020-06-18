@@ -318,7 +318,7 @@
             <div class="article-metadata border-bottom">
                 <small class="text-muted">{{ people['email'] }}</small>
             </div>
-            <h2><a class="article-title" href="#">{{ people['username'] }}</a></h2>
+            <h2><a class="article-title" href="{{ url_for('profile.view_profile', user_id=people['_id'])}}">{{ people['username'] }}</a></h2>
             <p class="article-content">{{ people['location'][2] }}</p>
         </div>
     </article>
