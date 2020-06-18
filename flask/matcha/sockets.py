@@ -50,6 +50,7 @@ def flirt_back(data):
     flirtee = db.get_user({'username' :data['to']}, {'username' : 1, 'flirted' : 1, 'matched' :1, 'rooms': 1})
     room = secrets.token_hex(16)
 
+    print("Debug")
     flirt_back['flirts'].append(flirtee['username'])
     flirtee['flirted'].append(flirt_back['username'])
     # add to the matched array.
