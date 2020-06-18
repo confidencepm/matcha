@@ -6,9 +6,15 @@
             <div class="media">
                 <img src="{{ url_for('static', filename='profile_pics/' + current_user['image_name'])}}" alt="profile" class="rounded-circle account-img">
                 <div class="media-body">
-                    <h2 class='account-heading'>{{ current_user['username'] }}</h2>
-                    <p class="text-muted text-secondary">{{ current_user['email'] }}</p>
-                    <p class="text-muted text-secondary">{{ current_user['location'][2]}}</p>
+                    <h6 class='text-muted text-secondary'>Username: </h6>
+                    <p>{{ current_user['username'] }}</p>
+                    <h6 class="text-muted text-secondary">Email: </h6>
+                    <p>{{ current_user['email'] }}</p>
+                    <h6 class="text-muted text-secondary">Location: </h6>
+                    <p>{{ current_user['location'][2]}}</p>
+                    <h6 class="text-muted text-secondary">Fame Rating: </h6>
+                    <p>{{ current_user['fame-rating']}}</p>
+                    <h6 class="text-muted text-secondary">Status: </h6>
                     {% if current_user['username'] in online_users %}
                     <p class='text-muted text-primary'>Online</p>
                     {% else %}
@@ -18,10 +24,20 @@
             </div>
         </div>
         <div class="col-sm-6">
-            {% if current_user['gallery'][0] == null %}
-                <p>Click <b>Gallery</b> to add Pictures to your gallery</p>
-            {%endif%}
-            {% if current_user['gallery'][0] != null %}
+            <h6>Bio:</h6>
+            <p>{{current_user['bio']}}</p>
+            <h6>Interests:</h6>
+            {% for interest in current_user['interests']%}
+            <p>{{interest}}</p>
+            {%endfor%}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            {% if current_user['gallery'][0] == null or current_user['gallery'][1] == null or 
+            current_user['gallery'][2] == null or current_user['gallery'][3] == null %}
+            <p>Click <b>Gallery</b> to add Pictures to your gallery</p>
+            {% else %}
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel"
                 style="width: 250px; height:150px; margin: 0 auto">
                 <div class="carousel-inner">
@@ -61,10 +77,10 @@
     <div class="btn-group" role="group" aria-label="Basic example" style="width: 100%;">
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#bio" aria-expanded="false" aria-controls="collapse">Profile details</button>
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#user_details" aria-expanded="false" aria-controls="collapse">Account details</button>
-        <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#gallery" aria-expanded="false" aria-controls="collapse">Gallery</button>
+        <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#gallery" aria-expanded="false" aria-controls="collapse">Gallery (FIX ME)</button>
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#pnm" aria-expanded="false" aria-controls="collapse">People near me</button>
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#viewers" aria-expanded="false" aria-controls="collapse">Profile viewers</button>
-        <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#viewers" aria-expanded="false" aria-controls="collapse">Profile likes(FIX ME)</button>
+        <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#flirts" aria-expanded="false" aria-controls="collapse">Profile likes(FIX ME)</button>
     </div>
 </div>
 
@@ -240,19 +256,36 @@
     </form>
 </div>
 <div class="collapse" id='viewers'>
+    <legend class="form-goup border-bottom" style="padding-left: 4%;">People who viewed your profile</legend>
  {% for views in viewers %}
   <article class="media content-section ">
     <img class="article-img rounded"
       src="{{ url_for('static', filename='profile_pics/' + views['image_name']) }}" alt="Profile Pic">
     <div class="media-body">
       <div class="article-metadata border-bottom">
-        <a class="mr-2" href="{{ url_for('profile.view_profile', user_id=views['_id'])}}">{{ views['username'] }}</a>
+        <small class="text-muted">{{ views['email'] }}</small>
       </div>
-      <p class="article-content">{{ views['firstname'] }}</p>
+        <h2><a class="article-title" href="{{ url_for('profile.view_profile', user_id=views['_id'])}}">{{ views['username'] }}</a></h2>
+        <p class="article-content">{{ views['sex'] }}</p>
     </div>
   </article>
   {% endfor %}
 </div>
+
+<div class="collapse" id='flirts'>
+    <legend class="form-goup border-bottom" style="padding-left: 4%;">People who liked your profile</legend>
+    {% for flirt in flirts %}
+    <article class="article-img rounded">
+        <div class="media-body">
+            <div class="article-metadata border-bottom">
+            </div>
+        </div>
+    </article>
+    {% endfor %}
+
+
+</div>
+
 
 
 <div class="collapse" id='gallery'>
@@ -262,6 +295,9 @@
         <br/>
         <div class="card" style="width: 8rem;">
             <img src="{{ url_for('static', filename='gallery_pics/' + pic)}}" class="card-img-top" alt="...">
+                <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
         </div>
         {% endfor %}
     </div>
@@ -284,11 +320,10 @@
         <img class="article-img rounded" src="{{ url_for('static', filename='profile_pics/' + people['image_name']) }}" alt="Profile Pic">
         <div class="media-body">
             <div class="article-metadata border-bottom">
-                <a class="mr-2" href="#">{{ people['username'] }}</a>
                 <small class="text-muted">{{ people['email'] }}</small>
             </div>
-            <h2><a class="article-title" href="#">{{ people['firstname'] }}</a></h2>
-            <p class="article-content">{{ people['sex'] }}</p>
+            <h2><a class="article-title" href="{{ url_for('profile.view_profile', user_id=people['_id'])}}">{{ people['username'] }}</a></h2>
+            <p class="article-content">{{ people['location'][2] }}</p>
         </div>
     </article>
     {% endif %} {% endfor %}
@@ -301,9 +336,9 @@
         'use strict';
         window.addEventListener('load', function() {
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            var forms = document.getElementsByClassName('needs-validation');
+            let forms = document.getElementsByClassName('needs-validation');
             // Loop over them and prevent submission
-            var validation = Array.prototype.filter.call(forms, function(form) {
+            let validation = Array.prototype.filter.call(forms, function(form) {
                 form.addEventListener('submit', function(event) {
                     if (form.checkValidity() === false) {
                         event.preventDefault();
@@ -334,9 +369,9 @@
             }
             ())
     })();
-    var map, places, marker;
-    var autocomplete;
-    var countries = {
+    let map, places, marker;
+    let autocomplete;
+    let countries = {
         'za': {
             center: {
                 lat: -30.6,
@@ -355,7 +390,7 @@
             zoomControl: false,
             streetViewControl: false
         });
-        var options = {
+        let options = {
             componentRestrictions: {
                 country: 'za'
             }
@@ -363,7 +398,7 @@
         autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete'), options);
         places = new google.maps.places.PlacesService(map);
         autocomplete.addListener('place_changed', onPlaceChanged);
-        var uluru = {
+        let uluru = {
             lat: -25.344,
             lng: 131.036
         };
@@ -375,9 +410,9 @@
 
     function onPlaceChanged() {
         alert('IS you even running');
-        var place = autocomplete.getPlace();
-        var latitude = place.geometry.location.lat();
-        var longitude = place.geometry.location.lng();
+        let place = autocomplete.getPlace();
+        let latitude = place.geometry.location.lat();
+        let longitude = place.geometry.location.lng();
         if (place.geometry) {
             map.panTo(place.geometry.location);
             map.setZoom(15);

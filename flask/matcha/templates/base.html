@@ -33,7 +33,7 @@
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
                         {% if logged_in %}
-                        <a class="nav-item nav-link" href="{{  url_for('main.users') }}">Users</a>
+                        <a class="nav-item nav-link" href="{{  url_for('main.users') }}">Profiles</a>
                         <a href="{{ url_for('profile.profile') }}" class="nav-item nav-link">Profile</a>
                         <a href="{{ url_for('auth.logout') }}" class="nav-item nav-link">Logout</a>
                         <button type='button' id='inbox' class="notification btn" data-toggle="collapse" data-target="#notification" aria-expanded="false" aria-controls="collapse">

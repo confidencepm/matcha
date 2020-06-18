@@ -177,5 +177,5 @@ def view_profile(user_id):
     user = db.get_user({'_id': id})
     user['fame-rating'] = int((user['fame-rating'] / 10) - 1)
     online_users = list(logged_in_users.keys())
-
+    print(f"Debug: {user}")
     return render_template('user/view_profile.html', logged_in=session.get('username'), user=user, current_user=current_user, online_users=online_users)
