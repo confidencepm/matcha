@@ -273,10 +273,14 @@
 </div>
 
 <div class="collapse" id='flirts'>
-    <p>Testing {flirts}</p>
+    <legend class="form-goup border-bottom" style="padding-left: 4%;">People who liked your profile</legend>
     {% for flirt in flirts %}
-        <img class="article-img rounded" src="{{ url_for('static', filename='profile_pics/' + flirts[0]['image_name']) }}"
-            alt="Profile Pic">
+    <article class="article-img rounded">
+        <div class="media-body">
+            <div class="article-metadata border-bottom">
+            </div>
+        </div>
+    </article>
     {% endfor %}
 
 
