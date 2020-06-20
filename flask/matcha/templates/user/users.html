@@ -88,12 +88,12 @@
         {% else %}
         <div>
           {% if user['username'] in current_user['flirted'] %}
-          <a href="{{ url_for('flirts.flirt', username=user['username']) }}" class='btn btn-secondary btn-sm m-1'>Flirt Back</a>
-          <!-- <button type='button' value="{{ user['username'] }}" class='flirt-back btn btn-secondary btn-sm m-1'>Flirt
-            Back</button> -->
+          <!-- <a href="{{ url_for('flirts.flirt', username=user['username']) }}" class='flirt-back btn btn-secondary btn-sm m-1'>Flirt Back</a> -->
+          <button type='button' value="{{ user['username'] }}" class='flirt-back btn btn-secondary btn-sm m-1'>Flirt
+            Back</button>
           {% else%}
-          <a href="{{ url_for('flirts.flirt', username=user['username']) }}" class='btn btn-secondary btn-sm m-1'>Flirt</a>
-          <!-- <button type='button' value='{{ user["username"] }}' class='flirt btn btn-secondary btn-sm m-1'>Flirt</button> -->
+          <!-- <a href="{{ url_for('flirts.flirt', username=user['username']) }}" class='btn btn-secondary btn-sm m-1'>Flirt</a> -->
+          <button type='button' value='{{ user["username"] }}' class='flirt btn btn-secondary btn-sm m-1'>Flirt</button>
           {% endif %}
         </div>
         {% endif %}
@@ -130,9 +130,7 @@
 
   $('.flirt-back').each(function () {
     $(this).on('click', function (e) {
-      socket.emit('flirt-back', {
-        'to': $(this).val()
-      });
+      socket.emit('flirt-back', {'to':$(this).val()});
       $(this).replaceWith("<a href='#' class='btn btn-outline-info btn-sm sm-1 disabled'>Chat</a>");
     });
   });
