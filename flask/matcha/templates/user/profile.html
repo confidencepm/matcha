@@ -81,6 +81,7 @@
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#pnm" aria-expanded="false" aria-controls="collapse">People near me</button>
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#viewers" aria-expanded="false" aria-controls="collapse">Profile viewers</button>
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#flirts" aria-expanded="false" aria-controls="collapse">Profile likes</button>
+        <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#match" aria-expanded="false" aria-controls="collapse">Profile Match</button>
     </div>
 </div>
 
@@ -286,6 +287,27 @@
             <h2><a class="article-title"
                     href="{{ url_for('profile.view_profile', user_id=flirt['_id'])}}">{{ flirt['username'] }}</a></h2>
             <p class="article-content">{{ flirt['gender'] }}</p>
+        </div>
+    </article>
+    {% endfor %}
+
+
+</div>
+
+<div class="collapse" id='match'>
+    <legend class="form-goup border-bottom" style="padding-left: 4%;">People you can chat with</legend>
+    {% for match in matched %}
+    <article class="media content-section ">
+        <img class="article-img rounded" src="{{ url_for('static', filename='profile_pics/' + match['image_name']) }}"
+            alt="Profile Pic">
+        <div class="media-body">
+            <div class="article-metadata border-bottom">
+                <small class="text-muted">{{ match['email'] }}</small>
+                <small><a href="{{ url_for('chat.chat_room', room=match['rooms'][logged_in]) }}"
+                    class='btn btn-outline-info btn-sm m-1'>Chat</a></small>
+            </div>
+            <h2><a class="article-title" href="{{ url_for('profile.view_profile', user_id=match['_id'])}}">{{ match['username'] }}</a></h2>
+            <p class="article-content">{{ match['gender'] }}</p>
         </div>
     </article>
     {% endfor %}
