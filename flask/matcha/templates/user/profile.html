@@ -481,7 +481,7 @@
   });
 
   socket.on('notif_chat', function (data) {
-    // alert(data['from'] + ' sent you a message')
+    alert(data['from'] + ' sent you a message')
     $('notification').append('<p>' + data['from'] + ' sent you a message</p>');
     $('#badge').text('new');
   });

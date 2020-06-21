@@ -90,11 +90,11 @@
         <div>
           {% if user['username'] in current_user['flirted'] %}
           <!-- <a href="{{ url_for('flirts.flirt', username=user['username']) }}" class='flirt-back btn btn-secondary btn-sm m-1'>Flirt Back</a> -->
-          <button type='button' value="{{ user['username'] }}" class='flirt-back btn btn-secondary btn-sm m-1'>Flirt
+          <button type='button' value="{{ user['username'] }}" class='flirt-back btn btn-secondary btn-sm m-1'>Like
             Back</button>
           {% else%}
           <!-- <a href="{{ url_for('flirts.flirt', username=user['username']) }}" class='btn btn-secondary btn-sm m-1'>Flirt</a> -->
-          <button type='button' value='{{ user["username"] }}' class='flirt btn btn-secondary btn-sm m-1'>Flirt</button>
+          <button type='button' value='{{ user["username"] }}' class='flirt btn btn-secondary btn-sm m-1'>Like</button>
           {% endif %}
         </div>
         {% endif %}
@@ -139,7 +139,7 @@
   // handle the unlike button;
   $('.unlike').each(function(){
     $(this).on('click', function(e){
-      alert('you have unlikd ' + $(this).val());
+      // alert('you have unlikd ' + $(this).val());
       socket.emit('Unlike', {'to':$(this).val()});
       window.location.reload();
     });
@@ -157,7 +157,7 @@
   });
 
   socket.on('matched', function (data) {
-    alert(data['from']);
+    // alert(data['from']);
 
     $('.pending').each(function () {
       if ($(this).val() == data['from']) {
@@ -170,7 +170,7 @@
 // Section for other notifications.
 
   socket.on('Unlike', function(data){
-    alert('some unliked you');
+    // alert('some unliked you');
     $('.flirt-back').each(function(){
       if ($(this).val() == data['from']){
         window.location.reload()

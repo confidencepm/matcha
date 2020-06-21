@@ -16,11 +16,11 @@
             {% else %}
                 {% if user['username'] in current_user['flirted'] %}
                 <!-- <a href="{{ url_for('flirts.flirt', username=user['username']) }}" class='btn btn-secondary btn-sm m-1'>Flirt Back</a> -->
-                <button type='button' value="{{ user['username'] }}" class='flirt-back btn btn-secondary btn-sm m-1'>Flirt
+                <button type='button' value="{{ user['username'] }}" class='flirt-back btn btn-secondary btn-sm m-1'>Like
                     Back</button>
                 {% else%}
                 <!-- <a href="{{ url_for('flirts.flirt', username=user['username']) }}" class='btn btn-secondary btn-sm m-1'>Flirt</a> -->
-                <button type='button' value='{{ user["username"] }}' class='flirt btn btn-secondary btn-sm m-1'>Flirt</button>
+                <button type='button' value='{{ user["username"] }}' class='flirt btn btn-secondary btn-sm m-1'>Like</button>
                 {% endif %}
             {% endif %}
             <a href="{{ url_for('main.block_user', b_id=user['_id']) }}" class='btn btn-secondary btn-sm m-1'>Block</a>
@@ -52,9 +52,9 @@
             </div>
         </div>
         <div class="col-sm-6">
-            <h6>Bio:</h6>
+            <h6 class='text-muted text-secondary'>Bio:</h6>
             <p>{{user['bio']}}</p>
-            <h6>Interests:</h6>
+            <h6 class='text-muted text-secondary'>Interests:</h6>
             {% for interest in user['interests']%}
             <p>{{interest}}</p>
             {%endfor%}
