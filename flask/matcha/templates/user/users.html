@@ -79,7 +79,8 @@
         {% if logged_in in user['flirted'] %}
         <div>
           {% if user['username'] in current_user['flirted'] %}
-          <a href="{{ url_for('chat.chat')}}" class='btn btn-outline-info btn-sm m-1'>Chat</a>
+        <a href="{{ url_for('chat.chat_room', room=user['rooms'][logged_in]) }}"
+          class='btn btn-outline-info btn-sm m-1'>Chat</a>
           {% else %}
           <a href="#" class='pending btn btn-secondary btn-sm m-1 disabled'>Pending</a>
           {% endif %}

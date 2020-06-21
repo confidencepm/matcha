@@ -2,6 +2,7 @@
 
 {% block content %}
 <div class="content-sections">
+  <legend class="form-goup border-bottom" style="padding-left: 4%;">People you can chat with</legend>
   {% for user in users %}
   {% if logged_in != user['username'] and user['username'] in current_user['matched'] %}
   <article class="media content-section">
@@ -14,7 +15,7 @@
         <!-- The chat system -->
         <a href="{{ url_for('chat.chat_room', room=user['rooms'][logged_in]) }}" class='btn btn-outline-info btn-sm m-1'>Chat</a>
       </div>
-      <p class="article-content">{{ user['sex'] }}</p>
+      <p class="article-content">{{ user['gender'] }}</p>
     </div>
   </article>
   {% endif %}

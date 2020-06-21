@@ -36,8 +36,9 @@
                         <a class="nav-item nav-link" href="{{  url_for('main.users') }}">Profiles</a>
                         <a href="{{ url_for('profile.profile') }}" class="nav-item nav-link">Profile</a>
                         <a href="{{ url_for('auth.logout') }}" class="nav-item nav-link">Logout</a>
+                        <a href="{{ url_for('chat.chat')}}" class="nav-item nav-link">Chats</a>
                         <button type='button' id='inbox' class="notification btn" data-toggle="collapse" data-target="#notification" aria-expanded="false" aria-controls="collapse">
-                            <span>Inbox</span>
+                            <span>Notifications</span>
                             {% if current_user and current_user['notifications'] %}
                             <span class="badge" id='badge'>new</span>
                             {% else %}
