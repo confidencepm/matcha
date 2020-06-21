@@ -190,14 +190,10 @@ socket.on('notif_chat', function(data){
     $('#badge').text('new');
   });
 
-  
-  $('#inbox').on('click', function(){
-    socket.emit('read');
+  $('#inbox').on('click', function () {
+    socket.emit('read', { "user": $('#username').text() });
     $('#badge').text('');
   });
-
-
-
 
 </script>
 {% endblock js %}

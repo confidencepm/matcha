@@ -80,7 +80,7 @@
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#gallery" aria-expanded="false" aria-controls="collapse">Gallery (FIX ME)</button>
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#pnm" aria-expanded="false" aria-controls="collapse">People near me</button>
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#viewers" aria-expanded="false" aria-controls="collapse">Profile viewers</button>
-        <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#flirts" aria-expanded="false" aria-controls="collapse">Profile likes(FIX ME)</button>
+        <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#flirts" aria-expanded="false" aria-controls="collapse">Profile likes</button>
     </div>
 </div>
 
@@ -264,9 +264,10 @@
     <div class="media-body">
       <div class="article-metadata border-bottom">
         <small class="text-muted">{{ views['email'] }}</small>
+        <small class="text-muted">{{ views['location'][2] }}</small>
       </div>
         <h2><a class="article-title" href="{{ url_for('profile.view_profile', user_id=views['_id'])}}">{{ views['username'] }}</a></h2>
-        <p class="article-content">{{ views['sex'] }}</p>
+        <p class="article-content">{{ views['gender'] }}</p>
     </div>
   </article>
   {% endfor %}
@@ -275,10 +276,16 @@
 <div class="collapse" id='flirts'>
     <legend class="form-goup border-bottom" style="padding-left: 4%;">People who liked your profile</legend>
     {% for flirt in flirts %}
-    <article class="article-img rounded">
+    <article class="media content-section ">
+        <img class="article-img rounded" src="{{ url_for('static', filename='profile_pics/' + flirt['image_name']) }}"
+            alt="Profile Pic">
         <div class="media-body">
             <div class="article-metadata border-bottom">
+                <small class="text-muted">{{ flirt['email'] }}</small>
             </div>
+            <h2><a class="article-title"
+                    href="{{ url_for('profile.view_profile', user_id=flirt['_id'])}}">{{ flirt['username'] }}</a></h2>
+            <p class="article-content">{{ flirt['gender'] }}</p>
         </div>
     </article>
     {% endfor %}
@@ -321,6 +328,7 @@
         <div class="media-body">
             <div class="article-metadata border-bottom">
                 <small class="text-muted">{{ people['email'] }}</small>
+                <small class="text-muted">{{ people['gender'] }}</small>
             </div>
             <h2><a class="article-title" href="{{ url_for('profile.view_profile', user_id=people['_id'])}}">{{ people['username'] }}</a></h2>
             <p class="article-content">{{ people['location'][2] }}</p>
