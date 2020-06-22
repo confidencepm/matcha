@@ -3,21 +3,23 @@ from bson.objectid import ObjectId
 import urllib
 from flask import Blueprint, render_template, session, redirect, flash, request, url_for
 from faker import Faker
-import matcha.mydatabase as db
+from matcha.mydatabase import Database
 
+db = Database()
 class DB:
 
     def __init__(self):
         self.__conn = db.get_connection
 
     def register_user(self, details):
-        db.add_user(details,self.__conn)
+        db.add_user(details)
     
     
     def get_user(self, user_Dict, fields=None):
         ''' This function will get a single users information'''
-        if user_Dict:
-            return db.get_user_by_username(user_Dict['username'])
+        # if user_Dict:
+        #     return db.get_user_by_username(user_Dict['_id'])
+        pass
 
 
     # Get all the users from the database
