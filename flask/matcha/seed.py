@@ -16,7 +16,9 @@ def seed_users():
     interests = ['Animals', 'Cheaters', 'Lookingforlove', 'Quickie', 'Travel', 'Menaretrash', 'NSA', 'Trans', 'LFF']
     profile_pics = ['dummy1.png', 'dummy2.png', 'dummy3.png', 'dummy4.png', 'dummy5.png', 'dummy6.png', 'dummy7.png', 'dummy8.png', 'dummy9.png', 'dummy10.png'] 
     
+    #create a dictionary for 50 randon users
     for _ in range(n):
+       
         salt = bcrypt.gensalt()
         details = {
             'username' : '',
@@ -46,7 +48,7 @@ def seed_users():
             'last-seen': datetime.utcnow(),
             'notifications': []
         }
-        
+        #load the 50 created users with random/fake data.
         details['username'] = fake.user_name()
         details['firstname'] = fake.first_name()
         details['lastname'] = fake.last_name()
@@ -65,6 +67,8 @@ def seed_users():
         details['image_name'] = random.choice(profile_pics)
         
         db.register_user(details)
+        # register fake users in an sql database
+        db.re
     message = str(n) + ' users created'
     print(message)
     if not db.get_user({'username': "Bobbers"}, {'username': 1}):

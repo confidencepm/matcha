@@ -15,7 +15,7 @@ user = Blueprint('profile', __name__)
 @user.route('/profile',  methods=['GET', 'POST'])
 @login_required
 def profile():
-    user = db.get_user({'username' : session.get('username')})
+    user = db.get_user({'username' : session.get('username')}) #
     admin = False
 
     if user['_id'] == ObjectId(b'bobisadmin!!'):

@@ -98,7 +98,7 @@ def register():
         if not errors:
             salt = bcrypt.gensalt()
             details['password'] = bcrypt.hashpw(details['password'].encode('utf-8'), salt)
-            db.register_user(details)
+            db.register_user(details) #add user to db.
             send_mail(details['username'])
             flash ("Please check your email for confirmation", 'success')
             return redirect( url_for('auth.login') )
@@ -247,3 +247,17 @@ def resetpw():
             flash(error, 'danger')
             
     return render_template('auth/resetpw.html')
+
+#sql stuff here
+@auth.route('/register', methods=['GET', 'POST'])
+def test_register():
+    if request.method == 'POST':
+        userId = 1
+        user_name = html.escape(request.form.get('username')) 
+        first_name = html.escape(request.form.get('firstname'))
+        last_name = html.escape(request.form.get('lastname'))
+        email = html.escape(request.form.get('email'))
+        password = html.escape(request.form.get('password'))
+
+        info_list = ['{userId}', '{user_name}', '{first_name}', '{last_name}', '{email}', '{password}']
+        return info_list

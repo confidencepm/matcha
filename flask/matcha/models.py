@@ -1,96 +1,86 @@
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-import urllib 
+import urllib
+from flask import Blueprint, render_template, session, redirect, flash, request, url_for
+from faker import Faker
+import matcha.mydatabase as db
 
 class DB:
 
-	def __init__(self):
-		client = MongoClient("mongodb+srv://pmalope:martian143281@matcha-2ordl.mongodb.net/test?retryWrites=true&w=majority",connect=False,)
-		db = client['Matcha']
-		self.__users = db['users']
-		self.__posts = db['posts']
-		self.__chats = db['chats']
-	
-	def get_user(self, query, fields=None):
-		''' This function will get a single users information'''
-		if not fields:
-			user = self.__users.find_one(query)
-		else:
-			user = self.__users.find_one(query, fields)
+    def __init__(self):
+        self.__conn = db.get_connection
 
-		return user
-	
-	# Add the user the database
-	def register_user(self, details):
-		self.__users.insert_one(details)
-		
-	# Get all the users from the database
-	def users(self, query={}):
-		return self.__users.find(query)
-	
-
-	# This funtion is used to get all the users that are not blocked
-
-	# Count all the users
-	def count_users(self):
-		return self.__users.count_documents({})
-
-	# Update the users information
-	def update_user(self, user_id, values):
-		items = values.items()
-		for key, value in items:
-			if key == '_id':
-				continue
-			self.__users.update_one({'_id' : user_id}, {'$set': { key: value}})
+    def register_user(self, details):
+        db.add_user(details,self.__conn)
+    
+    
+    def get_user(self, user_Dict, fields=None):
+        ''' This function will get a single users information'''
+        if user_Dict:
+            return db.get_user_by_username(user_Dict['username'])
 
 
-	# Update the flirts and flirted
-	def update_flirts(self, user_id, change):
-		query = {'_id' : user_id}
-		new_values = {'$set': change}
+    # Get all the users from the database
+    def users(self, query={}):
+        return self.__users.find(query)
 
-		self.__users.update_one(query, new_values)
+    # This funtion is used to get all the users that are not blocked
 
-	# Add a post to the posts table
-	def add_post(self, post):
-		self.__posts.insert_one(post)
+    # Count all the users
+    def count_users(self):
+        return self.__users.count_documents({})
 
-	# Get all the posts from the table.
-	def get_posts(self):
-		return self.__posts.find()
+    # Update the users information
+    def update_user(self, user_id, values):
+        items = values.items()
+        for key, value in items:
+            if key == '_id':
+                continue
+            self.__users.update_one({'_id': user_id}, {'$set': {key: value}})
 
-	# Get a single post
-	def get_post(self, post_id):
-		post_id = ObjectId(post_id)
+    # Update the flirts and flirted
+    def update_flirts(self, user_id, change):
+        query = {'_id': user_id}
+        new_values = {'$set': change}
 
-		return self.__posts.find_one({'_id': post_id})
+        self.__users.update_one(query, new_values)
 
+    # Add a post to the posts table
+    def add_post(self, post):
+        self.__posts.insert_one(post)
 
-	# Update a single post.
-	def update_post(self, post):
-		self.__posts.update_one({'_id' : post['_id']}, {'$set': post})
+    # Get all the posts from the table.
+    def get_posts(self):
+        return self.__posts.find()
 
-	# delete a single entry
-	def delete_post(self, post):
-		self.__posts.delete_one({'_id': post['_id']})
+    # Get a single post
+    def get_post(self, post_id):
+        post_id = ObjectId(post_id)
 
-	# Create a rooms history.
-	def create_history(self, room):
-		history ={
-			'_id': room,
-			'chats': []
-		}
-		self.__chats.insert_one(history)
+        return self.__posts.find_one({'_id': post_id})
 
-	# Add chat history to the database
-	def insert_chat(self, sender, room, message):
-		history = self.get_chat(room)
-		data = {sender: message}
-		history['chats'].append(data)
+    # Update a single post.
+    def update_post(self, post):
+        self.__posts.update_one({'_id': post['_id']}, {'$set': post})
 
-		self.__chats.update_one({'_id': history['_id']}, {'$set':history})
-		
+    # delete a single entry
+    def delete_post(self, post):
+        self.__posts.delete_one({'_id': post['_id']})
 
-	# Get the history for a specific chat.
-	def get_chat(self, room):
-		return self.__chats.find_one({'_id': room})
+    # Create a rooms history.
+    def create_history(self, room):
+        history = {
+            '_id': room,
+            'chats': []
+        }
+        self.__chats.insert_one(history)
+
+    # Add chat history to the database
+    def insert_chat(self, sender, room, message):
+        history = self.get_chat(room)
+        data = {sender: message}
+        history['chats'].append(data)
+
+        self.__chats.update_one({'_id': history['_id']}, {'$set': history})
+
+   
