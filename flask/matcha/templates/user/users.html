@@ -75,14 +75,12 @@
     <div class="media-body">
       <div class="article-metadata border-bottom">
         <h2><a class="mr-2" href="{{ url_for('profile.view_profile', user_id=user['_id'])}}">{{ user['username'] }}</a></h2>
-        
-        
-
         <!-- The like and comment system -->
         {% if logged_in in user['flirted'] %}
         <div>
           {% if user['username'] in current_user['flirted'] %}
-          <a href="#" class='btn btn-outline-info btn-sm m-1 disabled'>Chat</a>
+        <a href="{{ url_for('chat.chat_room', room=user['rooms'][logged_in]) }}"
+          class='btn btn-outline-info btn-sm m-1'>Chat</a>
           {% else %}
           <a href="#" class='pending btn btn-secondary btn-sm m-1 disabled'>Pending</a>
           {% endif %}
@@ -91,12 +89,12 @@
         {% else %}
         <div>
           {% if user['username'] in current_user['flirted'] %}
-          <!-- <a href="{{ url_for('flirts.flirt', username=user['username']) }}" class='btn btn-secondary btn-sm m-1'>Flirt Back</a> -->
-          <button type='button' value="{{ user['username'] }}" class='flirt-back btn btn-secondary btn-sm m-1'>Flirt
+          <!-- <a href="{{ url_for('flirts.flirt', username=user['username']) }}" class='flirt-back btn btn-secondary btn-sm m-1'>Flirt Back</a> -->
+          <button type='button' value="{{ user['username'] }}" class='flirt-back btn btn-secondary btn-sm m-1'>Like
             Back</button>
           {% else%}
           <!-- <a href="{{ url_for('flirts.flirt', username=user['username']) }}" class='btn btn-secondary btn-sm m-1'>Flirt</a> -->
-          <button type='button' value='{{ user["username"] }}' class='flirt btn btn-secondary btn-sm m-1'>Flirt</button>
+          <button type='button' value='{{ user["username"] }}' class='flirt btn btn-secondary btn-sm m-1'>Like</button>
           {% endif %}
         </div>
         {% endif %}
@@ -133,9 +131,7 @@
 
   $('.flirt-back').each(function () {
     $(this).on('click', function (e) {
-      socket.emit('flirt-back', {
-        'to': $(this).val()
-      });
+      socket.emit('flirt-back', {'to':$(this).val()});
       $(this).replaceWith("<a href='#' class='btn btn-outline-info btn-sm sm-1 disabled'>Chat</a>");
     });
   });
@@ -143,7 +139,7 @@
   // handle the unlike button;
   $('.unlike').each(function(){
     $(this).on('click', function(e){
-      alert('you have unlikd ' + $(this).val());
+      // alert('you have unlikd ' + $(this).val());
       socket.emit('Unlike', {'to':$(this).val()});
       window.location.reload();
     });
@@ -161,7 +157,7 @@
   });
 
   socket.on('matched', function (data) {
-    alert(data['from']);
+    // alert(data['from']);
 
     $('.pending').each(function () {
       if ($(this).val() == data['from']) {
@@ -174,7 +170,7 @@
 // Section for other notifications.
 
   socket.on('Unlike', function(data){
-    alert('some unliked you');
+    // alert('some unliked you');
     $('.flirt-back').each(function(){
       if ($(this).val() == data['from']){
         window.location.reload()
@@ -195,14 +191,10 @@ socket.on('notif_chat', function(data){
     $('#badge').text('new');
   });
 
-  
-  $('#inbox').on('click', function(){
-    socket.emit('read');
+  $('#inbox').on('click', function () {
+    socket.emit('read', { "user": $('#username').text() });
     $('#badge').text('');
   });
-
-
-
 
 </script>
 {% endblock js %}

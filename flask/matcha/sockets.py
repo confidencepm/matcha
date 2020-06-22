@@ -12,7 +12,6 @@ def connect():
     print (user_name, 'connected: id -',logged_in_users[user_name])
 
 
-
 @socket.on('disconnect')
 def disconnect():
     logged_in_users[session.get('username')] = ''
@@ -21,17 +20,14 @@ def disconnect():
 @socket.on('flirt')
 def flirt(data):
     flirter = db.get_user({'username': session.get('username')}, {'username': 1, 'flirts': 1})
-    flirtee = db.get_user({'username': data['to']}, {'username':1, 'flirted': 1})
-
-    print('flirter', flirter['username'])
-    print('flirtee', flirtee['username'])
+    flirtee = db.get_user({'username': data['to']}, {'username':1, 'flirted': 1, 'notifications': 1})
 
     flirter['flirts'].append(flirtee['username'])
     flirtee['flirted'].append(flirter['username'])
 
 
-    print('flirter:', flirter['flirts'])
-    print('flirtee:', flirtee['flirted'])
+    # print('flirter:', flirter['flirts'])
+    # print('flirtee:', flirtee['flirted'])
 
     db.update_flirts(flirter['_id'], {'flirts': flirter['flirts']})
     db.update_flirts(flirtee['_id'], {'flirted': flirtee['flirted']})
@@ -40,14 +36,14 @@ def flirt(data):
     if sid:
         socket.emit('flirt', {'from': session.get('username')}, room=sid)
         
-    flirtee['notifications'].append(session.get('username') + ' has sent you a message')
+    flirtee['notifications'].append(session.get('username') + ' liked you')
     db.update_flirts(flirtee['_id'], {'notifications' : flirtee['notifications']})
 
 
 @socket.on('flirt-back')
 def flirt_back(data):
     flirt_back = db.get_user({'username': session.get('username')}, {'username':1, 'flirts' : 1, 'matched': 1, 'rooms': 1})
-    flirtee = db.get_user({'username' :data['to']}, {'username' : 1, 'flirted' : 1, 'matched' :1, 'rooms': 1})
+    flirtee = db.get_user({'username' :data['to']}, {'username' : 1, 'flirted' : 1, 'matched' :1, 'rooms': 1, 'notifications': 1})
     room = secrets.token_hex(16)
 
     flirt_back['flirts'].append(flirtee['username'])
@@ -65,19 +61,18 @@ def flirt_back(data):
     sid = logged_in_users.get(data['to'])
     if sid:
         socket.emit('matched', {'from' : session.get('username')}, room=sid)
-
-    flirtee['notifications'].append(session.get('username') + ' has flirted')
+    flirtee['notifications'].append(session.get('username') + ' has liked back. You can now chat')
     db.update_flirts(flirtee['_id'], {'notifications' : flirtee['notifications']})
 
     print(data)
 
 @socket.on('Unlike')
 def unlike(data):
-    print(data['to'], 'has been unliked.')
+    print(f"Unlike {data}")
     current_user = db.get_user({'username': session.get('username')}, {'flirts': 1, 'matched': 1})
     unlikes = db.get_user({'username': data['to']}, {'flirted': 1, 'matched': 1, 'notifications': 1})
 
-    print('unlikes ', unlikes)
+    # print('unlikes ', unlikes)
     if data['to'] in current_user['flirts']:
         current_user['flirts'].remove(data['to'])
         unlikes['flirted'].remove(session.get('username'))
@@ -88,6 +83,7 @@ def unlike(data):
     db.update_flirts(current_user['_id'], {'flirts': current_user['flirts'], 'matched': current_user['matched']})
     db.update_flirts(unlikes['_id'], {'flirted': unlikes['flirted'], 'matched': unlikes['matched']})
 
+    # print(f" logged in users {logged_in_users[data['to']]}")
     sid = logged_in_users[data['to']]
     if sid:
         socket.emit('Unlike', {'from': session.get('username')}, room=sid)
@@ -104,6 +100,7 @@ def leave(data):
 
 @socket.on('send')
 def send(data):
+    print(f"Sending message")
     users = db.users()
     current_user = db.get_user({'username': session.get('username')}, {'_id': 1})
     notif_to = None
@@ -113,17 +110,19 @@ def send(data):
             notif_to = user
             break
 
-    
     if current_user['_id'] in user['blocked']:
         return False
 
-
     db.insert_chat(data['from'], data['room'], data['message'])
     socket.emit('recieve', {'from': data['from'], 'message': data['message']}, include_self=False, room=data['room'])
-    socket.emit('notif_chat', {'from': data['from'], 'message':data['message']}, sid=logged_in_users[notif_to['username']])
     if not notif_to['username'] in logged_in_users:
+        # send email
         notif_to['notifications'].append(session.get('username') + ' has sent you a message')
-        db.update_flirts(notif_to['_id'], {'notifications' : notif_to['notifications']})
+        db.update_flirts(notif_to['_id'], {'notifications': notif_to['notifications']})
+    else:
+        notif_to['notifications'].append(session.get('username') + ' has sent you a message')
+        db.update_flirts(notif_to['_id'], {'notifications': notif_to['notifications']})
+
 
 
 @socket.on('view')

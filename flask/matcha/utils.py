@@ -123,8 +123,8 @@ def send_mail(reciever, subject='email confirmation', text=None, html=None):
 # Creata a fucntion that finds the similarity ration betwwen two users interests.
 def similarity_perc(list1, list2):
     # Calculation the percentage similarity of the two lists.
-    print('list 1:', list1)
-    print('list 2:', list2)
+    # print('list 1:', list1)
+    # print('list 2:', list2)
     if not list1 or not list2:
         return 0
     res = len(set(list1) & set(list2)) / float(len(set(list1) | set(list2))) * 100
@@ -156,6 +156,6 @@ def filter_location(users, location):
 
 # Filter out users based on the given age
 def filter_age(users, age):
-    print('in filter age', age)
+    # print('in filter age', age)
     valid_users = [user for user in users if age <= int(user['fame-rating'])]
     return valid_users

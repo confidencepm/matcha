@@ -97,8 +97,6 @@ def profile():
             intret = request.form.getlist('interests')
             bio = html.escape(request.form.get('bio'))
             image_file = request.files.get('image2')
-            print(image_file)
-            print(image_file, gender, sex, intret)
             if not intret:
                 intret = ["none"]
             if not bio:
@@ -109,7 +107,6 @@ def profile():
                 user['bio'] = bio
 
             if image_file :
-                print('saving the image\n\n\n')
                 pic_name = save_picture(image_file)
                 user['image_name'] = pic_name
 
@@ -138,7 +135,6 @@ def profile():
                 user['latlon'] = [lat, lon]
                 db.update_user(user['_id'], user)
                 flash('Bio updated', 'success')
-                print(user['image_name'])
                 return redirect( url_for('profile.profile'))
 
             for error in errors:
@@ -162,8 +158,16 @@ def profile():
     for id in user['views']:
         viewers.append(db.get_user({'_id': ObjectId(id)}))
 
+    flirts = []
+    for username in user['flirted']:
+        flirts.append(db.get_user({'username': username}))
+
+    matched = []
+    for username in user['matched']:
+        matched.append(db.get_user({'username': username}))
+
     online_users = list(logged_in_users.keys())
-    return render_template('user/profile.html', logged_in=session.get('username'), current_user=user, users=valid_users, admin=admin, viewers=viewers, online_users=online_users )
+    return render_template('user/profile.html', logged_in=session.get('username'), current_user=user, users=valid_users, admin=admin, viewers=viewers, flirts=flirts, matched=matched, online_users=online_users )
 
 
 
@@ -177,5 +181,4 @@ def view_profile(user_id):
     user = db.get_user({'_id': id})
     user['fame-rating'] = int((user['fame-rating'] / 10) - 1)
     online_users = list(logged_in_users.keys())
-    print(f"Debug: {user}")
     return render_template('user/view_profile.html', logged_in=session.get('username'), user=user, current_user=current_user, online_users=online_users)

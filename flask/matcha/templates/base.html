@@ -36,8 +36,9 @@
                         <a class="nav-item nav-link" href="{{  url_for('main.users') }}">Profiles</a>
                         <a href="{{ url_for('profile.profile') }}" class="nav-item nav-link">Profile</a>
                         <a href="{{ url_for('auth.logout') }}" class="nav-item nav-link">Logout</a>
+                        <a href="{{ url_for('chat.chat')}}" class="nav-item nav-link">Chats</a>
                         <button type='button' id='inbox' class="notification btn" data-toggle="collapse" data-target="#notification" aria-expanded="false" aria-controls="collapse">
-                            <span>Inbox</span>
+                            <span>Notifications</span>
                             {% if current_user and current_user['notifications'] %}
                             <span class="badge" id='badge'>new</span>
                             {% else %}
@@ -121,9 +122,6 @@
             </div>
         </div>
     </main>
-    <div class="footer">
-        <p style="font-size: 1.5vh;"><img src="{{ url_for('static', filename='../static/logos/matchalogo.png') }}" alt="logo" width="1.5%">Matcha 2020</p>
-    </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
