@@ -14,11 +14,17 @@ connection = pyodbc.connect('DRIVER={'+driver+'}; \
 
 class Database:
 
-    def __init__(self):
-        self.conn = connection
+    def __init__(self, server, db_name, driver):
+        self.conn = pyodbc.connect('DRIVER={'+driver+'}; \
+                            SERVER=' + server + '; \
+                            DATABASE=' + db_name + ';\
+                            Trusted_Connection=yes;')
 
     def get_connection(self):
         return self.conn
+        
+    def close_conn(self):
+        self.conn.close()
 
     def add_user(self, details):
         cursor = self.conn.cursor()
@@ -29,7 +35,7 @@ class Database:
 
         cursor.execute(sql_query, user_info)
         cursor.commit()
-        self.conn.close()
+        #self.conn.close()
 
     def get_user_by_username(self, userDict):
         cursor = self.conn.cursor()

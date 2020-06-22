@@ -68,7 +68,6 @@ def seed_users():
         
         db.register_user(details)
         # register fake users in an sql database
-        db.re
     message = str(n) + ' users created'
     print(message)
     if not db.get_user({'username': "Bobbers"}, {'username': 1}):

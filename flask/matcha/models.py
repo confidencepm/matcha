@@ -5,7 +5,13 @@ from flask import Blueprint, render_template, session, redirect, flash, request,
 from faker import Faker
 from matcha.mydatabase import Database
 
-db = Database()
+server = 'DESKTOP-4L29225\SQLEXPRESS'
+database = 'MatchaDB'
+driver = 'ODBC Driver 17 for SQL Server'
+
+db = Database(server, database, driver)
+
+
 class DB:
 
     def __init__(self):
@@ -13,16 +19,15 @@ class DB:
 
     def register_user(self, details):
         db.add_user(details)
-    
-    
+        
     def get_user(self, user_Dict, fields=None):
         ''' This function will get a single users information'''
         # if user_Dict:
         #     return db.get_user_by_username(user_Dict['_id'])
         pass
 
-
     # Get all the users from the database
+
     def users(self, query={}):
         return self.__users.find(query)
 
