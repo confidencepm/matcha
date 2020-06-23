@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, session, redirect, flash, request, url_for
-from matcha import db, logged_in_users
+from matcha import db, logged_in_users, database
 from bson import ObjectId
 from functools import wraps
 import secrets, re, bcrypt, html
@@ -99,6 +99,7 @@ def register():
             salt = bcrypt.gensalt()
             details['password'] = bcrypt.hashpw(details['password'].encode('utf-8'), salt)
             db.register_user(details)
+            database.register_user(details)
             send_mail(details['username'])
             flash ("Please check your email for confirmation", 'success')
             return redirect( url_for('auth.login') )
