@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_socketio import SocketIO
 from matcha.models import DB
+from matcha.connection import DATABASE
 import secrets, re, bcrypt, html
 from bson import ObjectId
 from datetime import datetime
@@ -15,6 +16,7 @@ socket = SocketIO(app, Threaded=True, cors_allowed_origins='*')
 
 # Set up the database
 db = DB()
+database = DATABASE()
 
 from matcha.seed import *
 
