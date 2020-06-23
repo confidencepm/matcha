@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, session, redirect, flash, request, url_for
-from matcha import db, logged_in_users, database
+from matcha import db, logged_in_users
 from bson import ObjectId
 from functools import wraps
 import secrets, re, bcrypt, html
