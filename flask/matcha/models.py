@@ -5,12 +5,13 @@ import urllib
 class DB:
 
 	def __init__(self):
-		client = MongoClient("mongodb+srv://pmalope:martian143281@matcha-2ordl.mongodb.net/test?retryWrites=true&w=majority",connect=False,)
+		# client = MongoClient("mongodb+srv://pmalope:martian143281@matcha-2ordl.mongodb.net/test?retryWrites=true&w=majority",connect=False,)
+		client = MongoClient("mongodb://localhost:27017",connect=False,)
 		db = client['Matcha']
 		self.__users = db['users']
 		self.__posts = db['posts']
 		self.__chats = db['chats']
-	
+
 	def get_user(self, query, fields=None):
 		''' This function will get a single users information'''
 		if not fields:
@@ -37,7 +38,7 @@ class DB:
 
 	# Update the users information
 	def update_user(self, user_id, values):
-		items = values.items()
+		items = values.items()                                                      
 		for key, value in items:
 			if key == '_id':
 				continue

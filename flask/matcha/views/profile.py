@@ -30,7 +30,7 @@ def profile():
         valid_users = []
 
     if request.method == 'POST':
-        if request.form.get('submit') == 'update':
+        if request.form.get('submit') == 'update' or request.form.get('submit_pwd') == 'update_pwd':
             username = html.escape(request.form.get('username'))
             email = html.escape(request.form.get('email'))
             firstname = html.escape(request.form.get('firstname'))
@@ -119,6 +119,7 @@ def profile():
                 user['interests'] = intret
                 user['completed'] = 1
                 location = request.form.get('location')
+                print(f"Location: {location}")
                 # latlon1 = request.form.get('latlon')
                 location = location.split(",")
                 # location_send = request.form.get('autocomplete')
@@ -134,7 +135,7 @@ def profile():
                 user['location'] = location
                 user['latlon'] = [lat, lon]
                 db.update_user(user['_id'], user)
-                flash('Bio updated', 'success')
+                flash('Profile updated', 'success')
                 return redirect( url_for('profile.profile'))
 
             for error in errors:
