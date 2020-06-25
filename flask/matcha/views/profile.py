@@ -196,6 +196,12 @@ def profile():
     for username in user["matched"]:
         matched.append(db.get_user({"username": username}))
 
+
+    blocked = []
+    for user_id in user['blocked']:
+        blocked.append(db.get_user({"_id": user_id}))
+
+
     online_users = list(logged_in_users.keys())
     return render_template(
         "user/profile.html",
@@ -203,7 +209,8 @@ def profile():
         current_user=user,
         viewers=viewers,
         likes=likes,
-        matched=matched
+        matched=matched,
+        blocked=blocked
     )
 
 
