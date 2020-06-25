@@ -121,6 +121,13 @@
                         Please enter a valid email address
                     </div>
                 </div>
+            </fieldset>
+            <div class="form-group">
+                <input type="submit" value="update" name="submit" class="btn btn-outline-info btn-md">
+            </div>
+        </form>
+        <form action="" method='POST' class="needs-validation" novalidate enctype="multipart/form-data">
+
                 <h4 style="font-size: 2.5vh;">Change Your Password:</h4>
                 <p>Enter your current password and click button below or change password by entering current password and new password</p>
                 <div class="form-group">
@@ -135,13 +142,9 @@
                     <label class="form-control-label">Repeat Password</label>
                     <input type="password" id="new_password_repeat" class="form-control form-control-lg" name="new_password_repeat" value="" required>
                 </div>
-                <div class="form-group">
-                    <label class="form-control-label">Change profile pic</label>
-                    <input type='file' class="form-control-file" name='image' accept="image/*">
-                </div>
             </fieldset>
             <div class="form-group">
-                <input type="submit" value="update" name="submit" class="btn btn-outline-info btn-md">
+                <input type="submit" value="update" name="submitPwd" class="btn btn-outline-info btn-md">
             </div>
         </form>
     </div>

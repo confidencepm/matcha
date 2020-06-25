@@ -29,28 +29,15 @@ def profile():
     else:
         valid_users = []
 
+    #update user details
     if request.method == 'POST':
-        if request.form.get('submit') == 'update' or request.form.get('submit_pwd') == 'update_pwd':
+        if request.form.get('submit') == 'update':
+            print(f"Debug {request.form}")
             username = html.escape(request.form.get('username'))
             email = html.escape(request.form.get('email'))
             firstname = html.escape(request.form.get('firstname'))
             lastname = html.escape(request.form.get('lastname'))
             image_file = request.files.get('image')
-            password = html.escape(request.form.get('current_password'))
-            new_password = html.escape(request.form.get('new_password'))
-            check_new_password = html.escape(request.form.get('new_password_repeat'))
-            
-            if not new_password:
-                if not bcrypt.checkpw(password.encode('utf-8'), user['password']):
-                    errors.append('Incorrect password')
-            elif new_password:
-                if not re.match(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,25}$", new_password):
-                    errors.append('The password must have an uppercase, lowercase and a digit')
-                elif check_new_password != new_password:
-                    errors.append('The two passwords do not match')
-                else:
-                    salt = bcrypt.gensalt()
-                    user['password'] = bcrypt.hashpw(new_password.encode('utf-8'), salt)
                            
             if not re.match('^[A-Za-z][A-Za-z0-9]{2,49}$', username):
                 errors.append('The username must be an alpha numeric value, 3 - 50 characters long.')
@@ -86,11 +73,42 @@ def profile():
 
             if not errors:
                 db.update_user(user['_id'], user)
+                flash("User details updated", 'success')
                 return redirect( url_for('profile.profile') )
 
             for error in errors:
                 flash(error, 'danger')
 
+        #update user password
+        if request.form.get('submitPwd') == 'update':
+            # print(f"Debug {request.form}")
+            password = html.escape(request.form.get('current_password'))
+            new_password = html.escape(request.form.get('new_password'))
+            check_new_password = html.escape(request.form.get('new_password_repeat'))
+            # print("Debug2 ", password, new_password, check_new_password)
+            if not bcrypt.checkpw(password.encode('utf-8'), user['password']):
+                errors.append('Incorrect password')
+            elif new_password:
+                #fixme
+                # if not re.match(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,25}$", new_password):
+                #     print("Password error")
+                #     errors.append('The password must have an uppercase, lowercase and a digit')
+                if check_new_password != new_password:
+                    errors.append('The two passwords do not match')
+                else:
+                    salt = bcrypt.gensalt()
+                    user['password'] = bcrypt.hashpw(new_password.encode('utf-8'), salt)
+                    db.update_user(user['_id'], user)
+            
+            if not errors:
+                print("Updating password")
+                db.update_user(user['_id'], user)
+                flash("Password updated", 'success')
+            else:
+                for error in errors:
+                    flash(error, 'danger')
+
+        #update profile
         if request.form.get('submit') == 'bioupdate':
             gender = request.form.get('gender')
             sex = request.form.get('sexo')
