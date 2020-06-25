@@ -389,9 +389,7 @@
 
         'use strict';
         window.addEventListener('load', function() {
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
             let forms = document.getElementsByClassName('needs-validation');
-            // Loop over them and prevent submission
             let validation = Array.prototype.filter.call(forms, function(form) {
                 form.addEventListener('submit', function(event) {
                     if (form.checkValidity() === false) {
@@ -462,7 +460,6 @@
     }
 
     function onPlaceChanged() {
-        alert('Debug mode');
         let place = autocomplete.getPlace();
         let latitude = place.geometry.location.lat();
         let longitude = place.geometry.location.lng();
@@ -471,6 +468,8 @@
         console.log("Region: ", place.address_components[5].long_name)
         console.log("City: ", place.address_components[3].long_name)
         console.log("Geolocation: ", latitude, longitude)
+        document.getElementById('location').value = [place.address_components[6].long_name, place.address_components[5].long_name,
+                                                    place.address_components[3].long_name, longitude, latitude];
         if (place.geometry) {
             map.panTo(place.geometry.location);
             map.setZoom(15);
