@@ -99,7 +99,6 @@ def register():
             salt = bcrypt.gensalt()
             details['password'] = bcrypt.hashpw(details['password'].encode('utf-8'), salt)
             db.register_user(details)
-            database.register_user(details)
             send_mail(details['username'])
             flash ("Please check your email for confirmation", 'success')
             return redirect( url_for('auth.login') )
