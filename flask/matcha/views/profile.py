@@ -18,10 +18,7 @@ user = Blueprint("profile", __name__)
 @login_required
 def profile():
     user = db.get_user({"username": session.get("username")})
-    admin = False
 
-    if user["_id"] == ObjectId(b"bobisadmin!!"):
-        admin = True
     errors = []
     location = []
     blocked = user["blocked"]
@@ -43,7 +40,7 @@ def profile():
             email = html.escape(request.form.get("email"))
             firstname = html.escape(request.form.get("firstname"))
             lastname = html.escape(request.form.get("lastname"))
-            image_file = request.files.get("image")
+            image = request.files.get("image")
 
             if not re.match("^[A-Za-z][A-Za-z0-9]{2,49}$", username):
                 errors.append(
@@ -81,8 +78,8 @@ def profile():
             else:
                 user["lastname"] = lastname
 
-            if image_file:
-                pic_name = save_picture(image_file)
+            if image:
+                pic_name = save_picture(image)
                 user["image_name"] = pic_name
 
             if not errors:
@@ -125,12 +122,12 @@ def profile():
         # update profile
         if request.form.get("submit") == "bioupdate":
             gender = request.form.get("gender")
-            sex = request.form.get("sexo")
-            intret = request.form.getlist("interests")
+            sexuality = request.form.get("sexo")
+            interests = request.form.getlist("interests")
             bio = html.escape(request.form.get("bio"))
-            image_file = request.files.get("image2")
-            if not intret:
-                intret = ["none"]
+            image = request.files.get("image2")
+            if not interests:
+                interests = ["none"]
             if not bio:
                 errors.append("Bio may not be empty")
             elif len(bio) > 500:
@@ -138,8 +135,8 @@ def profile():
             else:
                 user["bio"] = bio
 
-            if image_file:
-                pic_name = save_picture(image_file)
+            if image:
+                pic_name = save_picture(image)
                 user["image_name"] = pic_name
 
             elif user["image_name"] == "default.png":
@@ -147,8 +144,8 @@ def profile():
 
             if not errors:
                 user["gender"] = gender
-                user["sex"] = sex
-                user["interests"] = intret
+                user["sex"] = sexuality
+                user["interests"] = interests
                 user["completed"] = 1
                 location = request.form.get("location")
                 print(f"Location: {location}")
@@ -175,11 +172,11 @@ def profile():
 
         if request.form.get("submit") == "Upload":
             # print(valid_users)
-            total_amnt = len(user["gallery"])
-            if total_amnt < 4:
-                image_file = request.files.get("image3")
-                if image_file:
-                    gallery_img = save_gallery(image_file)
+            image_count = len(user["gallery"])
+            if image_count < 4:
+                image = request.files.get("image3")
+                if image:
+                    gallery_img = save_gallery(image)
                     user["gallery"].append(gallery_img)
 
                     db.update_user(user["_id"], user)
@@ -205,7 +202,6 @@ def profile():
         logged_in=session.get("username"),
         current_user=user,
         users=valid_users,
-        admin=admin,
         viewers=viewers,
         likes=likes,
         matched=matched,
