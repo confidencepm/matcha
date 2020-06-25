@@ -23,14 +23,14 @@ def profile():
     location = []
     blocked = user["blocked"]
     users = db.users({"_id": {"$nin": blocked}, "completed": 1})
-    if user["completed"] == 1:
-        valid_users = [
-            check_user
-            for check_user in users
-            if check_user["completed"] == 1 and get_howfar(user, check_user) < 20
-        ]
-    else:
-        valid_users = []
+    # if user["completed"] == 1:
+    #     valid_users = [
+    #         check_user
+    #         for check_user in users
+    #         if check_user["completed"] == 1 and get_howfar(user, check_user) < 20
+    #     ]
+    # else:
+    #     valid_users = []
 
     # update user details
     if request.method == "POST":
@@ -199,13 +199,10 @@ def profile():
     online_users = list(logged_in_users.keys())
     return render_template(
         "user/profile.html",
-        logged_in=session.get("username"),
         current_user=user,
-        users=valid_users,
         viewers=viewers,
         likes=likes,
         matched=matched,
-        online_users=online_users,
     )
 
 

@@ -24,11 +24,11 @@
             </div>
         </div>
         <div class="col-sm-6">
-            <h6>Bio:</h6>
+            <h6 class='text-muted text-primary'>Bio:</h6>
             <p>{{current_user['bio']}}</p>
-            <h6>Interests:</h6>
+            <h6 class='text-muted text-primary'>Interests:</h6>
             {% for interest in current_user['interests']%}
-            <p>{{interest}}</p>
+                <p>{{interest}}</p>
             {%endfor%}
         </div>
     </div>
