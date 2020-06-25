@@ -10,10 +10,11 @@ from datetime import datetime
 
 
 def seed_users():
-    n = 50  # number of users you want to create
+    n = 250  # number of users you want to create
     fake = Faker()
     gender = ['Male', 'Female']
     sexo = ['bisexual', 'heterosexual', 'homosexual']
+    city = ['Johannesburg', 'Cape Town', 'Durban', 'Pretoria', 'Polokwane']
     interests = ['Animals', 'Cheaters', 'Lookingforlove', 'Quickie', 'Travel', 'Menaretrash', 'NSA', 'Trans', 'LFF']
     profile_pics = ['dummy1.png', 'dummy2.png', 'dummy3.png', 'dummy4.png', 'dummy5.png', 'dummy6.png', 'dummy7.png',
                     'dummy8.png', 'dummy9.png', 'dummy10.png']
@@ -33,7 +34,7 @@ def seed_users():
         details['fame-rating'] = fake.random_int(0, 80)
         details['location'].append(''.join([str(fake.random_int(1, 500)), ' ', fake.word(), ' street']))
         details['location'].append(''.join([fake.word(), 'cliff']))
-        details['location'].append(fake.city())
+        details['location'].append(random.choice(city))
         details['location'].append('South Africa')
         details['latlon'] = fake.local_latlng(country_code="ZA", coords_only=True)
         details['age'] = fake.random_int(18, 80)

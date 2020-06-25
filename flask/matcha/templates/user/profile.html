@@ -82,7 +82,7 @@
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#viewers" aria-expanded="false" aria-controls="collapse">Profile viewers</button>
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#likes" aria-expanded="false" aria-controls="collapse">Profile likes</button>
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#match" aria-expanded="false" aria-controls="collapse">Profile Match</button>
-        <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#blocked" aria-expanded="false" aria-controls="collapse">Blocked Profiles (Fix me)</button>
+        <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#blocked" aria-expanded="false" aria-controls="collapse">Blocked Profiles</button>
     </div>
 </div>
 
@@ -287,11 +287,10 @@
             alt="Profile Pic">
         <div class="media-body">
             <div class="article-metadata border-bottom">
-                <small class="text-muted">{{ like['email'] }}</small>
+                <small class="text-muted">{{ like['gender'] }}</small>
             </div>
             <h2><a class="article-title"
                     href="{{ url_for('profile.view_profile', user_id=like['_id'])}}">{{ like['username'] }}</a></h2>
-            <p class="article-content">{{ like['gender'] }}</p>
         </div>
     </article>
     {% endfor %}
@@ -307,12 +306,11 @@
             alt="Profile Pic">
         <div class="media-body">
             <div class="article-metadata border-bottom">
-                <small class="text-muted">{{ match['email'] }}</small>
+                <small class="text-muted">{{ match['gender'] }}</small>
                 <small><a href="{{ url_for('chat.chat_room', room=match['rooms'][logged_in]) }}"
                     class='btn btn-outline-info btn-sm m-1'>Chat</a></small>
             </div>
             <h2><a class="article-title" href="{{ url_for('profile.view_profile', user_id=match['_id'])}}">{{ match['username'] }}</a></h2>
-            <p class="article-content">{{ match['gender'] }}</p>
         </div>
     </article>
     {% endfor %}
@@ -322,22 +320,19 @@
 
 <div class="collapse" id='blocked'>
     <legend class="form-goup border-bottom" style="padding-left: 4%;">People you blocked</legend>
-    <!-- {% for match in matched %}
+    {% for block in blocked %}
     <article class="media content-section ">
-        <img class="article-img rounded" src="{{ url_for('static', filename='profile_pics/' + match['image_name']) }}"
+        <img class="article-img rounded" src="{{ url_for('static', filename='profile_pics/' + block['image_name']) }}"
             alt="Profile Pic">
         <div class="media-body">
             <div class="article-metadata border-bottom">
-                <small class="text-muted">{{ match['email'] }}</small>
-                <small><a href="{{ url_for('chat.chat_room', room=match['rooms'][logged_in]) }}"
-                        class='btn btn-outline-info btn-sm m-1'>Chat</a></small>
+                <small class="text-muted">{{ block['gender'] }}</small>
             </div>
             <h2><a class="article-title"
-                    href="{{ url_for('profile.view_profile', user_id=match['_id'])}}">{{ match['username'] }}</a></h2>
-            <p class="article-content">{{ match['gender'] }}</p>
+                    href="{{ url_for('profile.view_profile', user_id=block['_id'])}}">{{ block['username'] }}</a></h2>
         </div>
     </article>
-    {% endfor %} -->
+    {% endfor %}
 
 
 </div>
@@ -376,11 +371,10 @@
         <img class="article-img rounded" src="{{ url_for('static', filename='profile_pics/' + people['image_name']) }}" alt="Profile Pic">
         <div class="media-body">
             <div class="article-metadata border-bottom">
-                <small class="text-muted">{{ people['email'] }}</small>
                 <small class="text-muted">{{ people['gender'] }}</small>
+                <small class="text-muted">{{ people['location'][2] }}</small>
             </div>
             <h2><a class="article-title" href="{{ url_for('profile.view_profile', user_id=people['_id'])}}">{{ people['username'] }}</a></h2>
-            <p class="article-content">{{ people['location'][2] }}</p>
         </div>
     </article>
     {% endif %} {% endfor %}
@@ -395,9 +389,7 @@
 
         'use strict';
         window.addEventListener('load', function() {
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
             let forms = document.getElementsByClassName('needs-validation');
-            // Loop over them and prevent submission
             let validation = Array.prototype.filter.call(forms, function(form) {
                 form.addEventListener('submit', function(event) {
                     if (form.checkValidity() === false) {
@@ -468,7 +460,6 @@
     }
 
     function onPlaceChanged() {
-        alert('Debug mode');
         let place = autocomplete.getPlace();
         let latitude = place.geometry.location.lat();
         let longitude = place.geometry.location.lng();
@@ -477,6 +468,8 @@
         console.log("Region: ", place.address_components[5].long_name)
         console.log("City: ", place.address_components[3].long_name)
         console.log("Geolocation: ", latitude, longitude)
+        document.getElementById('location').value = [place.address_components[6].long_name, place.address_components[5].long_name,
+                                                    place.address_components[3].long_name, longitude, latitude];
         if (place.geometry) {
             map.panTo(place.geometry.location);
             map.setZoom(15);
