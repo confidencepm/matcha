@@ -37,7 +37,9 @@ def login_required(f):
 def finish_profile(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
-        user = db.get_user({'username':session.get('username')})
+        user = db.get_user({'username': session.get('username')})
+        if user is None:
+            return redirect( url_for('auth.login', next=request.url))
         if user['completed'] == 0:
             flash("Please finish your profile first", 'info')
             return redirect( url_for('profile.profile', next=request.url))
@@ -91,7 +93,7 @@ def send_mail(reciever, subject='email confirmation', text=None, html=None):
         Hi,{}
         Welcome to Matcha.
         Copy the URL below to confirm your email:
-        http://127.0.0.1:5000/confirm?jrr={}""".format(user['username'],user['_id'])
+        http://localhost:5000/confirm?jrr={}""".format(user['username'],user['_id'])
         
     if not html:
         html = """\
@@ -100,7 +102,7 @@ def send_mail(reciever, subject='email confirmation', text=None, html=None):
             <p>Hi,{}<br>
             Welcome to Matcha.<br>
             Click the link below to confirm your email:
-            <a href="http://127.0.0.1:5000/confirm?jrr={}">Confirm Email</a>
+            <a href="http://localhost:5000/confirm?jrr={}">Confirm Email</a>
             </p>
         </body>
         </html>
@@ -134,8 +136,8 @@ def similarity_perc(list1, list2):
 # Calculate the users fame rating
 def calculate_fame(user):
     account_count = db.count_users()
-    user_flirted = len(user['flirted'])
-    fame_rate = user_flirted / account_count * 100.0
+    user_liked = len(user['liked'])
+    fame_rate = user_liked / account_count * 100.0
 
     # Update the user information.
     user['fame-rating'] = fame_rate

@@ -24,11 +24,11 @@
             </div>
         </div>
         <div class="col-sm-6">
-            <h6>Bio:</h6>
+            <h6 class='text-muted text-primary'>Bio:</h6>
             <p>{{current_user['bio']}}</p>
-            <h6>Interests:</h6>
+            <h6 class='text-muted text-primary'>Interests:</h6>
             {% for interest in current_user['interests']%}
-            <p>{{interest}}</p>
+                <p>{{interest}}</p>
             {%endfor%}
         </div>
     </div>
@@ -80,8 +80,9 @@
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#gallery" aria-expanded="false" aria-controls="collapse">Gallery (FIX ME)</button>
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#pnm" aria-expanded="false" aria-controls="collapse">People near me</button>
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#viewers" aria-expanded="false" aria-controls="collapse">Profile viewers</button>
-        <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#flirts" aria-expanded="false" aria-controls="collapse">Profile likes</button>
+        <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#likes" aria-expanded="false" aria-controls="collapse">Profile likes</button>
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#match" aria-expanded="false" aria-controls="collapse">Profile Match</button>
+        <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#blocked" aria-expanded="false" aria-controls="collapse">Blocked Profiles (Fix me)</button>
     </div>
 </div>
 
@@ -259,6 +260,7 @@
 
     </form>
 </div>
+
 <div class="collapse" id='viewers'>
     <legend class="form-goup border-bottom" style="padding-left: 4%;">People who viewed your profile</legend>
  {% for views in viewers %}
@@ -277,19 +279,19 @@
   {% endfor %}
 </div>
 
-<div class="collapse" id='flirts'>
+<div class="collapse" id='likes'>
     <legend class="form-goup border-bottom" style="padding-left: 4%;">People who liked your profile</legend>
-    {% for flirt in flirts %}
+    {% for like in likes %}
     <article class="media content-section ">
-        <img class="article-img rounded" src="{{ url_for('static', filename='profile_pics/' + flirt['image_name']) }}"
+        <img class="article-img rounded" src="{{ url_for('static', filename='profile_pics/' + like['image_name']) }}"
             alt="Profile Pic">
         <div class="media-body">
             <div class="article-metadata border-bottom">
-                <small class="text-muted">{{ flirt['email'] }}</small>
+                <small class="text-muted">{{ like['email'] }}</small>
             </div>
             <h2><a class="article-title"
-                    href="{{ url_for('profile.view_profile', user_id=flirt['_id'])}}">{{ flirt['username'] }}</a></h2>
-            <p class="article-content">{{ flirt['gender'] }}</p>
+                    href="{{ url_for('profile.view_profile', user_id=like['_id'])}}">{{ like['username'] }}</a></h2>
+            <p class="article-content">{{ like['gender'] }}</p>
         </div>
     </article>
     {% endfor %}
@@ -314,6 +316,28 @@
         </div>
     </article>
     {% endfor %}
+
+
+</div>
+
+<div class="collapse" id='blocked'>
+    <legend class="form-goup border-bottom" style="padding-left: 4%;">People you blocked</legend>
+    <!-- {% for match in matched %}
+    <article class="media content-section ">
+        <img class="article-img rounded" src="{{ url_for('static', filename='profile_pics/' + match['image_name']) }}"
+            alt="Profile Pic">
+        <div class="media-body">
+            <div class="article-metadata border-bottom">
+                <small class="text-muted">{{ match['email'] }}</small>
+                <small><a href="{{ url_for('chat.chat_room', room=match['rooms'][logged_in]) }}"
+                        class='btn btn-outline-info btn-sm m-1'>Chat</a></small>
+            </div>
+            <h2><a class="article-title"
+                    href="{{ url_for('profile.view_profile', user_id=match['_id'])}}">{{ match['username'] }}</a></h2>
+            <p class="article-content">{{ match['gender'] }}</p>
+        </div>
+    </article>
+    {% endfor %} -->
 
 
 </div>

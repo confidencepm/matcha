@@ -13,12 +13,8 @@ main = Blueprint('main', __name__)
 @login_required
 @finish_profile
 def home():
-    posts = list(db.get_posts())
     user = db.get_user({'username': session.get('username')}, {'notifications': 1})
-    for post in posts:
-        post["title"] = html.unescape(post["title"])
-        post["content"] = html.unescape(post["content"])
-    return render_template('home.html', logged_in=session.get('username'), posts=posts, current_user=user)
+    return render_template('home.html', logged_in=session.get('username'), current_user=user)
 
 
 @main.route('/users')
