@@ -9,7 +9,6 @@ class DB:
 		client = MongoClient("mongodb://localhost:27017",connect=False,)
 		db = client['Matcha']
 		self.__users = db['users']
-		self.__posts = db['posts']
 		self.__chats = db['chats']
 
 	def get_user(self, query, fields=None):
@@ -52,28 +51,6 @@ class DB:
 
 		self.__users.update_one(query, new_values)
 
-	# Add a post to the posts table
-	def add_post(self, post):
-		self.__posts.insert_one(post)
-
-	# Get all the posts from the table.
-	def get_posts(self):
-		return self.__posts.find()
-
-	# Get a single post
-	def get_post(self, post_id):
-		post_id = ObjectId(post_id)
-
-		return self.__posts.find_one({'_id': post_id})
-
-
-	# Update a single post.
-	def update_post(self, post):
-		self.__posts.update_one({'_id' : post['_id']}, {'$set': post})
-
-	# delete a single entry
-	def delete_post(self, post):
-		self.__posts.delete_one({'_id': post['_id']})
 
 	# Create a rooms history.
 	def create_history(self, room):
