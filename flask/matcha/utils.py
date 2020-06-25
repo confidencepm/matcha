@@ -93,7 +93,7 @@ def send_mail(reciever, subject='email confirmation', text=None, html=None):
         Hi,{}
         Welcome to Matcha.
         Copy the URL below to confirm your email:
-        http://127.0.0.1:5000/confirm?jrr={}""".format(user['username'],user['_id'])
+        http://localhost:5000/confirm?jrr={}""".format(user['username'],user['_id'])
         
     if not html:
         html = """\
@@ -102,7 +102,7 @@ def send_mail(reciever, subject='email confirmation', text=None, html=None):
             <p>Hi,{}<br>
             Welcome to Matcha.<br>
             Click the link below to confirm your email:
-            <a href="http://127.0.0.1:5000/confirm?jrr={}">Confirm Email</a>
+            <a href="http://localhost:5000/confirm?jrr={}">Confirm Email</a>
             </p>
         </body>
         </html>
