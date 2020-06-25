@@ -22,8 +22,6 @@
                 {% endif %}
             {% endif %}
             <a href="{{ url_for('main.block_user', b_id=user['_id']) }}" class='btn btn-secondary btn-sm m-1'>Block</a>
-            <a href="{{ url_for('main.report_user', b_id=user['_id']) }}" class='btn btn-secondary btn-sm m-1'>Report as fake
-                account</a>
         </div>
     </div>
     <div class="row">
@@ -109,6 +107,19 @@
     });
 
       $('.flirt').each(function () {
+            $(this).on('click', function (e) {
+                socket.emit('flirt', {
+                    'to': $(this).val()
+                });
+                $(this).removeClass('flirt');
+                $(this).addClass('disabled');
+                $(this).addClass('pending')
+                $(this).text('pending');
+                $(this).unbind('click', arguments.callee);
+            });
+        });
+
+        $('.flirt').each(function () {
             $(this).on('click', function (e) {
                 socket.emit('flirt', {
                     'to': $(this).val()

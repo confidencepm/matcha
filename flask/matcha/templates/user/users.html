@@ -97,7 +97,6 @@
         </div>
         {% endif %}
         <a href="{{ url_for('main.block_user', b_id=user['_id']) }}" class='btn btn-secondary btn-sm m-1'>Block</a>
-        <a href="{{ url_for('main.report_user', b_id=user['_id']) }}" class='btn btn-secondary btn-sm m-1'>Report as fake account</a>
       </div>
       <h2><a class="article-title" href="#">{{ user['firstname'] }}</a></h2>
       <small class="text-muted">{{ user['lastname'] }}</small>
