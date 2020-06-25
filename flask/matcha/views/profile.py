@@ -81,11 +81,11 @@ def profile():
 
         #update user password
         if request.form.get('submitPwd') == 'update':
-            print(f"Debug {request.form}")
+            # print(f"Debug {request.form}")
             password = html.escape(request.form.get('current_password'))
             new_password = html.escape(request.form.get('new_password'))
             check_new_password = html.escape(request.form.get('new_password_repeat'))
-            print("Debug2 ", password, new_password, check_new_password)
+            # print("Debug2 ", password, new_password, check_new_password)
             if not bcrypt.checkpw(password.encode('utf-8'), user['password']):
                 errors.append('Incorrect password')
             elif new_password:
