@@ -28,16 +28,12 @@ valid_users = []
 # Import all the blueprints.
 from matcha.views.profile import user
 from matcha.views.auth import auth
-from matcha.views.posts import posts
 from matcha.views.home import main
-from matcha.views.flirts import flirts
 from matcha.views.chat import chatting
 # Register the blurprints
 app.register_blueprint(main)
 app.register_blueprint(user)
 app.register_blueprint(auth)
-app.register_blueprint(posts)
-app.register_blueprint(flirts)
 app.register_blueprint(chatting)
 
 from matcha import sockets

@@ -199,10 +199,11 @@ def profile():
     online_users = list(logged_in_users.keys())
     return render_template(
         "user/profile.html",
+        logged_in=session.get('username'),
         current_user=user,
         viewers=viewers,
         likes=likes,
-        matched=matched,
+        matched=matched
     )
 
 
@@ -218,9 +219,8 @@ def view_profile(user_id):
     online_users = list(logged_in_users.keys())
     return render_template(
         "user/view_profile.html",
-        logged_in=session.get("username"),
+        logged_in=session.get('username'),
         user=user,
-        current_user=current_user,
-        online_users=online_users,
+        current_user=current_user
     )
 
