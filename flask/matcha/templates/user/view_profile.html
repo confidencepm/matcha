@@ -5,8 +5,8 @@
     <div class="row">
         <div class="col-sm-12">
             <!-- FIX ME! -->
-            {% if logged_in in user['flirted'] %}
-                {% if user['username'] in current_user['flirted'] %}
+            {% if logged_in in user['liked'] %}
+                {% if user['username'] in current_user['liked'] %}
         <a href="{{ url_for('chat.chat_room', room=user['rooms'][logged_in]) }}"
             class='btn btn-outline-info btn-sm m-1'>Chat</a>
                 {% else %}
@@ -14,12 +14,10 @@
                 {% endif %}
                 <button type='button' class='unlike btn btn-secondary btn-sm m1' value="{{ user['username'] }}">unlike</button>
             {% else %}
-                {% if user['username'] in current_user['flirted'] %}
-                <!-- <a href="{{ url_for('flirts.flirt', username=user['username']) }}" class='btn btn-secondary btn-sm m-1'>Flirt Back</a> -->
+                {% if user['username'] in current_user['liked'] %}
                 <button type='button' value="{{ user['username'] }}" class='flirt-back btn btn-secondary btn-sm m-1'>Like
                     Back</button>
                 {% else%}
-                <!-- <a href="{{ url_for('flirts.flirt', username=user['username']) }}" class='btn btn-secondary btn-sm m-1'>Flirt</a> -->
                 <button type='button' value='{{ user["username"] }}' class='flirt btn btn-secondary btn-sm m-1'>Like</button>
                 {% endif %}
             {% endif %}

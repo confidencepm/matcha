@@ -189,7 +189,7 @@ def profile():
         viewers.append(db.get_user({"_id": ObjectId(id)}))
 
     likes = []
-    for username in user["flirted"]:
+    for username in user["liked"]:
         likes.append(db.get_user({"username": username}))
 
     matched = []

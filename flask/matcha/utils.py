@@ -37,7 +37,9 @@ def login_required(f):
 def finish_profile(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
-        user = db.get_user({'username':session.get('username')})
+        user = db.get_user({'username': session.get('username')})
+        if user is None:
+            return redirect( url_for('auth.login', next=request.url))
         if user['completed'] == 0:
             flash("Please finish your profile first", 'info')
             return redirect( url_for('profile.profile', next=request.url))
@@ -134,8 +136,8 @@ def similarity_perc(list1, list2):
 # Calculate the users fame rating
 def calculate_fame(user):
     account_count = db.count_users()
-    user_flirted = len(user['flirted'])
-    fame_rate = user_flirted / account_count * 100.0
+    user_liked = len(user['liked'])
+    fame_rate = user_liked / account_count * 100.0
 
     # Update the user information.
     user['fame-rating'] = fame_rate

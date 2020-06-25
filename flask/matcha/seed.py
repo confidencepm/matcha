@@ -21,9 +21,9 @@ def seed_users():
     for _ in range(n):
         salt = bcrypt.gensalt()
         details = {'username': fake.user_name(), 'firstname': fake.first_name(), 'lastname': fake.last_name(),
-                   'email': 'cmcmukwindidza26@gmail.com', 'password': bcrypt.hashpw('Password1'.encode('utf-8'), salt),
-                   'gender': random.choice(gender), 'sex': random.choice(sexo), 'bio': fake.text(), 'interests': [],
-                   'flirts': [], 'flirted': [], 'matched': [], 'blocked': [], 'views': [], 'rooms': {},
+                   'email': fake.email(), 'password': bcrypt.hashpw('Password1'.encode('utf-8'), salt),
+                   'gender': random.choice(gender), 'sexual_orientation': random.choice(sexo), 'bio': fake.text(), 'interests': [],
+                   'likes': [], 'liked': [], 'matched': [], 'blocked': [], 'views': [], 'rooms': {},
                    'fame-rating': 0, 'location': [], 'latlon': '', 'age': 18, 'image_name': 'dummy1.png', 'gallery': [],
                    'token': secrets.token_hex(16), 'completed': 1, 'email_confirmed': 1, 'last-seen': datetime.utcnow(),
                    'notifications': []}
@@ -39,6 +39,11 @@ def seed_users():
         details['age'] = fake.random_int(18, 80)
         details['image_name'] = random.choice(profile_pics)
 
+        index = 0
+        while index < 4:
+            details['gallery'].append(random.choice(profile_pics))
+            index += 1
+
         db.register_user(details)
     message = str(n) + ' users created'
     print(message)
@@ -46,29 +51,29 @@ def seed_users():
         salt = bcrypt.gensalt()
         Admin = {
             '_id': ObjectId(b'bobisadmin!!'),
-            'username': 'Bobbers',
-            'firstname': 'Bob',
+            'username': 'admin',
+            'firstname': 'Admin',
             'lastname': 'Admin',
-            'email': 'cmcmukwindidza26@gmail.com',
+            'email': 'phetomalope1@gmail.com',
             'password': bcrypt.hashpw('Password1'.encode('utf-8'), salt),
-            'gender': 'Female',
-            'sex': 'bisexual',
-            'bio': 'Hi my name is Bob, I am the greatest, duh',
-            'interests': ['Nothin', 'fokol'],
-            'flirts': [],
-            'flirted': [],
+            'gender': 'Male',
+            'sexual_orientation': 'homosexual',
+            'bio': 'Hi I am Root',
+            'interests': [],
+            'likes': [],
+            'liked': [],
             'matched': [],
             'blocked': [],
             'views': [],
             'rooms': {},
             'fame-rating': 100,
-            'location': ['1 Thegreatest Street', 'Greatnesscliff', 'Bobberg', 'South Africa'],
+            'location': ['84 Albertina Sisulu Street', 'Johannesburg', 'South Africa'],
             'latlon': ['-24.19436', '29.00974'],
             'age': 42,
             'image_name': 'bob.jpg',
             'gallery': [],
             'token': secrets.token_hex(16),
-            'completed': 1,
+            'completed': 0,
             'email_confirmed': 1,
             'last-seen': datetime.utcnow(),
             'notifications': []

@@ -20,20 +20,20 @@ def disconnect():
 @socket.on("flirt")
 def like(data):
     liker = db.get_user(
-        {"username": session.get("username")}, {"username": 1, "flirts": 1}
+        {"username": session.get("username")}, {"username": 1, "likes": 1}
     )
     liked = db.get_user(
-        {"username": data["to"]}, {"username": 1, "flirted": 1, "notifications": 1}
+        {"username": data["to"]}, {"username": 1, "liked": 1, "notifications": 1}
     )
 
-    liker["flirts"].append(liked["username"])
-    liked["flirted"].append(liker["username"])
+    liker["likes"].append(liked["username"])
+    liked["liked"].append(liker["username"])
 
-    # print('liker:', liker['flirts'])
-    # print('liked:', liked['flirted'])
+    # print('liker:', liker['likes'])
+    # print('liked:', liked['liked'])
 
-    db.update_likes(liker["_id"], {"flirts": liker["flirts"]})
-    db.update_likes(liked["_id"], {"flirted": liked["flirted"]})
+    db.update_likes(liker["_id"], {"likes": liker["likes"]})
+    db.update_likes(liked["_id"], {"liked": liked["liked"]})
 
     sid = logged_in_users.get(data["to"])
     if sid:
@@ -47,16 +47,16 @@ def like(data):
 def liked_back(data):
     like_back = db.get_user(
         {"username": session.get("username")},
-        {"username": 1, "flirts": 1, "matched": 1, "rooms": 1},
+        {"username": 1, "likes": 1, "matched": 1, "rooms": 1},
     )
     liked = db.get_user(
         {"username": data["to"]},
-        {"username": 1, "flirted": 1, "matched": 1, "rooms": 1, "notifications": 1},
+        {"username": 1, "liked": 1, "matched": 1, "rooms": 1, "notifications": 1},
     )
     room = secrets.token_hex(16)
 
-    like_back["flirts"].append(liked["username"])
-    liked["flirted"].append(like_back["username"])
+    like_back["likes"].append(liked["username"])
+    liked["liked"].append(like_back["username"])
     # add to the matched array.
     like_back["matched"].append(liked["username"])
     liked["matched"].append(like_back["username"])
@@ -67,7 +67,7 @@ def liked_back(data):
     db.update_likes(
         like_back["_id"],
         {
-            "flirts": like_back["flirts"],
+            "likes": like_back["likes"],
             "matched": like_back["matched"],
             "rooms": like_back["rooms"],
         },
@@ -75,7 +75,7 @@ def liked_back(data):
     db.update_likes(
         liked["_id"],
         {
-            "flirted": liked["flirted"],
+            "liked": liked["liked"],
             "matched": liked["matched"],
             "rooms": liked["rooms"],
         },
@@ -96,26 +96,26 @@ def liked_back(data):
 def unlike(data):
     print(f"Unlike {data}")
     current_user = db.get_user(
-        {"username": session.get("username")}, {"flirts": 1, "matched": 1}
+        {"username": session.get("username")}, {"likes": 1, "matched": 1}
     )
     unlikes = db.get_user(
-        {"username": data["to"]}, {"flirted": 1, "matched": 1, "notifications": 1}
+        {"username": data["to"]}, {"liked": 1, "matched": 1, "notifications": 1}
     )
 
     # print('unlikes ', unlikes)
-    if data["to"] in current_user["flirts"]:
-        current_user["flirts"].remove(data["to"])
-        unlikes["flirted"].remove(session.get("username"))
+    if data["to"] in current_user["likes"]:
+        current_user["likes"].remove(data["to"])
+        unlikes["liked"].remove(session.get("username"))
     if current_user["matched"] and data["to"] in current_user["matched"]:
         current_user["matched"].remove(data["to"])
         unlikes["matched"].remove(session.get("username"))
 
     db.update_likes(
         current_user["_id"],
-        {"flirts": current_user["flirts"], "matched": current_user["matched"]},
+        {"likes": current_user["likes"], "matched": current_user["matched"]},
     )
     db.update_likes(
-        unlikes["_id"], {"flirted": unlikes["flirted"], "matched": unlikes["matched"]}
+        unlikes["_id"], {"liked": unlikes["liked"], "matched": unlikes["matched"]}
     )
 
     # print(f" logged in users {logged_in_users[data['to']]}")

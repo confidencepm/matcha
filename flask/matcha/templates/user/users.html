@@ -16,7 +16,7 @@
   <div class="btn-group">
     <button type="button" class="btn btn-danger dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true"
       aria-expanded="false" id='fame'>
-      flirted
+      liked
     </button>
     <div class="dropdown-menu">
       <a class="dropdown-item" href="{{ url_for('main.sort_likes') }}">sort</a>
@@ -76,9 +76,9 @@
       <div class="article-metadata border-bottom">
         <h2><a class="mr-2" href="{{ url_for('profile.view_profile', user_id=user['_id'])}}">{{ user['username'] }}</a></h2>
         <!-- The like and comment system -->
-        {% if logged_in in user['flirted'] %}
+        {% if logged_in in user['liked'] %}
         <div>
-          {% if user['username'] in current_user['flirted'] %}
+          {% if user['username'] in current_user['liked'] %}
         <a href="{{ url_for('chat.chat_room', room=user['rooms'][logged_in]) }}"
           class='btn btn-outline-info btn-sm m-1'>Chat</a>
           {% else %}
@@ -88,12 +88,10 @@
         </div>
         {% else %}
         <div>
-          {% if user['username'] in current_user['flirted'] %}
-          <!-- <a href="{{ url_for('flirts.flirt', username=user['username']) }}" class='flirt-back btn btn-secondary btn-sm m-1'>Flirt Back</a> -->
+          {% if user['username'] in current_user['liked'] %}
           <button type='button' value="{{ user['username'] }}" class='flirt-back btn btn-secondary btn-sm m-1'>Like
             Back</button>
           {% else%}
-          <!-- <a href="{{ url_for('flirts.flirt', username=user['username']) }}" class='btn btn-secondary btn-sm m-1'>Flirt</a> -->
           <button type='button' value='{{ user["username"] }}' class='flirt btn btn-secondary btn-sm m-1'>Like</button>
           {% endif %}
         </div>

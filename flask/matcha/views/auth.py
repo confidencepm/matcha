@@ -33,11 +33,11 @@ def register():
         'email': '',
         'password': '',
         'gender': '',
-        'sex': 'bisexual',
+        'sexual_orientation': 'bisexual',
         'bio': '',
         'interests': [],
-        'flirts': [],  # like
-        'flirted': [],  # liked
+        'likes': [],
+        'liked': [],
         'matched': [],
         'blocked': blocked,  # users blocked
         'views': [],
@@ -78,8 +78,8 @@ def register():
         if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,100}$', details['email']):
             errors.append('invalid email format')
         # check the users password
-        if not re.match(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,25}$", details['password']):
-            errors.append('The password must have an uppercase, lowercase and a digit, 5 - 25 characters long.')
+        # if not re.match(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,25}$", details['password']):
+        #     errors.append('The password must have an uppercase, lowercase and a digit, 5 - 25 characters long.')
         if passwd_confirm != details['password']:
             errors.append('The two passwords do not match')
         # Check the users firstname
