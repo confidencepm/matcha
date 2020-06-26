@@ -10,11 +10,13 @@ from datetime import datetime
 
 
 def seed_users():
+    print("Creating fake users please wait...")
     n = 250  # number of users you want to create
     fake = Faker()
     gender = ['Male', 'Female']
     sexo = ['bisexual', 'heterosexual', 'homosexual']
     city = ['Johannesburg', 'Cape Town', 'Durban', 'Pretoria', 'Polokwane']
+    gallery = ['dummy1.jpg', 'dummy2.jpg', 'dummy3.jpg', 'dummy4.jpg', 'dummy5.jpg', 'dummy6.jpg']
     interests = ['Animals', 'Cheaters', 'Lookingforlove', 'Quickie', 'Travel', 'Menaretrash', 'NSA', 'Trans', 'LFF']
     profile_pics = ['dummy1.png', 'dummy2.png', 'dummy3.png', 'dummy4.png', 'dummy5.png', 'dummy6.png', 'dummy7.png',
                     'dummy8.png', 'dummy9.png', 'dummy10.png']
@@ -42,7 +44,7 @@ def seed_users():
 
         index = 0
         while index < 4:
-            details['gallery'].append(random.choice(profile_pics))
+            details['gallery'].append(random.choice(gallery))
             index += 1
 
         db.register_user(details)
