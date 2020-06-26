@@ -137,7 +137,7 @@ def similarity_perc(list1, list2):
 def calculate_fame(user):
     account_count = db.count_users()
     user_liked = len(user['liked'])
-    fame_rate = user_liked / account_count * 100.0
+    fame_rate = user_liked / account_count * 100
 
     # Update the user information.
     user['fame-rating'] = fame_rate

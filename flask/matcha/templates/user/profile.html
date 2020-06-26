@@ -78,7 +78,6 @@
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#bio" aria-expanded="false" aria-controls="collapse">Profile details</button>
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#user_details" aria-expanded="false" aria-controls="collapse">Account details</button>
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#gallery" aria-expanded="false" aria-controls="collapse">Gallery (FIX ME)</button>
-        <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#pnm" aria-expanded="false" aria-controls="collapse">People near me</button>
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#viewers" aria-expanded="false" aria-controls="collapse">Profile viewers</button>
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#likes" aria-expanded="false" aria-controls="collapse">Profile likes</button>
         <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#match" aria-expanded="false" aria-controls="collapse">Profile Match</button>
@@ -364,21 +363,6 @@
     </form>
 </div>
 
-<div class="collapse" id='pnm'>
-    <legend class="form-goup border-bottom" style="padding-left: 4%;">People Near Me</legend>
-    {% for people in users %} {% if logged_in != people['username'] %}
-    <article class="media content-section">
-        <img class="article-img rounded" src="{{ url_for('static', filename='profile_pics/' + people['image_name']) }}" alt="Profile Pic">
-        <div class="media-body">
-            <div class="article-metadata border-bottom">
-                <small class="text-muted">{{ people['gender'] }}</small>
-                <small class="text-muted">{{ people['location'][2] }}</small>
-            </div>
-            <h2><a class="article-title" href="{{ url_for('profile.view_profile', user_id=people['_id'])}}">{{ people['username'] }}</a></h2>
-        </div>
-    </article>
-    {% endif %} {% endfor %}
-</div>
 <br/>
 {% endblock content %} {% block js %}
 <script
