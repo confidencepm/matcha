@@ -21,7 +21,7 @@ def seed_users():
     profile_pics = ['dummy1.png', 'dummy2.png', 'dummy3.png', 'dummy4.png', 'dummy5.png', 'dummy6.png', 'dummy7.png',
                     'dummy8.png', 'dummy9.png', 'dummy10.png']
 
-    for _ in range(n):
+    for i in range(n):
         salt = bcrypt.gensalt()
         details = {'username': fake.user_name(), 'firstname': fake.first_name(), 'lastname': fake.last_name(),
                    'email': fake.email(), 'password': bcrypt.hashpw('Password1'.encode('utf-8'), salt),
@@ -48,16 +48,17 @@ def seed_users():
             index += 1
 
         db.register_user(details)
+        print(f"user {i} of {n}")
     message = str(n) + ' users created'
     print(message)
-    if not db.get_user({'username': "Bobbers"}, {'username': 1}):
+    if not db.get_user({'username': "admin"}, {'username': 1}):
         salt = bcrypt.gensalt()
         Admin = {
             '_id': ObjectId(b'bobisadmin!!'),
             'username': 'admin',
             'firstname': 'Admin',
             'lastname': 'Admin',
-            'email': 'phetomalope1@gmail.com',
+            'email': 'admin@matcha.com',
             'password': bcrypt.hashpw('Password1'.encode('utf-8'), salt),
             'gender': 'Male',
             'sexual_orientation': 'homosexual',

@@ -7,9 +7,9 @@
 <div class="content-section messages">
     {% for chat in history %}
         {% if chat[0] == logged_in %}
-        <p class='alert-info'>{{ chat[1] }}</p>
+            <p class='alert-info'>{{ chat[1] }}</p>
         {% else %}
-        <p class='alert-primary'>{{ chat[1] }}</p>
+            <p class='alert-primary'>{{ chat[1]}}</p>
         {% endif %}
     {% endfor %}
 </div>
@@ -17,13 +17,14 @@
     <input type="text" class="form-control form-control-sm" placeholder="Type your message here..." aria-label="Send"
         aria-describedby="send_message" id='message'>
     <div class="input-group-append">
-        <button class="btn btn-outline-primary btn-sm" type="button" id="send" value="{{ logged_in }}">send</button>
+        <button class="btn btn-outline-primary btn-sm" type="button" id="send" value="{{ logged_in }}">Send</button>
     </div>
 </div>
 {% endblock content %}
 
 {% block js %}
 <script>
+
     socket = io('http://localhost:5000')
     room = $('#room').text();
 

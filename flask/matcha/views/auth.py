@@ -200,14 +200,14 @@ def forgot_password():
                     Hi,{}
                     Welcome to Matcha.
                     Copy the URL below to reset your password:
-                    http://127.0.0.1:5000/resetpw?jrr={}""".format(user['username'], user['_id'])
+                    http://localhost:5000/reset_password?jrr={}""".format(user['username'], user['_id'])
             html = """\
                     <html>
                     <body>
                         <p>Hi,{}<br>
                         Welcome to Matcha.<br>
                         Click the link below to reset your password:
-                        <a href="http://127.0.0.1:5000/resetpw?jrr={}">Reset Password</a>
+                        <a href="http://127.0.0.1:5000/reset_password?jrr={}">Reset Password</a>
                         </p>
                     </body>
                     </html>

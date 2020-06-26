@@ -13,7 +13,6 @@ class DB:
         self.__chats = db['chats']
 
     def get_user(self, query, fields=None):
-        ''' This function will get a single users information'''
         if not fields:
             user = self.__users.find_one(query)
         else:
