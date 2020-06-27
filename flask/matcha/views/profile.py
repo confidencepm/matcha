@@ -2,7 +2,6 @@ from flask import Blueprint, render_template, session, redirect, flash, request,
 from functools import wraps
 import os, secrets, re, html, pymongo, bcrypt
 
-# from werkzeug import secure_filename
 from PIL import Image
 from matcha import db, app, logged_in_users
 from matcha.utils import *
@@ -90,7 +89,6 @@ def profile():
             for error in errors:
                 flash(error, "danger")
 
-        # update user password
         if request.form.get("submitPwd") == "update":
             # print(f"Debug {request.form}")
             password = html.escape(request.form.get("current_password"))
@@ -119,7 +117,6 @@ def profile():
                 for error in errors:
                     flash(error, "danger")
 
-        # update profile
         if request.form.get("submit") == "bioupdate":
             gender = request.form.get("gender")
             sexuality = request.form.get("sexo")
@@ -149,16 +146,7 @@ def profile():
                 user["completed"] = 1
                 location = request.form.get("location")
                 print(f"Location: {location}")
-                # latlon1 = request.form.get('latlon')
                 location = location.split(",")
-                # location_send = request.form.get('autocomplete')
-
-                # if location_send:
-                #     user['location'] = location_send.split(",")
-                #     print ('location',user['location'])
-                #     user['latlon'] = latlon1.split(",")
-                #     print('user latlon',user['latlon'])
-                # else:
                 lat = location.pop(3)
                 lon = location.pop(3)
                 user["location"] = location

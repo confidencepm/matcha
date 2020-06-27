@@ -29,9 +29,6 @@ def like(data):
     liker["likes"].append(liked["username"])
     liked["liked"].append(liker["username"])
 
-    # print('liker:', liker['likes'])
-    # print('liked:', liked['liked'])
-
     db.update_likes(liker["_id"], {"likes": liker["likes"]})
     db.update_likes(liked["_id"], {"liked": liked["liked"]})
 
@@ -102,7 +99,6 @@ def unlike(data):
         {"username": data["to"]}, {"liked": 1, "matched": 1, "notifications": 1}
     )
 
-    # print('unlikes ', unlikes)
     if data["to"] in current_user["likes"]:
         current_user["likes"].remove(data["to"])
         unlikes["liked"].remove(session.get("username"))
@@ -118,7 +114,6 @@ def unlike(data):
         unlikes["_id"], {"liked": unlikes["liked"], "matched": unlikes["matched"]}
     )
 
-    # print(f" logged in users {logged_in_users[data['to']]}")
     sid = logged_in_users[data["to"]]
     if sid:
         socket.emit("Unlike", {"from": session.get("username")}, room=sid)

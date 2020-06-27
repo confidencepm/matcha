@@ -4,7 +4,6 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-12">
-            <!-- FIX ME! -->
             {% if logged_in in user['liked'] %}
                 {% if user['username'] in current_user['liked'] %}
         <a href="{{ url_for('chat.chat_room', room=user['rooms'][logged_in]) }}"
@@ -151,7 +150,6 @@
             });
         });
 
-        // handle the unlike button;
         $('.unlike').each(function () {
             $(this).on('click', function (e) {
                 alert('you have unlikd ' + $(this).val());
@@ -159,7 +157,6 @@
                 window.location.reload();
             });
         });
-        // Listening the for events.
         socket.on('flirt', function (data) {
             alert(data['from']);
 
@@ -181,9 +178,6 @@
             });
         });
 
-
-        // Section for other notifications.
-
         socket.on('Unlike', function (data) {
             alert('some unliked you');
             $('.flirt-back').each(function () {
@@ -195,13 +189,11 @@
 
 
         socket.on('notif_chat', function (data) {
-            // alert(data['from'] + ' sent you a message')
             $('notification').append('<p>' + data['from'] + ' sent you a message</p>');
             $('#badge').text('new');
         });
 
         socket.on('notif_view', function (data) {
-            // alert(data['from'] + ' has viewed your profile');
             $('#notification').append('<p>' + data['from'] + ' viewed your profile</p>');
             $('#badge').text('new');
         });

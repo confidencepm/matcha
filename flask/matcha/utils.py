@@ -17,12 +17,6 @@ def get_user_location(current_user):
 def get_howfar(current_user, users):
     return (geodesic(get_user_location(current_user), get_user_location(users)).km)
 
-# def allvs1():
-#     current_user=db.get_user({'username' : session.get('username')})
-#     users=db.users()
-#     valid_users = [user for user in users if get_howfar(current_user, users) < 20]
-
-# This is used to force the user to login before being allowed to 
 # get access to a route
 def login_required(f):
     @wraps(f)
@@ -65,7 +59,6 @@ def save_gallery(form_pic):
     pic_fn =  rand_hex + f_ext
     pic_path = os.path.join(app.root_path, 'static/gallery_pics', pic_fn)
 
-    # form_pic.save(pic_path)
     i = Image.open(form_pic.stream)
     i.thumbnail((200,200))
 
@@ -75,9 +68,6 @@ def save_gallery(form_pic):
 def send_mail(reciever, subject='email confirmation', text=None, html=None):
     user = db.get_user({'username' : reciever}, {'username' :1 , 'email': 1})
 
-    # Check if the reciever is a username.
-
-    # Set up the user information.
     port = 465
     password = 'C108629d'
 
@@ -107,26 +97,18 @@ def send_mail(reciever, subject='email confirmation', text=None, html=None):
         </body>
         </html>
         """.format(user['username'],user['_id'])
-    # Turn these into plain/html MIMEText objects
     part1 = MIMEText(text, "plain")
     part2 = MIMEText(html, "html")
-    # Add HTML/plain-text parts to MIMEMultipart message
-    # The email client will try to render the last part first
     message.attach(part1)
     message.attach(part2)
 
-    # Create secure connection with server and send email
     email_context = ssl.create_default_context()
     with smtplib.SMTP_SSL("smtp.gmail.com", port, context=email_context) as server:
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver_email, message.as_string())
 
-
-# Creata a fucntion that finds the similarity ration betwwen two users interests.
+# Calculation the percentage similarity of the two lists.
 def similarity_perc(list1, list2):
-    # Calculation the percentage similarity of the two lists.
-    # print('list 1:', list1)
-    # print('list 2:', list2)
     if not list1 or not list2:
         return 0
     res = len(set(list1) & set(list2)) / float(len(set(list1) | set(list2))) * 100
@@ -139,7 +121,6 @@ def calculate_fame(user):
     user_liked = len(user['liked'])
     fame_rate = user_liked / account_count * 100
 
-    # Update the user information.
     user['fame-rating'] = fame_rate
     db.update_user(user['_id'], user)
     return fame_rate
@@ -158,6 +139,5 @@ def filter_location(users, location):
 
 # Filter out users based on the given age
 def filter_age(users, age):
-    # print('in filter age', age)
     valid_users = [user for user in users if age <= int(user['fame-rating'])]
     return valid_users

@@ -105,27 +105,6 @@ def users():
         search=True,
     )
 
-
-# @main.route('/users_not_blocked')
-# @login_required
-# @finish_profile
-# def users_not_blocked():
-
-#     current_user = db.get_user({'username' : session.get('username')})
-#     blocked = current_user["blocked"]
-#     opp_gen = "Male" if current_user["gender"] == "Female" else "Female"
-#     gen = current_user["gender"]
-
-#     if current_user["sexual_orientation"] == "heterosexual":
-#         users = list(db.users( {'_id' : { '$nin' : blocked }, 'gender' : opp_gen, 'sexual_orientation' : { '$nin' : ["homosexual"]} } ))
-#     elif current_user["sexual_orientation"] == "homosexual":
-#         users = list(db.users( {'_id' : { '$nin' : blocked }, 'gender' : gen, 'sexual_orientation' : { '$nin' : ["heterosexual"]} } ))
-#     else:
-#         users = list(db.users({ '$and' : [ {'_id' : { '$nin' : blocked }}, {'$or': [ { 'sexual_orientation' : "bisexual" }, {'$or': [ { '$and': [ { 'sexual_orientation' : 'homosexual' } , { 'gender' : gen } ] } , { '$and': [ { 'sexual_orientation' : 'heterosexual' }, { 'gender' : opp_gen } ] } ] }]}]}) )
-
-#     return render_template('user/users_not_blocked.html', logged_in=session.get('username'), users=users, current_user=current_user)
-
-
 @main.route("/users/username/search", methods=["GET", "POST"])
 @login_required
 @finish_profile
@@ -219,10 +198,8 @@ def search_age():
         blocked = current_user["blocked"]
         users = db.users({"_id": {"$nin": blocked}, "completed": 1})
         age = int((age.replace(" ", "")).split(",")[0])
-        print(age)
         valid_users = filter_age(users, age)
 
-        # Add the filters stuff.
         return render_template(
             "user/users.html",
             logged_in=session.get("username"),
