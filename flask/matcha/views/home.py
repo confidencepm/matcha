@@ -81,7 +81,6 @@ def users():
         )
 
     global valid_users
-    current_user = db.get_user({"username": session.get("username")})
     # for user in users:
     #     if user['username'] != current_user['username']:
     #         if similarity_perc(current_user['interests'], user['interests']) > 49.0:
