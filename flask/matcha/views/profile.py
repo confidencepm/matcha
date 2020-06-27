@@ -207,6 +207,7 @@ def profile():
         "user/profile.html",
         logged_in=session.get('username'),
         current_user=user,
+        online_users=online_users,
         viewers=viewers,
         likes=likes,
         matched=matched,
@@ -228,6 +229,7 @@ def view_profile(user_id):
         "user/view_profile.html",
         logged_in=session.get('username'),
         user=user,
+        online_users=online_users,
         current_user=current_user
     )
 
