@@ -489,39 +489,5 @@
 </script>
 <script>
     socket = io('http://localhost:5000');
-
-  socket.on('flirt', function (data) {
-    $('notification').append('<p>' + data['from'] + ' has flirted with you</p>');
-    $('#badge').text('new');
-  });
-
-  socket.on('matched', function () {
-    alert(data['from'] + ' and you can now chat');
-    $('notification').append('<p> you and ' + data['from'] + ' can now chat.</p>');
-    $('#badge').text('new');
-  });
-
-  socket.on('notif_chat', function (data) {
-    alert(data['from'] + ' sent you a message')
-    $('notification').append('<p>' + data['from'] + ' sent you a message</p>');
-    $('#badge').text('new');
-  });
-
-  socket.on('notif_view', function(data){
-    // alert(data['from'] + ' has viewed your profile');
-    $('#notification').append('<p>' + data['from'] + ' viewed your profile</p>');
-    $('#badge').text('new');
-  });
-
- socket.on('Unlike', function(data){
-    alert(data['from'] + ' has unliked, so sad');
-    window.location.reload();
-  });
-
-  $('#inbox').on('click', function(){
-    socket.emit('read', {"user": $('#username').text()});
-    $('#badge').text('');
-  });
-
 </script>
 {% endblock js %}

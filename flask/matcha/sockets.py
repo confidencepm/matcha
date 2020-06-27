@@ -17,7 +17,7 @@ def disconnect():
     logged_in_users[session.get("username")] = ""
 
 
-@socket.on("flirt")
+@socket.on("like")
 def like(data):
     liker = db.get_user(
         {"username": session.get("username")}, {"username": 1, "likes": 1}
@@ -40,8 +40,9 @@ def like(data):
     db.update_likes(liked["_id"], {"notifications": liked["notifications"]})
 
 
-@socket.on("flirt-back")
+@socket.on("like-back")
 def liked_back(data):
+    print(f"Debug")
     like_back = db.get_user(
         {"username": session.get("username")},
         {"username": 1, "likes": 1, "matched": 1, "rooms": 1},
