@@ -7,7 +7,6 @@ import html
 
 main = Blueprint("main", __name__)
 
-
 # Create the route for the home page
 @main.route("/")
 @login_required
