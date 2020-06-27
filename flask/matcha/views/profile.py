@@ -23,7 +23,6 @@ def profile():
     blocked = user["blocked"]
     users = db.users({"_id": {"$nin": blocked}, "completed": 1})
 
-    # update user details
     if request.method == "POST":
         if request.form.get("submit") == "update":
             username = html.escape(request.form.get("username"))
@@ -81,7 +80,6 @@ def profile():
                 flash(error, "danger")
 
         if request.form.get("submitPwd") == "update":
-            # print(f"Debug {request.form}")
             password = html.escape(request.form.get("current_password"))
             new_password = html.escape(request.form.get("new_password"))
             check_new_password = html.escape(request.form.get("new_password_repeat"))
@@ -136,7 +134,6 @@ def profile():
                 user["interests"] = interests
                 user["completed"] = 1
                 location = request.form.get("location")
-                print(f"Location: {location}")
                 location = location.split(",")
                 lat = location.pop(3)
                 lon = location.pop(3)
@@ -150,7 +147,6 @@ def profile():
                 flash(error, "danger")
 
         if request.form.get("submit") == "Upload":
-            # print(valid_users)
             image_count = len(user["gallery"])
             if image_count < 4:
                 image = request.files.get("image3")

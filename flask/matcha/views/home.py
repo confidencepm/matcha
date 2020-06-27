@@ -23,8 +23,6 @@ def home():
 @login_required
 @finish_profile
 def users():
-    # valid_users = []
-    # users = db.users({'_id' : { '$nin' : blocked }, {'completed' : 1})
     current_user = db.get_user({"username": session.get("username")})
     blocked = current_user["blocked"]
     opp_gen = "Male" if current_user["gender"] == "Female" else "Female"

@@ -136,7 +136,7 @@ def login():
             if not details['username'] in logged_in_users:
                 logged_in_users[details['username']] = ''
             calculate_fame(user)
-            return redirect(url_for('main.home'))
+            return redirect(url_for('main.users'))
         for error in errors:
             flash(error, 'danger')
 

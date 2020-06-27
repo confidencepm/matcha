@@ -170,86 +170,86 @@
             <legend class="form-goup border-bottom">My Profile</legend>
             <p>Before we can match you, you need to complete your profile</p>
             <form action="" method="POST">
-                <label for="gender"><b>I identify as a:</b></label>
+                <label for="gender"><b>Gender:</b></label>
                 <select name="gender">
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                     </select>
                 <br />
-                <label for="sexo"><b>My sexual orientation is:</b></label>
+                <label for="sexo"><b>Sexual Orientation:</b></label>
                 <select name="sexo">
-                            <option value="bisexual">Bisexual</option>
+                        <option value="bisexual">Bisexual</option>
                         <option value="heterosexual">HeteroSexual</option>
                         <option value="homosexual">HomoSexual</option>
                     </select>
                 <br />
                 <fieldset>
                     {% if current_user['interests'] %}
+                        {% if 'Traveling' in current_user['interests'] %}
+                        <input type="checkbox" name="interests" value="Traveling" checked>#Traveling<br>
+                        {% else %}
+                        <input type="checkbox" name="interests" value="Traveling">#Traveling<br>
+                        {% endif %}
+
                         {% if 'Animals' in current_user['interests'] %}
                         <input type="checkbox" name="interests" value="Animals" checked>#Animals<br>
                         {% else %}
                         <input type="checkbox" name="interests" value="Animals">#Animals<br>
                         {% endif %}
 
-                        {% if 'Cheaters' in current_user['interests'] %}
-                        <input type="checkbox" name="interests" value="Cheaters" checked>#Cheaters<br>
+                        {% if 'Technology' in current_user['interests'] %}
+                        <input type="checkbox" name="interests" value="Technology" checked>#Technology<br>
                         {% else %}
-                        <input type="checkbox" name="interests" value="Cheaters">#Cheaters<br>
+                        <input type="checkbox" name="interests" value="Technology">#Technology<br>
                         {% endif %}
 
-                        {% if 'Lookingforlove' in current_user['interests'] %}
-                        <input type="checkbox" name="interests" value="Lookingforlove" checked>#Lookingforlove<br>
+                        {% if 'Sky-diving' in current_user['interests'] %}
+                        <input type="checkbox" name="interests" value="Sky-diving" checked>#Sky-diving<br>
                         {% else %}
-                        <input type="checkbox" name="interests" value="Lookingforlove">#Lookingforlove<br>
+                        <input type="checkbox" name="interests" value="Sky-diving">#Sky-diving<br>
                         {% endif %}
 
-                        {% if 'Quickie' in current_user['interests'] %}
-                        <input type="checkbox" name="interests" value="Quickie" checked>#Quickie<br>
+                        {% if 'Movies' in current_user['interests'] %}
+                        <input type="checkbox" name="interests" value="Movies" checked>#Movies<br>
                         {% else %}
-                        <input type="checkbox" name="interests" value="Quickie">#Quickie<br>
+                        <input type="checkbox" name="interests" value="Movies">#Movies<br>
                         {% endif %}
 
-                        {% if 'Travel' in current_user['interests'] %}
-                        <input type="checkbox" name="interests" value="Travel" checked>#Travel<br>
+                        {% if 'Music' in current_user['interests'] %}
+                        <input type="checkbox" name="interests" value="Music" checked>#Music<br>
                         {% else %}
-                        <input type="checkbox" name="interests" value="Travel">#Travel<br>
+                        <input type="checkbox" name="interests" value="Music">#Music<br>
                         {% endif %}
 
-                        {% if 'Menaretrash' in current_user['interests'] %}
-                        <input type="checkbox" name="interests" value="Menaretrash" checked>#Menaretrash<br>
+                        {% if 'Cooking' in current_user['interests'] %}
+                        <input type="checkbox" name="interests" value="Cooking" checked>#Cooking<br>
                         {% else %}
-                        <input type="checkbox" name="interests" value="Menaretrash">#Menaretrash<br>
-                        {% endif %}
-
-                        {% if 'NSA' in current_user['interests'] %}
-                        <input type="checkbox" name="interests" value="NSA" checked>#NSA<br>
-                        {% else %}
-                        <input type="checkbox" name="interests" value="NSA">#NSA<br>
+                        <input type="checkbox" name="interests" value="Cooking">#Cooking<br>
                         {% endif %}
 
 
-                        {% if 'Trans' in current_user['interests'] %}
-                        <input type="checkbox" name="interests" value="Trans" checked>#Trans<br>
+                        {% if 'Sports' in current_user['interests'] %}
+                        <input type="checkbox" name="interests" value="Sports" checked>#Sports<br>
                         {% else %}
-                        <input type="checkbox" name="interests" value="Trans">#Trans<br>
+                        <input type="checkbox" name="interests" value="Sports">#Sports<br>
                         {% endif %}
 
-                        {% if 'LFF' in current_user['interests'] %}
-                        <input type="checkbox" name="interests" value="LFF" checked>#LFF<br>
+                        {% if 'Gaming' in current_user['interests'] %}
+                        <input type="checkbox" name="interests" value="Gaming" checked>#Gaming<br>
                         {% else %}
-                        <input type="checkbox" name="interests" value="LFF">#LFF<br>
+                        <input type="checkbox" name="interests" value="Gaming">#Gaming<br>
                         {% endif %}
                     {% else %}
                     <label for="interests"><b>My interests are:</b></label> <br />
+                    <input type="checkbox" name="interests" value="Traveling">#Traveling<br>
                     <input type="checkbox" name="interests" value="Animals">#Animals<br>
-                    <input type="checkbox" name="interests" value="Cheaters">#Cheaters<br>
-                    <input type="checkbox" name="interests" value="Lookingforlove">#Lookingforlove<br>
-                    <input type="checkbox" name="interests" value="Quickie">#Quickie<br>
-                    <input type="checkbox" name="interests" value="Travel">#Travel<br>
-                    <input type="checkbox" name="interests" value="Menaretrash">#Menaretrash<br>
-                    <input type="checkbox" name="interests" value="NSA">#NSA<br>
-                    <input type="checkbox" name="interests" value="Trans">#Trans<br>
-                    <input type="checkbox" name="interests" value="LFF">#LFF<br>
+                    <input type="checkbox" name="interests" value="Technology">#Technology<br>
+                    <input type="checkbox" name="interests" value="Sky-diving">#Sky-diving<br>
+                    <input type="checkbox" name="interests" value="Movies">#Movies<br>
+                    <input type="checkbox" name="interests" value="Music">#Music<br>
+                    <input type="checkbox" name="interests" value="Cooking">#Cooking<br>
+                    <input type="checkbox" name="interests" value="Sports">#Sports<br>
+                    <input type="checkbox" name="interests" value="Gaming">#Gaming<br>
                     {% endif %}
                 </fieldset>
                 <br />
@@ -460,10 +460,6 @@
         let latitude = place.geometry.location.lat();
         let longitude = place.geometry.location.lng();
         
-        console.log("Country: ", place.address_components[6].long_name)
-        console.log("Region: ", place.address_components[5].long_name)
-        console.log("City: ", place.address_components[3].long_name)
-        console.log("Geolocation: ", latitude, longitude)
         document.getElementById('location').value = [place.address_components[6].long_name, place.address_components[5].long_name,
                                                     place.address_components[3].long_name, longitude, latitude];
         if (place.geometry) {
