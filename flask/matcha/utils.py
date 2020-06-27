@@ -11,8 +11,8 @@ from geopy.geocoders import *
 from geopy.distance import *
 
 def get_user_location(current_user):
-    user_loca = (current_user['latlon'][0], current_user['latlon'][1])
-    return user_loca
+    user_location = (current_user['latlon'][0], current_user['latlon'][1])
+    return user_location
 
 def get_howfar(current_user, users):
     return (geodesic(get_user_location(current_user), get_user_location(users)).km)
