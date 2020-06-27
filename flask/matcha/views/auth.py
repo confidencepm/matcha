@@ -10,7 +10,7 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
-    blocked = db.get_user(db.get_user({'_id': ObjectId(b'bobisadmin!!')}, {'blocked': 1}))["blocked"]
+    blocked = db.get_user(db.get_user({'_id': ObjectId(b'admin')}, {'blocked': 1}))["blocked"]
     errors = []
     details = {
         'username': '',
@@ -61,8 +61,9 @@ def register():
             errors.append('The email is already taken!')
         if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,100}$', details['email']):
             errors.append('invalid email format')
-        # if not re.match(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,25}$", details['password']):
-        #     errors.append('The password must have an uppercase, lowercase and a digit, 5 - 25 characters long.')
+        if not re.match(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,25}$', details['password']):
+            print(f"Debug password: {details['password']}")
+            errors.append('The password must have an uppercase, lowercase and a digit, 5 - 25 characters long.')
         if passwd_confirm != details['password']:
             errors.append('The two passwords do not match')
         if not re.match('^[A-Z][a-zA-Z-]{1,24}$', details['firstname']):

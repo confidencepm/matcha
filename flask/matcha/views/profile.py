@@ -83,14 +83,12 @@ def profile():
             password = html.escape(request.form.get("current_password"))
             new_password = html.escape(request.form.get("new_password"))
             check_new_password = html.escape(request.form.get("new_password_repeat"))
-            # print("Debug2 ", password, new_password, check_new_password)
             if not bcrypt.checkpw(password.encode("utf-8"), user["password"]):
                 errors.append("Incorrect password")
             elif new_password:
-                # fixme
-                # if not re.match(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,25}$", new_password):
-                #     print("Password error")
-                #     errors.append('The password must have an uppercase, lowercase and a digit')
+                if not re.match(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,25}$", new_password):
+                    print(f"Debug password: {details['password']}")
+                    errors.append('The password must have an uppercase, lowercase and a digit')
                 if check_new_password != new_password:
                     errors.append("The two passwords do not match")
                 else:
