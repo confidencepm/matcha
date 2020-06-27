@@ -144,13 +144,8 @@
     />
     <div class="media-body">
       <div class="article-metadata border-bottom">
-        <h2>
-          <a
-            class="mr-2"
-            href="{{ url_for('profile.view_profile', user_id=user['_id'])}}"
-            >{{ user['username'] }}</a
-          >
-        </h2>
+        <small class="text-muted">Fame: {{user['fame-rating']}}</small>
+        <small class="text-muted">Location: {{ user['location'][2]}}</small>
         {% if logged_in in user['liked'] %}
         <div>
           {% if user['username'] in current_user['liked'] %}
@@ -199,9 +194,11 @@
           >Block</a
         >
       </div>
-      <h2><a class="article-title" href="#">{{ user['firstname'] }}</a></h2>
-      <small class="text-muted">{{ user['lastname'] }}</small>
-      <p class="article-content">{{ user['sex'] }} {{ user['gender'] }}</p>
+        <h2>
+          <a class="mr-2" href="{{ url_for('profile.view_profile', user_id=user['_id'])}}">{{ user['username'] }}</a>
+        </h2>
+      <small class="text-muted">{{ user['firstname'] }} {{ user['lastname'] }}</small><br />
+      <small class="text-muted">{{ user['sexual_orientation'] }} {{ user['gender'] }} {{ user['age'] }}</small>
     </div>
   </article>
   {% endif %} {% endfor %}
