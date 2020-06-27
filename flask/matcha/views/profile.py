@@ -22,19 +22,10 @@ def profile():
     location = []
     blocked = user["blocked"]
     users = db.users({"_id": {"$nin": blocked}, "completed": 1})
-    # if user["completed"] == 1:
-    #     valid_users = [
-    #         check_user
-    #         for check_user in users
-    #         if check_user["completed"] == 1 and get_howfar(user, check_user) < 20
-    #     ]
-    # else:
-    #     valid_users = []
 
     # update user details
     if request.method == "POST":
         if request.form.get("submit") == "update":
-            print(f"Debug {request.form}")
             username = html.escape(request.form.get("username"))
             email = html.escape(request.form.get("email"))
             firstname = html.escape(request.form.get("firstname"))
@@ -172,6 +163,8 @@ def profile():
             else:
                 flash("You can only have 4 pictures in your gallery", "danger")
 
+    bio = html.unescape(user['bio'])
+    user['bio'] = bio
     viewers = []
     for id in user["views"]:
         viewers.append(db.get_user({"_id": ObjectId(id)}))
@@ -213,6 +206,8 @@ def view_profile(user_id):
     user = db.get_user({"_id": id})
     user["fame-rating"] = int((user["fame-rating"] / 10) - 1)
     online_users = list(logged_in_users.keys())
+    bio = html.unescape(user['bio'])
+    user['bio'] = bio
     return render_template(
         "user/view_profile.html",
         logged_in=session.get('username'),
