@@ -3,7 +3,7 @@ from matcha import db, logged_in_users
 from bson import ObjectId
 from functools import wraps
 import secrets, re, bcrypt, html
-from matcha.utils import *
+from matcha.utils import calculate_fame
 from faker import Faker
 import random
 from datetime import datetime
@@ -13,6 +13,7 @@ def seed_users():
     print("Creating fake users please wait...")
     n = 250  # number of users you want to create
     fake = Faker()
+    usernames = []
     gender = ['Male', 'Female']
     sexo = ['bisexual', 'heterosexual', 'homosexual']
     city = ['Johannesburg', 'Cape Town', 'Durban', 'Pretoria', 'Polokwane']
@@ -21,18 +22,26 @@ def seed_users():
     profile_pics = ['dummy1.png', 'dummy2.png', 'dummy3.png', 'dummy4.png', 'dummy5.png', 'dummy6.png', 'dummy7.png',
                     'dummy8.png', 'dummy9.png', 'dummy10.png']
 
+    for x in range(n):
+        username = fake.user_name()
+        usernames.append(username)
+
+    print("Debug ", len(usernames))
     for i in range(n):
         salt = bcrypt.gensalt()
-        details = {'username': fake.user_name(), 'firstname': fake.first_name(), 'lastname': fake.last_name(),
+        details = {'username': usernames[i], 'firstname': fake.first_name(), 'lastname': fake.last_name(),
                    'email': fake.email(), 'password': bcrypt.hashpw('Password1'.encode('utf-8'), salt),
                    'gender': random.choice(gender), 'sexual_orientation': random.choice(sexo), 'bio': fake.text(), 'interests': [],
-                   'likes': [], 'liked': [], 'matched': [], 'blocked': [], 'views': [], 'rooms': {},
+                   'liked': [], 'matched': [], 'blocked': [], 'views': [], 'rooms': {},
                    'fame-rating': 0, 'location': [], 'latlon': '', 'age': 18, 'image_name': 'dummy1.png', 'gallery': [],
                    'token': secrets.token_hex(16), 'completed': 1, 'email_confirmed': 1, 'last-seen': datetime.utcnow(),
                    'notifications': []}
 
-        num = fake.random_int(3, 9)
-        details['interests'] = random.sample(interests, num)
+        max_interests = fake.random_int(3, 9)
+        max_likes = fake.random_int(3, 40)
+        print("Max ", max_likes)
+        details['interests'] = random.sample(interests, max_interests)
+        details['likes'] = random.sample(usernames, max_likes)
         details['fame-rating'] = fake.random_int(0, 80)
         details['location'].append(''.join([str(fake.random_int(1, 500)), ' ', fake.word(), ' street']))
         details['location'].append(''.join([fake.word(), 'cliff']))
@@ -48,9 +57,15 @@ def seed_users():
             index += 1
 
         db.register_user(details)
+        # calculate_fame(details)
         print(f"user {i} of {n}")
     message = str(n) + ' users created'
     print(message)
+
+    r = db.users()
+    for user in r:
+        calculate_fame(user)
+
     if not db.get_user({'username': "admin"}, {'username': 1}):
         salt = bcrypt.gensalt()
         Admin = {

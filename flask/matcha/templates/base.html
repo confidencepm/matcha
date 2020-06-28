@@ -75,12 +75,11 @@
                     </div>
                     {% endif %} {% if search %}
                     <h3>Search</h3>
-                    <p class='text-muted'>You can put any information here you'd like.
                         <ul class="list-group">
                             <li class="list-group-item list-group-item-light">
-                                by age
+                                Age
                                 <form action="{{ url_for('main.search_age') }}" method='POST'>
-                                    <select class="form-control" name="age">
+                                    <select class="form-control" name="age" id="age">
                                         <option>Choose option</option>
                                         <option value="29">18 to 29</option>
                                         <option value="39">30 to 39</option>
@@ -91,7 +90,42 @@
                                 </form>
                             </li>
                             <li class="list-group-item list-group-item-light">
-                                by interests
+                                Fame rating
+                                <form action="{{ url_for('main.search_fame') }}" method="POST">
+                                    <select class="form-control" name="fame">
+                                        <option>Choose option</option>
+                                        <option value="10">0% to 9%</option>
+                                        <option value="20">10% to 19%</option>
+                                        <option value="30">20% to 29%</option>
+                                        <option value="40">30% to 39%</option>
+                                        <option value="50">40% to 49%</option>
+                                        <option value="60">50% to 59%</option>
+                                        <option value="70">60% to 69%</option>
+                                        <option value="80">70% to 79%</option>
+                                        <option value="90">80% to 89%</option>
+                                        <option value="100">90% to 100%</option>
+                                    </select>
+                                    <br />
+                                    <input type="submit" name='submit' value='search' class='btn btn-sm btn-outline-info'>
+                                </form>
+                            </li>
+                            <li class="list-group-item list-group-item-light">
+                                Location
+                                <form action="{{ url_for('main.search_location') }}" method="POST">
+                                    <select class="form-control" name="location">
+                                        <option>Choose option</option>
+                                        <option value="Johannesburg">Johannesburg</option>
+                                        <option value="Cape Town">Cape Town</option>
+                                        <option value="Durban">Durban</option>
+                                        <option value="Pretoria">Pretoria</option>
+                                        <option value="Polokwane">Polokwane</option>
+                                    </select>
+                                    <br />
+                                    <input type="submit" name='submit' value='search' class='btn btn-sm btn-outline-info'>
+                                </form>
+                            </li>
+                            <li class="list-group-item list-group-item-light">
+                                interests
                                 <form action="{{ url_for('main.search_interest') }}" method='POST'>
                                     <div class="form-group">
                                         <input type="checkbox" name="Traveling" value="Traveling">#Traveling<br>
@@ -107,16 +141,6 @@
                                     <input type="submit" name='submit' value='search' class='btn btn-sm btn-outline-info'>
                                 </form>
                             </li>
-                            <li class="list-group-item list-group-item-light">
-                                by fame rating
-                                <form action="{{ url_for('main.search_location') }}" method="POST">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id='location' placeholder='by location' name='location'>
-                                    </div>
-                                    <input type="submit" name='submit' value='search' class='btn btn-sm btn-outline-info'>
-                                </form>
-                            </li>
-
                         </ul>
                         <br />
                     </p>
@@ -127,6 +151,11 @@
             </div>
         </div>
     </main>
+    <script>
+        document.getElementById('age').addEventListener('onChange', (e) => {
+            console.log("test ", e);
+        })
+    </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
