@@ -150,7 +150,8 @@ def filter_age(users, age):
     return valid_users
 
 # Filter out users based on the given fame
-def filter_age(users, fame):
+def filter_fame(users, fame):
+    print("Fame: ", fame)
     if fame == 10:
         valid_users = [user for user in users if user['fame-rating'] >= 0 and user['fame-rating'] < fame]
     elif fame == 20:

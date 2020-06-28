@@ -2,7 +2,9 @@ from matcha import db, logged_in_users, valid_users
 from flask import Blueprint, render_template, session, redirect, flash, request, url_for
 from bson.objectid import ObjectId
 from functools import wraps, cmp_to_key
-from matcha.utils import similarity_perc, get_howfar, filter_age, filter_interest, filter_location, login_required, finish_profile
+from matcha.utils import similarity_perc, get_howfar, \
+filter_age, filter_interest, filter_location, login_required, \
+finish_profile, filter_fame
 
 main = Blueprint("main", __name__)
 
@@ -155,8 +157,8 @@ def search_fame():
         current_user = db.get_user({"username": session.get("username")})
         blocked = current_user["blocked"]
         users = db.users({"_id": {"$nin": blocked}, "gender": {"$ne": current_user['gender']}, "completed": 1})
-        # age = int((age.replace(" ", "")).split(",")[0])
-        # valid_users = filter_fame(users, fame)
+        fame = int((fame.replace(" ", "")).split(",")[0])
+        valid_users = filter_fame(users, fame)
 
         return render_template(
             "user/users.html",
