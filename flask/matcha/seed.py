@@ -38,8 +38,7 @@ def seed_users():
                    'notifications': []}
 
         max_interests = fake.random_int(3, 9)
-        max_likes = fake.random_int(3, 40)
-        print("Max ", max_likes)
+        max_likes = fake.random_int(10, 80)
         details['interests'] = random.sample(interests, max_interests)
         details['likes'] = random.sample(usernames, max_likes)
         details['fame-rating'] = fake.random_int(0, 80)
