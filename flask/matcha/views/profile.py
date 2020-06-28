@@ -126,7 +126,7 @@ def profile():
 
             if not errors:
                 user["gender"] = gender
-                user["sex"] = sexuality
+                user["sexual_orientation"] = sexuality
                 user["interests"] = interests
                 user["completed"] = 1
                 location = request.form.get("location")

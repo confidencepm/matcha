@@ -505,10 +505,13 @@ def users():
     gen = current_user["gender"]
 
     if current_user["sexual_orientation"] == "heterosexual":
+        print("Debug 1")
         users = list(db.users( {'_id' : { '$nin' : blocked }, 'gender' : opp_gen, 'sexual_orientation' : { '$nin' : ["homosexual"]} } ))
     elif current_user["sexual_orientation"] == "homosexual":
+        print("Debug 2")
         users = list(db.users( {'_id' : { '$nin' : blocked }, 'gender' : gen, 'sexual_orientation' : { '$nin' : ["heterosexual"]} } ))
     else:
+        print("Debug 3")
         users = list(db.users({ '$and' : [ {'_id' : { '$nin' : blocked }}, {'$or': [ { 'sexual_orientation' : "bisexual" }, {'$or': [ { '$and': [ { 'sexual_orientation' : 'homosexual' } , { 'gender' : gen } ] } , { '$and': [ { 'sexual_orientation' : 'heterosexual' }, { 'gender' : opp_gen } ] } ] }]}]}) )
 
     global valid_users
