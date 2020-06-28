@@ -19,10 +19,10 @@ def home():
     )
 
 
-# @main.route("/users")
-# @login_required
-# @finish_profile
-# def users():
+@main.route("/users")
+@login_required
+@finish_profile
+def users():
     current_user = db.get_user({"username": session.get("username")})
     blocked = current_user["blocked"]
     opp_gen = "Male" if current_user["gender"] == "Female" else "Female"
@@ -91,7 +91,7 @@ def home():
         if user["username"] != current_user["username"]
         and similarity_perc(current_user["interests"], user["interests"]) >= 0
         and user["completed"] == 1
-        and get_howfar(current_user, user) < 20
+        and user['location'][2] == current_user['location'][2]
     ]
 
     return render_template(
@@ -240,6 +240,32 @@ def search_location():
         )
 
     return redirect(url_for("main.users"))
+
+@main.route("/users/advance_search/search", methods=["GET", "POST"])
+@login_required
+@finish_profile
+def advance_search():
+    global valid_users
+    print("Debug ", request.json)
+    # if request.method == "POST":
+        # location = request.form.get("location")
+        # location = location.split(",")
+        # current_user = db.get_user({"username": session.get("username")})
+        # blocked = current_user["blocked"]
+        # users = db.users({"_id": {"$nin": blocked}, "completed": 1})
+        # valid_users = filter_location(users, location)
+        # print("User location: ", users[0]['location'])
+
+    # Add the filters stuff.
+    return render_template(
+        "user/users.html",
+        # logged_in=session.get("username"),
+        # users=valid_users,
+        # current_user=current_user,
+        search=True,
+    )
+
+    # return redirect(url_for("main.users"))
 
 
 @main.route("/users/sort/fame/<value>", methods=["GET", "POST"])
@@ -488,14 +514,15 @@ def block_for_all(b_id):
     return redirect(url_for("main.blocked"))
 
 
-@main.route('/users')
-@login_required
-@finish_profile
-def users():
+# @main.route('/users')
+# @login_required
+# @finish_profile
+# def users():
     # valid_users = []
     # users = db.users({'_id' : { '$nin' : blocked }, {'completed' : 1})
     current_user = db.get_user({'username': session.get('username')})
     blocked = current_user["blocked"]
+    locatio = current_user['location'][2]
     opp_gen = "Male" if current_user["gender"] == "Female" else "Female"
     gen = current_user["gender"]
 
@@ -507,13 +534,12 @@ def users():
         users = list(db.users( {'_id' : { '$nin' : blocked }, 'gender' : gen, 'sexual_orientation' : { '$nin' : ["heterosexual"]} } ))
     else:
         print("Debug 3")
-        users = list(db.users({ '$and' : [ {'_id' : { '$nin' : blocked }}, {'$or': [ { 'sexual_orientation' : "bisexual" }, {'$or': [ { '$and': [ { 'sexual_orientation' : 'homosexual' } , { 'gender' : gen } ] } , { '$and': [ { 'sexual_orientation' : 'heterosexual' }, { 'gender' : opp_gen } ] } ] }]}]}) )
+        users = list(db.users({ '$and' : [ {'_id' : { '$nin' : blocked }}, {'$or': [ { 'sexual_orientation' : "bisexual" }, {'$or': [ { '$and': [ { 'sexual_orientation' : 'homosexual' } , { 'gender' : gen }, {'location'[2] : locatio} ] } , { '$and': [ { 'sexual_orientation' : 'heterosexual' }, { 'gender' : opp_gen } ] } ] }]}]}) )
 
     global valid_users
     current_user = db.get_user({'username' : session.get('username')})
 
     valid_users = [user for user in users if user['username'] != current_user['username'] and similarity_perc(current_user['interests'], user['interests']) >= 0 and user['completed'] == 1]
-
     return render_template('user/users.html', logged_in=session.get('username'), users=valid_users, current_user=current_user, search=True)
 
 
