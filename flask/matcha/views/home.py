@@ -101,12 +101,24 @@ def users():
         search=True,
     )
 
-@main.route("/users/age/search", methods=["GET", "POST"])
+# @main.route("/users/advance_search/search", methods=["POST"])
+# @login_required
+# @finish_profile
+# def search_age():
+#     global valid_users
+#     if request.method == "POST":
+#         print("Debug: ", request.form)
+#         return render_template(
+#             "user/users.html"
+#         )
+
+#     return redirect(url_for("main.users"))
+
+@main.route("/users/search_age/search", methods=["GET", "POST"])
 @login_required
 @finish_profile
 def search_age():
     global valid_users
-    print(f"Debug: {request.form}")
     if request.method == "POST":
         age = request.form.get("age")
 
@@ -137,11 +149,29 @@ def search_interest():
     global valid_users
 
     if request.method == "POST":
-        interest = request.form.get("interest")
-        interest = (interest.replace(" ", "")).split(",")
+        interest = []
+        if request.form.get("Traveling"):
+            interest.append(request.form.get("Traveling"))
+        if request.form.get("Animals"):
+            interest.append(request.form.get("Animals"))
+        if request.form.get("Technology"):
+            interest.append(request.form.get("Technology"))
+        if request.form.get("Sky-diving"):
+            interest.append(request.form.get("Sky-diving"))
+        if request.form.get("Movies"):
+            interest.append(request.form.get("Movies"))
+        if request.form.get("Music"):
+            interest.append(request.form.get("Music"))
+        if request.form.get("Cooking"):
+            interest.append(request.form.get("Cooking"))
+        if request.form.get("Sports"):
+            interest.append(request.form.get("Sports"))
+        if request.form.get("Gaming"):
+            interest.append(request.form.get("Gaming"))
+
         current_user = db.get_user({"username": session.get("username")})
         blocked = current_user["blocked"]
-        users = db.users({"_id": {"$nin": blocked}, "completed": 1})
+        users = db.users({"_id": {"$nin": blocked}, "gender": {"$ne": current_user['gender']}, "completed": 1})
         valid_users = filter_interest(users, interest)
 
         # Add the filters stuff.

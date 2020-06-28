@@ -14,7 +14,8 @@
 
     <!-- Custom css -->
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-    <!-- <link rel="shortcut icon" href="{{ url_for('static', filename='../static/logos/logoblk.ico') }}" type="image/x-icon" /> -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='../static/logos/logoblk.ico') }}" type="image/x-icon" />
+
     <title>Matcha</title>
 </head>
 <p id='username' class='d-none'> {{ logged_in }}</p>
@@ -79,9 +80,6 @@
                             <li class="list-group-item list-group-item-light">
                                 by age
                                 <form action="{{ url_for('main.search_age') }}" method='POST'>
-                                    <!-- <div class="form-group">
-                                        <input type="text" class="form-control" id='username' placeholder='by username' name='username'>
-                                    </div> -->
                                     <select class="form-control" name="age">
                                         <option>Choose option</option>
                                         <option value="29">18 to 29</option>
@@ -96,31 +94,31 @@
                                 by interests
                                 <form action="{{ url_for('main.search_interest') }}" method='POST'>
                                     <div class="form-group">
-                                        <input type="text" class="form-control" id='interest' placeholder='by interest' name='interest'>
-
+                                        <input type="checkbox" name="Traveling" value="Traveling">#Traveling<br>
+                                        <input type="checkbox" name="Animals" value="Animals">#Animals<br>
+                                        <input type="checkbox" name="Technology" value="Technology">#Technology<br>
+                                        <input type="checkbox" name="Sky-diving" value="Sky-diving">#Sky-diving<br>
+                                        <input type="checkbox" name="Movies" value="Movies">#Movies<br>
+                                        <input type="checkbox" name="Music" value="Music">#Music<br>
+                                        <input type="checkbox" name="Cooking" value="Cooking">#Cooking<br>
+                                        <input type="checkbox" name="Sports" value="Sports">#Sports<br>
+                                        <input type="checkbox" name="Gaming" value="Gaming">#Gaming<br>
                                     </div>
-                                    <input type="submit" name='submit' value='search_interest' class='btn btn-sm btn-outline-info'>
+                                    <input type="submit" name='submit' value='search' class='btn btn-sm btn-outline-info'>
                                 </form>
                             </li>
                             <li class="list-group-item list-group-item-light">
-                                by location
+                                by fame rating
                                 <form action="{{ url_for('main.search_location') }}" method="POST">
                                     <div class="form-group">
                                         <input type="text" class="form-control" id='location' placeholder='by location' name='location'>
+                                    </div>
+                                    <input type="submit" name='submit' value='search' class='btn btn-sm btn-outline-info'>
+                                </form>
+                            </li>
 
-                                    </div>
-                                    <input type="submit" name='submit' value='search_location' class='btn btn-sm btn-outline-info'>
-                                </form>
-                            </li>
-                            <li class="list-group-item list-group-item-light">
-                                <form action="{{ url_for('main.search_age') }}" method="POST">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id='age' placeholder='by age' name='age'>
-                                    </div>
-                                    <input type="submit" name='submit' value='search_age' class='btn btn-sm btn-outline-info'>
-                                </form>
-                            </li>
                         </ul>
+                        <br />
                     </p>
                     {% else %}
 

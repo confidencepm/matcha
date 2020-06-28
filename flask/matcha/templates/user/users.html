@@ -173,7 +173,7 @@
           <button
             type="button"
             value="{{ user['username'] }}"
-            class="flirt-back btn btn-secondary btn-sm m-1"
+            class="like-back btn btn-secondary btn-sm m-1"
           >
             Like Back
           </button>
@@ -181,7 +181,7 @@
           <button
             type="button"
             value='{{ user["username"] }}'
-            class="flirt btn btn-secondary btn-sm m-1"
+            class="like btn btn-secondary btn-sm m-1"
           >
             Like
           </button>
@@ -208,12 +208,12 @@
   socket = io("http://localhost:5000");
   var_name = $("#username").text();
 
-  $(".flirt").each(function () {
+  $(".like").each(function () {
     $(this).on("click", function (e) {
-      socket.emit("flirt", {
+      socket.emit("like", {
         to: $(this).val(),
       });
-      $(this).removeClass("flirt");
+      $(this).removeClass("like");
       $(this).addClass("disabled");
       $(this).addClass("pending");
       $(this).text("pending");
@@ -221,9 +221,9 @@
     });
   });
 
-  $(".flirt-back").each(function () {
+  $(".like-back").each(function () {
     $(this).on("click", function (e) {
-      socket.emit("flirt-back", { to: $(this).val() });
+      socket.emit("like-back", { to: $(this).val() });
       $(this).replaceWith(
         "<a href='#' class='btn btn-outline-info btn-sm sm-1 disabled'>Chat</a>"
       );
@@ -236,10 +236,11 @@
       window.location.reload();
     });
   });
-  socket.on("flirt", function (data) {
+
+  socket.on("like", function (data) {
     alert(data["from"]);
 
-    $(".flirt").each(function () {
+    $(".like").each(function () {
       if ($(this).val() == data["from"]) {
         window.location.reload();
       }
@@ -257,7 +258,7 @@
   });
 
   socket.on("Unlike", function (data) {
-    $(".flirt-back").each(function () {
+    $(".like-back").each(function () {
       if ($(this).val() == data["from"]) {
         window.location.reload();
       }
