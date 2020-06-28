@@ -101,21 +101,28 @@ def users():
         search=True,
     )
 
-@main.route("/users/username/search", methods=["GET", "POST"])
+@main.route("/users/age/search", methods=["GET", "POST"])
 @login_required
 @finish_profile
-def search_username():
+def search_age():
     global valid_users
+    print(f"Debug: {request.form}")
     if request.method == "POST":
-        username = request.form.get("username")
-        print(username)
+        age = request.form.get("age")
+
+        if not age.isnumeric():
+            flash("invalid input for age search", "danger")
+            return redirect(url_for("main.users"))
         current_user = db.get_user({"username": session.get("username")})
         blocked = current_user["blocked"]
-        valid_users = list(
-            db.users({"_id": {"$nin": blocked}, "completed": 1, "username": username})
-        )
+        print("current user", current_user)
+        users = db.users({"_id": {"$nin": blocked}, "gender": {"$ne": current_user['gender']}, "completed": 1})
+        print("users: ", users)
+        age = int((age.replace(" ", "")).split(",")[0])
+        print("age ", age)
+        print("age type", type(age))
+        valid_users = filter_age(users, age)
 
-        # Add the filters stuff.
         return render_template(
             "user/users.html",
             logged_in=session.get("username"),
@@ -168,34 +175,6 @@ def search_location():
         valid_users = filter_location(users, location[0])
 
         # Add the filters stuff.
-        return render_template(
-            "user/users.html",
-            logged_in=session.get("username"),
-            users=valid_users,
-            current_user=current_user,
-            search=True,
-        )
-
-    return redirect(url_for("main.users"))
-
-
-@main.route("/users/age/search", methods=["GET", "POST"])
-@login_required
-@finish_profile
-def search_age():
-    global valid_users
-    if request.method == "POST":
-        age = request.form.get("age")
-
-        if not age.isnumeric():
-            flash("invalid input for age search", "danger")
-            return redirect(url_for("main.users"))
-        current_user = db.get_user({"username": session.get("username")})
-        blocked = current_user["blocked"]
-        users = db.users({"_id": {"$nin": blocked}, "completed": 1})
-        age = int((age.replace(" ", "")).split(",")[0])
-        valid_users = filter_age(users, age)
-
         return render_template(
             "user/users.html",
             logged_in=session.get("username"),

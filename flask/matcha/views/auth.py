@@ -10,7 +10,7 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
-    blocked = db.get_user(db.get_user({'_id': ObjectId(b'admin')}, {'blocked': 1}))["blocked"]
+    # blocked = db.get_user(db.get_user({'_id': ObjectId(b'admin')}, {'blocked': 1}))["blocked"]
     errors = []
     details = {
         'username': '',
@@ -25,7 +25,7 @@ def register():
         'likes': [],
         'liked': [],
         'matched': [],
-        'blocked': blocked,
+        'blocked': [],
         'views': [],
         'rooms': {},
         'notifications': [],
@@ -61,7 +61,7 @@ def register():
             errors.append('The email is already taken!')
         if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,100}$', details['email']):
             errors.append('invalid email format')
-        if not re.match(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,25}$', details['password']):
+        if not re.match(r'^.*(?=.{8,10})(?=.*[a-zA-Z])(?=.*?[A-Z])(?=.*\d)[a-zA-Z0-9!@£$%^&*()_+={}?:~\[\]]+$', details['password']):
             print(f"Debug password: {details['password']}")
             errors.append('The password must have an uppercase, lowercase and a digit, 5 - 25 characters long.')
         if passwd_confirm != details['password']:
@@ -187,7 +187,7 @@ def forgot_password():
                         <p>Hi,{}<br>
                         Welcome to Matcha.<br>
                         Click the link below to reset your password:
-                        <a href="http://127.0.0.1:5000/reset_password?jrr={}">Reset Password</a>
+                        <a href="http://localhost:5000/reset_password?jrr={}">Reset Password</a>
                         </p>
                     </body>
                     </html>

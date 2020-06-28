@@ -86,8 +86,7 @@ def profile():
             if not bcrypt.checkpw(password.encode("utf-8"), user["password"]):
                 errors.append("Incorrect password")
             elif new_password:
-                if not re.match(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,25}$", new_password):
-                    print(f"Debug password: {details['password']}")
+                if not re.match(r'^.*(?=.{8,10})(?=.*[a-zA-Z])(?=.*?[A-Z])(?=.*\d)[a-zA-Z0-9!@£$%^&*()_+={}?:~\[\]]+$', new_password):
                     errors.append('The password must have an uppercase, lowercase and a digit')
                 if check_new_password != new_password:
                     errors.append("The two passwords do not match")
@@ -97,7 +96,6 @@ def profile():
                     db.update_user(user["_id"], user)
 
             if not errors:
-                print("Updating password")
                 db.update_user(user["_id"], user)
                 flash("Password updated", "success")
             else:

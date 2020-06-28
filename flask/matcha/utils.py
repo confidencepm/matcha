@@ -139,5 +139,13 @@ def filter_location(users, location):
 
 # Filter out users based on the given age
 def filter_age(users, age):
-    valid_users = [user for user in users if age <= int(user['fame-rating'])]
+    if age == 29:
+        print("test 1", age)
+        valid_users = [user for user in users if user['age'] <= age and age >= 18]
+    elif age == 39:
+        print('test 2', age)
+        valid_users = [user for user in users if user['age'] <= age and age >= 30]
+    elif age == 100:
+        print('test 3', age)
+        valid_users = [user for user in users if user['age'] <= age and age >= 40]
     return valid_users
