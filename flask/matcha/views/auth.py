@@ -3,7 +3,7 @@ from matcha import db, logged_in_users
 from bson import ObjectId
 from functools import wraps
 import secrets, re, bcrypt, html
-from matcha.utils import *
+from matcha.utils import calculate_fame, send_mail
 from datetime import datetime
 
 auth = Blueprint('auth', __name__)

@@ -1,4 +1,5 @@
 from matcha import socket, logged_in_users, db
+from matcha.utils import calculate_fame, send_mail
 from flask import session, request
 from flask_socketio import join_room, leave_room
 import secrets
@@ -31,7 +32,7 @@ def like(data):
 
     db.update_likes(liker["_id"], {"likes": liker["likes"]})
     db.update_likes(liked["_id"], {"liked": liked["liked"]})
-
+    calculate_fame(liked)
     sid = logged_in_users.get(data["to"])
     if sid:
         socket.emit("flirt", {"from": session.get("username")}, room=sid)
@@ -115,9 +116,9 @@ def unlike(data):
         unlikes["_id"], {"liked": unlikes["liked"], "matched": unlikes["matched"]}
     )
 
-    sid = logged_in_users[data["to"]]
-    if sid:
-        socket.emit("Unlike", {"from": session.get("username")}, room=sid)
+    # sid = logged_in_users[data["to"]]
+    # if sid:
+    #     socket.emit("Unlike", {"from": session.get("username")}, room=sid)
 
     unlikes["notifications"].append(session.get("username") + " has unliked you.")
     db.update_likes(unlikes["_id"], {"notifications": unlikes["notifications"]})

@@ -7,11 +7,12 @@ from datetime import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'kueghfo734yfo8g387'
+app.config['SESSION_COOKIE_SAMESITE'] = "None"
 
 logged_in_users = {}
 
 # Set up the socket
-socket = SocketIO(app, Threaded=True, cors_allowed_origins='*')
+socket = SocketIO(app, Threaded=True, cors_allowed_origins='*', SameSite=None)
 
 db = DB()
 

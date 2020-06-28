@@ -2,8 +2,9 @@ from matcha import db, logged_in_users, valid_users
 from flask import Blueprint, render_template, session, redirect, flash, request, url_for
 from bson.objectid import ObjectId
 from functools import wraps, cmp_to_key
-from matcha.utils import *
-import html
+from matcha.utils import similarity_perc, get_howfar, \
+filter_age, filter_interest, filter_location, login_required, \
+finish_profile, filter_fame
 
 main = Blueprint("main", __name__)
 
@@ -90,7 +91,7 @@ def users():
         if user["username"] != current_user["username"]
         and similarity_perc(current_user["interests"], user["interests"]) >= 0
         and user["completed"] == 1
-        and get_howfar(current_user, user) < 20
+        and user['location'][2] == current_user['location'][2]
     ]
 
     return render_template(
@@ -130,6 +131,34 @@ def search_age():
         users = db.users({"_id": {"$nin": blocked}, "gender": {"$ne": current_user['gender']}, "completed": 1})
         age = int((age.replace(" ", "")).split(",")[0])
         valid_users = filter_age(users, age)
+
+        return render_template(
+            "user/users.html",
+            logged_in=session.get("username"),
+            users=valid_users,
+            current_user=current_user,
+            search=True,
+        )
+
+    return redirect(url_for("main.users"))
+
+@main.route("/users/search_fame/search", methods=["GET", "POST"])
+@login_required
+@finish_profile
+def search_fame():
+    global valid_users
+    if request.method == "POST":
+        print("Debug 1", request.form.get("fame"))
+        fame = request.form.get("fame")
+
+        if not fame.isnumeric():
+            flash("invalid input for age search", "danger")
+            return redirect(url_for("main.users"))
+        current_user = db.get_user({"username": session.get("username")})
+        blocked = current_user["blocked"]
+        users = db.users({"_id": {"$nin": blocked}, "gender": {"$ne": current_user['gender']}, "completed": 1})
+        fame = int((fame.replace(" ", "")).split(",")[0])
+        valid_users = filter_fame(users, fame)
 
         return render_template(
             "user/users.html",
@@ -191,14 +220,15 @@ def search_interest():
 @finish_profile
 def search_location():
     global valid_users
-
+    print("Debug location ", request.form.get("location"))
     if request.method == "POST":
         location = request.form.get("location")
-        location = location.split(",")
+        # location = location.split(",")
         current_user = db.get_user({"username": session.get("username")})
         blocked = current_user["blocked"]
         users = db.users({"_id": {"$nin": blocked}, "completed": 1})
-        valid_users = filter_location(users, location[0])
+        valid_users = filter_location(users, location)
+        # print("User location: ", users[0]['location'])
 
         # Add the filters stuff.
         return render_template(
@@ -210,6 +240,32 @@ def search_location():
         )
 
     return redirect(url_for("main.users"))
+
+@main.route("/users/advance_search/search", methods=["GET", "POST"])
+@login_required
+@finish_profile
+def advance_search():
+    global valid_users
+    print("Debug ", request.json)
+    # if request.method == "POST":
+        # location = request.form.get("location")
+        # location = location.split(",")
+        # current_user = db.get_user({"username": session.get("username")})
+        # blocked = current_user["blocked"]
+        # users = db.users({"_id": {"$nin": blocked}, "completed": 1})
+        # valid_users = filter_location(users, location)
+        # print("User location: ", users[0]['location'])
+
+    # Add the filters stuff.
+    return render_template(
+        "user/users.html",
+        # logged_in=session.get("username"),
+        # users=valid_users,
+        # current_user=current_user,
+        search=True,
+    )
+
+    # return redirect(url_for("main.users"))
 
 
 @main.route("/users/sort/fame/<value>", methods=["GET", "POST"])
@@ -439,41 +495,6 @@ def block_user(b_id):
     return redirect(url_for("main.users"))
 
 
-@main.route("/user/<b_id>/report", methods=["GET", "POST"])
-@login_required
-@finish_profile
-def report_user(b_id):
-
-    current_user = db.get_user({"username": session.get("username")})
-    print("email should send")
-    subject = "fake account"
-    text = """\
-    {}  {} reporting {}
-    As a fake account
-    """.format(
-        current_user["username"], current_user["_id"], b_id
-    )
-
-    html = """\
-    <html>
-    <body>
-        <p>{}<br>{} reporting {}<br>
-            As a fake account
-        </p>
-    </body>
-    </html>
-    """.format(
-        current_user["username"], current_user["_id"], b_id
-    )
-    send_mail("Bobbers", subject, text, html)
-
-    ob_id = ObjectId(b_id)
-    current_user["blocked"].append(ob_id)
-    db.update_user(current_user["_id"], current_user)
-
-    return redirect(url_for("main.users"))
-
-
 @main.route("/user/<b_id>/block_for_all", methods=["GET", "POST"])
 @login_required
 @finish_profile
@@ -497,26 +518,29 @@ def block_for_all(b_id):
 # @login_required
 # @finish_profile
 # def users():
-#     # valid_users = []
-#     # users = db.users({'_id' : { '$nin' : blocked }, {'completed' : 1})
-#     current_user = db.get_user({'username' : session.get('username')})
-#     blocked = current_user["blocked"]
-#     opp_gen = "Male" if current_user["gender"] == "Female" else "Female"
-#     gen = current_user["gender"]
+    # valid_users = []
+    # users = db.users({'_id' : { '$nin' : blocked }, {'completed' : 1})
+    current_user = db.get_user({'username': session.get('username')})
+    blocked = current_user["blocked"]
+    locatio = current_user['location'][2]
+    opp_gen = "Male" if current_user["gender"] == "Female" else "Female"
+    gen = current_user["gender"]
 
-#     if current_user["sexual_orientation"] == "heterosexual":
-#         users = list(db.users( {'_id' : { '$nin' : blocked }, 'gender' : opp_gen, 'sexual_orientation' : { '$nin' : ["homosexual"]} } ))
-#     elif current_user["sexual_orientation"] == "homosexual":
-#         users = list(db.users( {'_id' : { '$nin' : blocked }, 'gender' : gen, 'sexual_orientation' : { '$nin' : ["heterosexual"]} } ))
-#     else:
-#         users = list(db.users({ '$and' : [ {'_id' : { '$nin' : blocked }}, {'$or': [ { 'sexual_orientation' : "bisexual" }, {'$or': [ { '$and': [ { 'sexual_orientation' : 'homosexual' } , { 'gender' : gen } ] } , { '$and': [ { 'sexual_orientation' : 'heterosexual' }, { 'gender' : opp_gen } ] } ] }]}]}) )
+    if current_user["sexual_orientation"] == "heterosexual":
+        print("Debug 1")
+        users = list(db.users( {'_id' : { '$nin' : blocked }, 'gender' : opp_gen, 'sexual_orientation' : { '$nin' : ["homosexual"] } } ))
+    elif current_user["sexual_orientation"] == "homosexual":
+        print("Debug 2")
+        users = list(db.users( {'_id' : { '$nin' : blocked }, 'gender' : gen, 'sexual_orientation' : { '$nin' : ["heterosexual"]} } ))
+    else:
+        print("Debug 3")
+        users = list(db.users({ '$and' : [ {'_id' : { '$nin' : blocked }}, {'$or': [ { 'sexual_orientation' : "bisexual" }, {'$or': [ { '$and': [ { 'sexual_orientation' : 'homosexual' } , { 'gender' : gen }, {'location'[2] : locatio} ] } , { '$and': [ { 'sexual_orientation' : 'heterosexual' }, { 'gender' : opp_gen } ] } ] }]}]}) )
 
-#     global valid_users
-#     current_user = db.get_user({'username' : session.get('username')})
+    global valid_users
+    current_user = db.get_user({'username' : session.get('username')})
 
-#     valid_users = [user for user in users if user['username'] != current_user['username'] and similarity_perc(current_user['interests'], user['interests']) >= 0 and user['completed'] == 1]
-
-#     return render_template('user/users.html', logged_in=session.get('username'), users=valid_users, current_user=current_user, search=True)
+    valid_users = [user for user in users if user['username'] != current_user['username'] and similarity_perc(current_user['interests'], user['interests']) >= 0 and user['completed'] == 1]
+    return render_template('user/users.html', logged_in=session.get('username'), users=valid_users, current_user=current_user, search=True)
 
 
 @main.route("/blocked", methods=["GET", "POST"])

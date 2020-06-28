@@ -118,12 +118,14 @@ def similarity_perc(list1, list2):
 # Calculate the users fame rating
 def calculate_fame(user):
     account_count = db.count_users()
-    user_liked = len(user['liked'])
-    fame_rate = user_liked / account_count * 100
+    user_liked = len(user['likes'])
+    if user_liked == 0:
+        fame_rate = 0
+    else:
+        fame_rate = (user_liked / account_count) * 100
 
-    user['fame-rating'] = fame_rate
+    user['fame-rating'] = int(fame_rate)
     db.update_user(user['_id'], user)
-    return fame_rate
 
 
 
@@ -145,4 +147,29 @@ def filter_age(users, age):
         valid_users = [user for user in users if user['age'] >= 30 and user['age'] <= age]
     elif age == 100:
         valid_users = [user for user in users if user['age'] >= 40 and user['age'] <= age]
+    return valid_users
+
+# Filter out users based on the given fame
+def filter_fame(users, fame):
+    print("Fame: ", fame)
+    if fame == 10:
+        valid_users = [user for user in users if user['fame-rating'] >= 0 and user['fame-rating'] < fame]
+    elif fame == 20:
+        valid_users = [user for user in users if user['fame-rating'] >= 10 and user['fame-rating'] < fame]
+    elif fame == 30:
+        valid_users = [user for user in users if user['fame-rating'] >= 20 and user['famer-rating'] < fame]
+    elif fame == 40:
+        valid_users = [user for user in users if user['fame-rating'] >= 30 and user['famer-rating'] < fame]
+    elif fame == 50:
+        valid_users = [user for user in users if user['fame-rating'] >= 40 and user['famer-rating'] < fame]
+    elif fame == 60:
+        valid_users = [user for user in users if user['fame-rating'] >= 50 and user['famer-rating'] < fame]
+    elif fame == 70:
+        valid_users = [user for user in users if user['fame-rating'] >= 60 and user['famer-rating'] < fame]
+    elif fame == 80:
+        valid_users = [user for user in users if user['fame-rating'] >= 70 and user['famer-rating'] < fame]
+    elif fame == 90:
+        valid_users = [user for user in users if user['fame-rating'] >= 80 and user['famer-rating'] < fame]
+    elif fame == 100:
+        valid_users = [user for user in users if user['fame-rating'] >= 90 and user['famer-rating'] < fame]
     return valid_users

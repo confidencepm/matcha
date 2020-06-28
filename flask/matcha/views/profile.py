@@ -4,7 +4,7 @@ import os, secrets, re, html, pymongo, bcrypt
 
 from PIL import Image
 from matcha import db, app, logged_in_users
-from matcha.utils import *
+from matcha.utils import save_picture, save_gallery, login_required, finish_profile
 from bson.objectid import ObjectId
 
 from datetime import date
@@ -126,7 +126,7 @@ def profile():
 
             if not errors:
                 user["gender"] = gender
-                user["sex"] = sexuality
+                user["sexual_orientation"] = sexuality
                 user["interests"] = interests
                 user["completed"] = 1
                 location = request.form.get("location")
@@ -196,7 +196,6 @@ def view_profile(user_id):
     current_user = db.get_user({"username": session.get("username")})
 
     user = db.get_user({"_id": id})
-    user["fame-rating"] = int((user["fame-rating"] / 10) - 1)
     online_users = list(logged_in_users.keys())
     bio = html.unescape(user['bio'])
     user['bio'] = bio
