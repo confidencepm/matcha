@@ -515,58 +515,58 @@ def block_for_all(b_id):
     return redirect(url_for("main.blocked"))
 
 
-# @main.route('/users')
-# @login_required
-# @finish_profile
-# def users():
-#     # valid_users = []
-#     # users = db.users({'_id' : { '$nin' : blocked }, {'completed' : 1})
-#     current_user = db.get_user({'username' : session.get('username')})
-#     blocked = current_user["blocked"]
-#     opp_gen = "Male" if current_user["gender"] == "Female" else "Female"
-#     gen = current_user["gender"]
-
-#     if current_user["sexual_orientation"] == "heterosexual":
-#         users = list(db.users( {'_id' : { '$nin' : blocked }, 'gender' : opp_gen, 'sexual_orientation' : { '$nin' : ["homosexual"]} } ))
-#     elif current_user["sexual_orientation"] == "homosexual":
-#         users = list(db.users( {'_id' : { '$nin' : blocked }, 'gender' : gen, 'sexual_orientation' : { '$nin' : ["heterosexual"]} } ))
-#     else:
-#         users = list(db.users({ '$and' : [ {'_id' : { '$nin' : blocked }}, {'$or': [ { 'sexual_orientation' : "bisexual" }, {'$or': [ { '$and': [ { 'sexual_orientation' : 'homosexual' } , { 'gender' : gen } ] } , { '$and': [ { 'sexual_orientation' : 'heterosexual' }, { 'gender' : opp_gen } ] } ] }]}]}) )
-
-#     global valid_users
-#     current_user = db.get_user({'username' : session.get('username')})
-
-#     valid_users = [user for user in users if user['username'] != current_user['username'] and similarity_perc(current_user['interests'], user['interests']) >= 0 and user['completed'] == 1]
-
-#     return render_template('user/users.html', logged_in=session.get('username'), users=valid_users, current_user=current_user, search=True)
-
-@main.route("/users/popularity", methods=["GET", "POST"])
+@main.route('/users')
 @login_required
 @finish_profile
-def popularity():
+def users():
+    # valid_users = []
+    # users = db.users({'_id' : { '$nin' : blocked }, {'completed' : 1})
+    current_user = db.get_user({'username' : session.get('username')})
+    blocked = current_user["blocked"]
+    opp_gen = "Male" if current_user["gender"] == "Female" else "Female"
+    gen = current_user["gender"]
+
+    if current_user["sexual_orientation"] == "heterosexual":
+        users = list(db.users( {'_id' : { '$nin' : blocked }, 'gender' : opp_gen, 'sexual_orientation' : { '$nin' : ["homosexual"]} } ))
+    elif current_user["sexual_orientation"] == "homosexual":
+        users = list(db.users( {'_id' : { '$nin' : blocked }, 'gender' : gen, 'sexual_orientation' : { '$nin' : ["heterosexual"]} } ))
+    else:
+        users = list(db.users({ '$and' : [ {'_id' : { '$nin' : blocked }}, {'$or': [ { 'sexual_orientation' : "bisexual" }, {'$or': [ { '$and': [ { 'sexual_orientation' : 'homosexual' } , { 'gender' : gen } ] } , { '$and': [ { 'sexual_orientation' : 'heterosexual' }, { 'gender' : opp_gen } ] } ] }]}]}) )
+
     global valid_users
-    current_user = db.get_user({"username": session.get("username")})
-    users = valid_users
-    rating = 0
-    average_rating = 0
-    for user in users:
-        average_rating += user['fame-rating'] / len(users)
-        #add to db.
-    if average_rating >= 50:
-        if current_user['fame-rating'] >= average_rating:
-            sorted_users = valid_users[:]
-            for i in range(len(sorted_users)):
-                for k in range(len(sorted_users)):
-                    if sorted_users[i]["fame-rating"] > sorted_users[k]["fame-rating"]:
-                        sorted_users[i], sorted_users[k] = sorted_users[k], sorted_users[i]
+    current_user = db.get_user({'username' : session.get('username')})
+
+    valid_users = [user for user in users if user['username'] != current_user['username'] and similarity_perc(current_user['interests'], user['interests']) >= 0 and user['completed'] == 1]
+
+    return render_template('user/users.html', logged_in=session.get('username'), users=valid_users, current_user=current_user, search=True)
+
+# @main.route("/users/popularity", methods=["GET", "POST"])
+# @login_required
+# @finish_profile
+# def popularity():
+#     global valid_users
+#     current_user = db.get_user({"username": session.get("username")})
+#     users = valid_users
+#     rating = 0
+#     average_rating = 0
+#     for user in users:
+#         average_rating += user['fame-rating'] / len(users)
+#         #add to db.
+#     if average_rating >= 50:
+#         if current_user['fame-rating'] >= average_rating:
+#             sorted_users = valid_users[:]
+#             for i in range(len(sorted_users)):
+#                 for k in range(len(sorted_users)):
+#                     if sorted_users[i]["fame-rating"] > sorted_users[k]["fame-rating"]:
+#                         sorted_users[i], sorted_users[k] = sorted_users[k], sorted_users[i]
     
-    return render_template(
-            "user/users.html",
-            logged_in=session.get("username"),
-            users=valid_users,
-            current_user=current_user,
-            search=True,
-        )
+#     return render_template(
+#             "user/users.html",
+#             logged_in=session.get("username"),
+#             users=valid_users,
+#             current_user=current_user,
+#             search=True,
+#         )
 
 
 @main.route("/blocked", methods=["GET", "POST"])
