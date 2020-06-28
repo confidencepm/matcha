@@ -140,12 +140,9 @@ def filter_location(users, location):
 # Filter out users based on the given age
 def filter_age(users, age):
     if age == 29:
-        print("test 1", age)
-        valid_users = [user for user in users if user['age'] <= age and age >= 18]
+        valid_users = [user for user in users if user['age'] >= 18 and user['age'] <= age]
     elif age == 39:
-        print('test 2', age)
-        valid_users = [user for user in users if user['age'] <= age and age >= 30]
+        valid_users = [user for user in users if user['age'] >= 30 and user['age'] <= age]
     elif age == 100:
-        print('test 3', age)
-        valid_users = [user for user in users if user['age'] <= age and age >= 40]
+        valid_users = [user for user in users if user['age'] >= 40 and user['age'] <= age]
     return valid_users

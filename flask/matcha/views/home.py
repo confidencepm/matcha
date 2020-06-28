@@ -115,12 +115,8 @@ def search_age():
             return redirect(url_for("main.users"))
         current_user = db.get_user({"username": session.get("username")})
         blocked = current_user["blocked"]
-        print("current user", current_user)
         users = db.users({"_id": {"$nin": blocked}, "gender": {"$ne": current_user['gender']}, "completed": 1})
-        print("users: ", users)
         age = int((age.replace(" ", "")).split(",")[0])
-        print("age ", age)
-        print("age type", type(age))
         valid_users = filter_age(users, age)
 
         return render_template(
