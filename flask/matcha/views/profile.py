@@ -4,7 +4,7 @@ import os, secrets, re, html, pymongo, bcrypt
 
 from PIL import Image
 from matcha import db, app, logged_in_users
-from matcha.utils import *
+from matcha.utils import save_picture, save_gallery, login_required, finish_profile
 from bson.objectid import ObjectId
 
 from datetime import date

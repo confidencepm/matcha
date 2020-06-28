@@ -80,7 +80,7 @@
                                 Age
                                 <form action="{{ url_for('main.search_age') }}" method='POST'>
                                     <select class="form-control" name="age" id="age">
-                                        <option>Choose option</option>
+                                        <option value="">Choose option</option>
                                         <option value="29">18 to 29</option>
                                         <option value="39">30 to 39</option>
                                         <option value="100">over 40</option>
@@ -92,8 +92,8 @@
                             <li class="list-group-item list-group-item-light">
                                 Fame rating
                                 <form action="{{ url_for('main.search_fame') }}" method="POST">
-                                    <select class="form-control" name="fame">
-                                        <option>Choose option</option>
+                                    <select class="form-control" name="fame" id="fame1">
+                                        <option value="">Choose option</option>
                                         <option value="10">0% to 9%</option>
                                         <option value="20">10% to 19%</option>
                                         <option value="30">20% to 29%</option>
@@ -112,8 +112,8 @@
                             <li class="list-group-item list-group-item-light">
                                 Location
                                 <form action="{{ url_for('main.search_location') }}" method="POST">
-                                    <select class="form-control" name="location">
-                                        <option>Choose option</option>
+                                    <select class="form-control" name="location" id="location">
+                                        <option value="">Choose option</option>
                                         <option value="Johannesburg">Johannesburg</option>
                                         <option value="Cape Town">Cape Town</option>
                                         <option value="Durban">Durban</option>
@@ -127,19 +127,24 @@
                             <li class="list-group-item list-group-item-light">
                                 interests
                                 <form action="{{ url_for('main.search_interest') }}" method='POST'>
-                                    <div class="form-group">
-                                        <input type="checkbox" name="Traveling" value="Traveling">#Traveling<br>
-                                        <input type="checkbox" name="Animals" value="Animals">#Animals<br>
-                                        <input type="checkbox" name="Technology" value="Technology">#Technology<br>
-                                        <input type="checkbox" name="Sky-diving" value="Sky-diving">#Sky-diving<br>
-                                        <input type="checkbox" name="Movies" value="Movies">#Movies<br>
-                                        <input type="checkbox" name="Music" value="Music">#Music<br>
-                                        <input type="checkbox" name="Cooking" value="Cooking">#Cooking<br>
-                                        <input type="checkbox" name="Sports" value="Sports">#Sports<br>
-                                        <input type="checkbox" name="Gaming" value="Gaming">#Gaming<br>
+                                    <div class="form-group" id="test">
+                                        <input type="checkbox" id="traveling" name="Traveling" value="Traveling">#Traveling<br>
+                                        <input type="checkbox" id="animals" name="Animals" value="Animals">#Animals<br>
+                                        <input type="checkbox" id="technology" name="Technology" value="Technology">#Technology<br>
+                                        <input type="checkbox" id="sky-diving" name="Sky-diving" value="Sky-diving">#Sky-diving<br>
+                                        <input type="checkbox" id="movies" name="Movies" value="Movies">#Movies<br>
+                                        <input type="checkbox" id="music" name="Music" value="Music">#Music<br>
+                                        <input type="checkbox" id="cooking" name="Cooking" value="Cooking">#Cooking<br>
+                                        <input type="checkbox" id="sports" name="Sports" value="Sports">#Sports<br>
+                                        <input type="checkbox" id="gaming" name="Gaming" value="Gaming">#Gaming<br>
                                     </div>
                                     <input type="submit" name='submit' value='search' class='btn btn-sm btn-outline-info'>
                                 </form>
+                            </li>
+                            <li class="list-group-item list-group-item-light">
+                                Advance Search
+                                <br />
+                                <input type="submit" name="submit" value="search" id="advance_search" onclick="advance_search()" class='btn btn-sm btn-outline-info'>
                             </li>
                         </ul>
                         <br />
@@ -152,9 +157,72 @@
         </div>
     </main>
     <script>
-        document.getElementById('age').addEventListener('onChange', (e) => {
-            console.log("test ", e);
-        })
+        let traveling = "";
+        let animals = "";
+        let technology= "";
+        let skyDiving = "";
+        let movies = "";
+        let music = "";
+        let cooking = "";
+        let sports = "";
+        let gaming = "";
+
+        const interests = [];
+
+        document.getElementById('traveling').addEventListener("click", function (e) {
+            traveling = e.target.value;
+            interests.push(traveling);
+        });
+        document.getElementById('animals').addEventListener("click", function (e) {
+            animals = e.target.value;
+            interests.push(animals);
+        });
+        document.getElementById('technology').addEventListener("click", function (e) {
+            technology = e.target.value;
+            interests.push(technology);
+        });
+        document.getElementById('sky-diving').addEventListener("click", function (e) {
+            skyDiving = e.target.value;
+            interests.push(skyDiving);
+        });
+        document.getElementById('movies').addEventListener("click", function (e) {
+            movies = e.target.value;
+            interests.push(movies);
+        });
+        document.getElementById('music').addEventListener("click", function (e) {
+            music = e.target.value;
+            interests.push(music);
+        });
+        document.getElementById('cooking').addEventListener("click", function (e) {
+            cooking = e.target.value;
+            interests.push(cooking);
+        });
+        document.getElementById('sports').addEventListener("click", function (e) {
+            sports = e.target.value;
+            interests.push(sports);
+        });
+        document.getElementById('gaming').addEventListener("click", function (e) {
+            gaming = e.target.value;
+            interests.push(gaming);
+        });
+
+        function advance_search() {
+            const age = document.getElementById('age').value;
+            const fame = document.getElementById('fame1').value;
+            const location = document.getElementById('location').value;
+            fetch("http://localhost:5000/users/advance_search/search",
+                {
+                    method: 'POST',
+                    mode: "cors",
+                    cache: "no-cache",
+                    credentials: "same-origin",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ "Age": age, "Fame": fame, "Location": location, "Interests": interests })
+                }
+            );
+        }
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
