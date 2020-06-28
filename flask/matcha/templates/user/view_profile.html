@@ -4,7 +4,6 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-12">
-            <!-- FIX ME! -->
             {% if logged_in in user['liked'] %}
                 {% if user['username'] in current_user['liked'] %}
         <a href="{{ url_for('chat.chat_room', room=user['rooms'][logged_in]) }}"
@@ -15,10 +14,10 @@
                 <button type='button' class='unlike btn btn-secondary btn-sm m1' value="{{ user['username'] }}">unlike</button>
             {% else %}
                 {% if user['username'] in current_user['liked'] %}
-                <button type='button' value="{{ user['username'] }}" class='flirt-back btn btn-secondary btn-sm m-1'>Like
+                <button type='button' value="{{ user['username'] }}" class='like-back btn btn-secondary btn-sm m-1'>Like
                     Back</button>
                 {% else%}
-                <button type='button' value='{{ user["username"] }}' class='flirt btn btn-secondary btn-sm m-1'>Like</button>
+                <button type='button' value='{{ user["username"] }}' class='like btn btn-secondary btn-sm m-1'>Like</button>
                 {% endif %}
             {% endif %}
             <a href="{{ url_for('main.block_user', b_id=user['_id']) }}" class='btn btn-secondary btn-sm m-1'>Block</a>
@@ -32,25 +31,37 @@
                 <div class="media-body">
                     <h6 class='text-muted text-secondary'>Username: </h6>
                     <p>{{ user['username'] }}</p>
-                    <h6 class="text-muted text-secondary">Location: </h6>
-                    <p>{{ user['location'][2]}}</p>
-                    <h6 class="text-muted text-secondary">Fame Rating: </h6>
-                    <p>{{ user['fame-rating']}}</p>
-                    <h6 class="text-muted text-secondary">Status: </h6>
-                    {% if user['username'] in online_users %}
-                    <p class='text-muted text-primary'>Online</p>
-                    {% else %}
-                    <p class='text-muted text-secondary'>Last seen: {{ user['last-seen'].strftime("%H:%M %Y-%m-%d") }}</p>
-                    {% endif%}
+                    <h6 class='text-muted text-secondary'>First Name: </h6>
+                    <p>{{ user['firstname'] }}</p>
+                    <h6 class='text-muted text-secondary'>Last Name: </h6>
+                    <p>{{ user['lastname'] }}</p>
+                    <h6 class="text-muted text-secondary">Gender: </h6>
+                    <p>{{ user['gender'] }}</p>
+                    <h6 class="text-muted text-secondary">Sexual Orientation: </h6>
+                    <p>{{ user['sexual_orientation'] }}</p>
+                    <h6 class="text-muted text-secondary">Age: </h6>
+                    <p>{{ user['age'] }}</p>
+                    <!-- <h6 class="text-muted text-secondary">Email: </h6>
+                    <p>{{ current_user['email'] }}</p> -->
+                    <h6 class='text-muted text-primary'>Bio:</h6>
+                    <p>{{user['bio']}}</p>
                 </div>
             </div>
         </div>
         <div class="col-sm-6">
-            <h6 class='text-muted text-secondary'>Bio:</h6>
-            <p>{{user['bio']}}</p>
-            <h6 class='text-muted text-secondary'>Interests:</h6>
-            {% for interest in user['interests']%}
-            <p>{{interest}}</p>
+            <h6 class="text-muted text-secondary">Location: </h6>
+            <p>{{ user['location'][2]}}</p>
+            <h6 class="text-muted text-secondary">Fame Rating: </h6>
+            <p>{{ user['fame-rating']}}</p>
+            <h6 class="text-muted text-secondary">Status: </h6>
+            {% if user['username'] in online_users %}
+                <p class='text-muted text-primary'>Online</p>
+            {% else %}
+                <p class='text-muted text-secondary'>Last seen: {{ user['last-seen'].strftime("%H:%M %Y-%m-%d") }}</p>
+            {% endif%}
+            <h6 class='text-muted text-primary'>Interests:</h6>
+            {% for interest in current_user['interests']%}
+                <p>{{interest}}</p>
             {%endfor%}
         </div>
     </div>
@@ -106,12 +117,12 @@
         socket.emit('view', {'viewer': $('#current_user_id').text(), 'viewed': $('#user_id').text()});
     });
 
-      $('.flirt').each(function () {
+      $('.like').each(function () {
             $(this).on('click', function (e) {
-                socket.emit('flirt', {
+                socket.emit('like', {
                     'to': $(this).val()
                 });
-                $(this).removeClass('flirt');
+                $(this).removeClass('like');
                 $(this).addClass('disabled');
                 $(this).addClass('pending')
                 $(this).text('pending');
@@ -119,12 +130,12 @@
             });
         });
 
-        $('.flirt').each(function () {
+        $('.like').each(function () {
             $(this).on('click', function (e) {
-                socket.emit('flirt', {
+                socket.emit('like', {
                     'to': $(this).val()
                 });
-                $(this).removeClass('flirt');
+                $(this).removeClass('like');
                 $(this).addClass('disabled');
                 $(this).addClass('pending')
                 $(this).text('pending');
@@ -132,26 +143,21 @@
             });
         });
 
-        $('.flirt-back').each(function () {
+        $('.like-back').each(function () {
             $(this).on('click', function (e) {
-                socket.emit('flirt-back', { 'to': $(this).val() });
+                socket.emit('like-back', { 'to': $(this).val() });
                 $(this).replaceWith("<a href='#' class='btn btn-outline-info btn-sm sm-1 disabled'>Chat</a>");
             });
         });
 
-        // handle the unlike button;
         $('.unlike').each(function () {
             $(this).on('click', function (e) {
-                alert('you have unlikd ' + $(this).val());
                 socket.emit('Unlike', { 'to': $(this).val() });
                 window.location.reload();
             });
         });
-        // Listening the for events.
-        socket.on('flirt', function (data) {
-            alert(data['from']);
-
-            $('.flirt').each(function () {
+        socket.on('like', function (data) {
+            $('.like').each(function () {
                 if ($(this).val() == data['from']) {
                     window.location.reload();
                 }
@@ -160,8 +166,6 @@
         });
 
         socket.on('matched', function (data) {
-            alert(data['from']);
-
             $('.pending').each(function () {
                 if ($(this).val() == data['from']) {
                     $(this).replaceWith("<a href='#' class='btn btn-outline-info btn-sm sm-1 disabled'>Chat</a>");
@@ -169,12 +173,8 @@
             });
         });
 
-
-        // Section for other notifications.
-
         socket.on('Unlike', function (data) {
-            alert('some unliked you');
-            $('.flirt-back').each(function () {
+            $('.like-back').each(function () {
                 if ($(this).val() == data['from']) {
                     window.location.reload()
                 }
@@ -183,13 +183,11 @@
 
 
         socket.on('notif_chat', function (data) {
-            // alert(data['from'] + ' sent you a message')
             $('notification').append('<p>' + data['from'] + ' sent you a message</p>');
             $('#badge').text('new');
         });
 
         socket.on('notif_view', function (data) {
-            // alert(data['from'] + ' has viewed your profile');
             $('#notification').append('<p>' + data['from'] + ' viewed your profile</p>');
             $('#badge').text('new');
         });

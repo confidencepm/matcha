@@ -14,7 +14,8 @@
 
     <!-- Custom css -->
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-    <!-- <link rel="shortcut icon" href="{{ url_for('static', filename='../static/logos/logoblk.ico') }}" type="image/x-icon" /> -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='../static/logos/logoblk.ico') }}" type="image/x-icon" />
+
     <title>Matcha</title>
 </head>
 <p id='username' class='d-none'> {{ logged_in }}</p>
@@ -66,7 +67,6 @@
             </div>
             <div class="col-md-4">
                 <div class="content-section">
-                    <!-- notifications -->
                     {% if current_user %}
                     <div class="collapse" id='notification'>
                         {% for notif in current_user['notifications'] %}
@@ -78,42 +78,47 @@
                     <p class='text-muted'>You can put any information here you'd like.
                         <ul class="list-group">
                             <li class="list-group-item list-group-item-light">
-                                <form action="{{ url_for('main.search_username') }}" method='POST'>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id='username' placeholder='by username' name='username'>
-                                    </div>
-                                    <input type="submit" name='submit' value='search_username' class='btn btn-sm btn-outline-info'>
+                                by age
+                                <form action="{{ url_for('main.search_age') }}" method='POST'>
+                                    <select class="form-control" name="age">
+                                        <option>Choose option</option>
+                                        <option value="29">18 to 29</option>
+                                        <option value="39">30 to 39</option>
+                                        <option value="100">over 40</option>
+                                    </select>
+                                    <br />
+                                    <input type="submit" name='submit' value='search' class='btn btn-sm btn-outline-info'>
                                 </form>
                             </li>
                             <li class="list-group-item list-group-item-light">
                                 by interests
                                 <form action="{{ url_for('main.search_interest') }}" method='POST'>
                                     <div class="form-group">
-                                        <input type="text" class="form-control" id='interest' placeholder='by interest' name='interest'>
-
+                                        <input type="checkbox" name="Traveling" value="Traveling">#Traveling<br>
+                                        <input type="checkbox" name="Animals" value="Animals">#Animals<br>
+                                        <input type="checkbox" name="Technology" value="Technology">#Technology<br>
+                                        <input type="checkbox" name="Sky-diving" value="Sky-diving">#Sky-diving<br>
+                                        <input type="checkbox" name="Movies" value="Movies">#Movies<br>
+                                        <input type="checkbox" name="Music" value="Music">#Music<br>
+                                        <input type="checkbox" name="Cooking" value="Cooking">#Cooking<br>
+                                        <input type="checkbox" name="Sports" value="Sports">#Sports<br>
+                                        <input type="checkbox" name="Gaming" value="Gaming">#Gaming<br>
                                     </div>
-                                    <input type="submit" name='submit' value='search_interest' class='btn btn-sm btn-outline-info'>
+                                    <input type="submit" name='submit' value='search' class='btn btn-sm btn-outline-info'>
                                 </form>
                             </li>
                             <li class="list-group-item list-group-item-light">
-                                by location
+                                by fame rating
                                 <form action="{{ url_for('main.search_location') }}" method="POST">
                                     <div class="form-group">
                                         <input type="text" class="form-control" id='location' placeholder='by location' name='location'>
+                                    </div>
+                                    <input type="submit" name='submit' value='search' class='btn btn-sm btn-outline-info'>
+                                </form>
+                            </li>
 
-                                    </div>
-                                    <input type="submit" name='submit' value='search_location' class='btn btn-sm btn-outline-info'>
-                                </form>
-                            </li>
-                            <li class="list-group-item list-group-item-light">
-                                <form action="{{ url_for('main.search_age') }}" method="POST">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id='age' placeholder='by age' name='age'>
-                                    </div>
-                                    <input type="submit" name='submit' value='search_age' class='btn btn-sm btn-outline-info'>
-                                </form>
-                            </li>
                         </ul>
+                        <br />
                     </p>
                     {% else %}
 
@@ -122,8 +127,6 @@
             </div>
         </div>
     </main>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

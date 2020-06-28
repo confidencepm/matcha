@@ -55,13 +55,11 @@
   });
 
   socket.on("notif_chat", function (data) {
-    // alert(data['from'] + ' sent you a message')
     $("notification").append("<p>" + data["from"] + " sent you a message</p>");
     $("#badge").text("new");
   });
 
   socket.on("notif_view", function (data) {
-    // alert(data['from'] + ' has viewed your profile');
     $("#notification").append(
       "<p>" + data["from"] + " viewed your profile</p>"
     );

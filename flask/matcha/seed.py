@@ -16,8 +16,8 @@ def seed_users():
     gender = ['Male', 'Female']
     sexo = ['bisexual', 'heterosexual', 'homosexual']
     city = ['Johannesburg', 'Cape Town', 'Durban', 'Pretoria', 'Polokwane']
-    gallery = ['dummy1.jpg', 'dummy2.jpg', 'dummy3.jpg', 'dummy4.jpg', 'dummy5.jpg', 'dummy6.jpg']
-    interests = ['Animals', 'Cheaters', 'Lookingforlove', 'Quickie', 'Travel', 'Menaretrash', 'NSA', 'Trans', 'LFF']
+    gallery = ['dummy1.jpg', 'dummy2.jpg', 'dummy3.jpg', 'dummy4.jpg', 'dummy5.jpg', 'dummy6.jpg', 'dummy7.jpg', 'dummy8.jpg', 'dummy9.jpg']
+    interests = ['Traveling', 'Animals', 'Technology', 'Sky-diving', 'Movies', 'Music', 'Cooking', 'Sports', 'Gaming']
     profile_pics = ['dummy1.png', 'dummy2.png', 'dummy3.png', 'dummy4.png', 'dummy5.png', 'dummy6.png', 'dummy7.png',
                     'dummy8.png', 'dummy9.png', 'dummy10.png']
 
@@ -31,7 +31,7 @@ def seed_users():
                    'token': secrets.token_hex(16), 'completed': 1, 'email_confirmed': 1, 'last-seen': datetime.utcnow(),
                    'notifications': []}
 
-        num = fake.random_int(2, 6)
+        num = fake.random_int(3, 9)
         details['interests'] = random.sample(interests, num)
         details['fame-rating'] = fake.random_int(0, 80)
         details['location'].append(''.join([str(fake.random_int(1, 500)), ' ', fake.word(), ' street']))

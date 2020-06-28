@@ -1,197 +1,285 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<!-- Example single danger button -->
+{% extends 'base.html' %} {% block content %}
 <div class="section">
   <div class="btn-group">
-    <button type="button" class="btn btn-danger dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true"
-      aria-expanded="false" id='fame'>
+    <button
+      type="button"
+      class="btn btn-danger dropdown-toggle btn-sm"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+      id="fame"
+    >
       Fame
     </button>
     <div class="dropdown-menu">
-      <a class="dropdown-item" href="{{ url_for('main.sort_fame', value='Filter') }}">filter</a>
-      <a class="dropdown-item" href="{{ url_for('main.sort_fame', value='Sort') }}">sort</a>
+      <a
+        class="dropdown-item"
+        href="{{ url_for('main.sort_fame', value='Filter') }}"
+        >filter</a
+      >
+      <a
+        class="dropdown-item"
+        href="{{ url_for('main.sort_fame', value='Sort') }}"
+        >sort</a
+      >
     </div>
   </div>
   <div class="btn-group">
-    <button type="button" class="btn btn-danger dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true"
-      aria-expanded="false" id='fame'>
+    <button
+      type="button"
+      class="btn btn-danger dropdown-toggle btn-sm"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+      id="fame"
+    >
       liked
     </button>
     <div class="dropdown-menu">
       <a class="dropdown-item" href="{{ url_for('main.sort_likes') }}">sort</a>
     </div>
   </div>
-<div class="btn-group">
-  <button type="button" class="btn btn-danger dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true"
-    aria-expanded="false" id='fame'>
-    flirts
-  </button>
-  <div class="dropdown-menu">
-    <a class="dropdown-item" href="{{ url_for('main.sort_liked', value='Sort') }}">sort</a>
+  <div class="btn-group">
+    <button
+      type="button"
+      class="btn btn-danger dropdown-toggle btn-sm"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+      id="fame"
+    >
+      flirts
+    </button>
+    <div class="dropdown-menu">
+      <a
+        class="dropdown-item"
+        href="{{ url_for('main.sort_liked', value='Sort') }}"
+        >sort</a
+      >
+    </div>
   </div>
-</div>
-<div class="btn-group">
-  <button type="button" class="btn btn-danger dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true"
-    aria-expanded="false" id='fame'>
-    Age
-  </button>
-  <div class="dropdown-menu">
-    <a class="dropdown-item" href="{{ url_for('main.sort_age', value='Filter') }}">filter</a>
-    <a class="dropdown-item" href="{{ url_for('main.sort_age', value='Sort') }}">sort</a>
+  <div class="btn-group">
+    <button
+      type="button"
+      class="btn btn-danger dropdown-toggle btn-sm"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+      id="fame"
+    >
+      Age
+    </button>
+    <div class="dropdown-menu">
+      <a
+        class="dropdown-item"
+        href="{{ url_for('main.sort_age', value='Filter') }}"
+        >filter</a
+      >
+      <a
+        class="dropdown-item"
+        href="{{ url_for('main.sort_age', value='Sort') }}"
+        >sort</a
+      >
+    </div>
   </div>
-</div>
 
-<div class="btn-group">
-  <button type="button" class="btn btn-danger dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true"
-    aria-expanded="false" id='fame'>
-    Location
-  </button>
-  <div class="dropdown-menu">
-    <a class="dropdown-item" href="{{ url_for('main.sort_location', value='District') }}">filter</a>
-    <a class="dropdown-item" href="{{ url_for('main.sort_location',value='Distance') }}">sort</a>
+  <div class="btn-group">
+    <button
+      type="button"
+      class="btn btn-danger dropdown-toggle btn-sm"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+      id="fame"
+    >
+      Location
+    </button>
+    <div class="dropdown-menu">
+      <a
+        class="dropdown-item"
+        href="{{ url_for('main.sort_location', value='District') }}"
+        >filter</a
+      >
+      <a
+        class="dropdown-item"
+        href="{{ url_for('main.sort_location',value='Distance') }}"
+        >sort</a
+      >
+    </div>
   </div>
-</div>
 
-<div class="btn-group">
-  <button type="button" class="btn btn-danger dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true"
-    aria-expanded="false" id='fame'>
-    Interests
-  </button>
-  <div class="dropdown-menu">
-    <a class="dropdown-item" href="{{ url_for('main.sort_interests', value='Filter') }}">filter</a>
-    <a class="dropdown-item" href="{{ url_for('main.sort_interests',value='Sort') }}">sort</a>
+  <div class="btn-group">
+    <button
+      type="button"
+      class="btn btn-danger dropdown-toggle btn-sm"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+      id="fame"
+    >
+      Interests
+    </button>
+    <div class="dropdown-menu">
+      <a
+        class="dropdown-item"
+        href="{{ url_for('main.sort_interests', value='Filter') }}"
+        >filter</a
+      >
+      <a
+        class="dropdown-item"
+        href="{{ url_for('main.sort_interests',value='Sort') }}"
+        >sort</a
+      >
+    </div>
   </div>
-</div>
-
 </div>
 
 <div class="content-sections">
-  {% for user in users %}
-  {% if logged_in != user['username'] %}
+  {% for user in users %} {% if logged_in != user['username'] %}
   <article class="media content-section">
-    <img class="article-img rounded" src="{{ url_for('static', filename='profile_pics/' + user['image_name']) }}"
-      alt="Profile Pic">
+    <img
+      class="article-img rounded"
+      src="{{ url_for('static', filename='profile_pics/' + user['image_name']) }}"
+      alt="Profile Pic"
+    />
     <div class="media-body">
       <div class="article-metadata border-bottom">
-        <h2><a class="mr-2" href="{{ url_for('profile.view_profile', user_id=user['_id'])}}">{{ user['username'] }}</a></h2>
-        <!-- The like and comment system -->
+        <small class="text-muted">Fame: {{user['fame-rating']}}</small>
+        <small class="text-muted">Location: {{ user['location'][2]}}</small>
         {% if logged_in in user['liked'] %}
         <div>
           {% if user['username'] in current_user['liked'] %}
-        <a href="{{ url_for('chat.chat_room', room=user['rooms'][logged_in]) }}"
-          class='btn btn-outline-info btn-sm m-1'>Chat</a>
+          <a
+            href="{{ url_for('chat.chat_room', room=user['rooms'][logged_in]) }}"
+            class="btn btn-outline-info btn-sm m-1"
+            >Chat</a
+          >
           {% else %}
-          <a href="#" class='pending btn btn-secondary btn-sm m-1 disabled'>Pending</a>
+          <a href="#" class="pending btn btn-secondary btn-sm m-1 disabled"
+            >Pending</a
+          >
           {% endif %}
-          <button type='button' class='unlike btn btn-secondary btn-sm m1' value="{{ user['username'] }}">unlike</button>
+          <button
+            type="button"
+            class="unlike btn btn-secondary btn-sm m1"
+            value="{{ user['username'] }}"
+          >
+            unlike
+          </button>
         </div>
         {% else %}
         <div>
           {% if user['username'] in current_user['liked'] %}
-          <button type='button' value="{{ user['username'] }}" class='flirt-back btn btn-secondary btn-sm m-1'>Like
-            Back</button>
+          <button
+            type="button"
+            value="{{ user['username'] }}"
+            class="like-back btn btn-secondary btn-sm m-1"
+          >
+            Like Back
+          </button>
           {% else%}
-          <button type='button' value='{{ user["username"] }}' class='flirt btn btn-secondary btn-sm m-1'>Like</button>
+          <button
+            type="button"
+            value='{{ user["username"] }}'
+            class="like btn btn-secondary btn-sm m-1"
+          >
+            Like
+          </button>
           {% endif %}
         </div>
         {% endif %}
-        <a href="{{ url_for('main.block_user', b_id=user['_id']) }}" class='btn btn-secondary btn-sm m-1'>Block</a>
+        <a
+          href="{{ url_for('main.block_user', b_id=user['_id']) }}"
+          class="btn btn-secondary btn-sm m-1"
+          >Block</a
+        >
       </div>
-      <h2><a class="article-title" href="#">{{ user['firstname'] }}</a></h2>
-      <small class="text-muted">{{ user['lastname'] }}</small>
-      <p class="article-content">{{ user['sex'] }} {{ user['gender'] }}</p>
+        <h2>
+          <a class="mr-2" href="{{ url_for('profile.view_profile', user_id=user['_id'])}}">{{ user['username'] }}</a>
+        </h2>
+      <small class="text-muted">{{ user['firstname'] }} {{ user['lastname'] }}</small><br />
+      <small class="text-muted">{{ user['sexual_orientation'] }} {{ user['gender'] }} {{ user['age'] }}</small>
     </div>
   </article>
-  {% endif %}
-  {% endfor %}
+  {% endif %} {% endfor %}
 </div>
-{% endblock content %}
-
-{% block js %}
+{% endblock content %} {% block js %}
 <script>
-  socket = io('http://localhost:5000')
-  var_name = $('#username').text();
+  socket = io("http://localhost:5000");
+  var_name = $("#username").text();
 
-  $('.flirt').each(function () {
-    $(this).on('click', function (e) {
-      socket.emit('flirt', {
-        'to': $(this).val()
+  $(".like").each(function () {
+    $(this).on("click", function (e) {
+      socket.emit("like", {
+        to: $(this).val(),
       });
-      $(this).removeClass('flirt');
-      $(this).addClass('disabled');
-      $(this).addClass('pending')
-      $(this).text('pending');
-      $(this).unbind('click', arguments.callee);
+      $(this).removeClass("like");
+      $(this).addClass("disabled");
+      $(this).addClass("pending");
+      $(this).text("pending");
+      $(this).unbind("click", arguments.callee);
     });
   });
 
-  $('.flirt-back').each(function () {
-    $(this).on('click', function (e) {
-      socket.emit('flirt-back', {'to':$(this).val()});
-      $(this).replaceWith("<a href='#' class='btn btn-outline-info btn-sm sm-1 disabled'>Chat</a>");
+  $(".like-back").each(function () {
+    $(this).on("click", function (e) {
+      socket.emit("like-back", { to: $(this).val() });
+      $(this).replaceWith(
+        "<a href='#' class='btn btn-outline-info btn-sm sm-1 disabled'>Chat</a>"
+      );
     });
   });
 
-  // handle the unlike button;
-  $('.unlike').each(function(){
-    $(this).on('click', function(e){
-      // alert('you have unlikd ' + $(this).val());
-      socket.emit('Unlike', {'to':$(this).val()});
+  $(".unlike").each(function () {
+    $(this).on("click", function (e) {
+      socket.emit("Unlike", { to: $(this).val() });
       window.location.reload();
     });
   });
-  // Listening the for events.
-  socket.on('flirt', function (data) {
-    alert(data['from']);
 
-    $('.flirt').each(function () {
-      if ($(this).val() == data['from']) {
+  socket.on("like", function (data) {
+    alert(data["from"]);
+
+    $(".like").each(function () {
+      if ($(this).val() == data["from"]) {
         window.location.reload();
       }
     });
-
   });
 
-  socket.on('matched', function (data) {
-    // alert(data['from']);
-
-    $('.pending').each(function () {
-      if ($(this).val() == data['from']) {
-        $(this).replaceWith("<a href='#' class='btn btn-outline-info btn-sm sm-1 disabled'>Chat</a>");
+  socket.on("matched", function (data) {
+    $(".pending").each(function () {
+      if ($(this).val() == data["from"]) {
+        $(this).replaceWith(
+          "<a href='#' class='btn btn-outline-info btn-sm sm-1 disabled'>Chat</a>"
+        );
       }
     });
   });
 
-
-// Section for other notifications.
-
-  socket.on('Unlike', function(data){
-    // alert('some unliked you');
-    $('.flirt-back').each(function(){
-      if ($(this).val() == data['from']){
-        window.location.reload()
+  socket.on("Unlike", function (data) {
+    $(".like-back").each(function () {
+      if ($(this).val() == data["from"]) {
+        window.location.reload();
       }
     });
   });
 
-
-socket.on('notif_chat', function(data){
-    // alert(data['from'] + ' sent you a message')
-    $('notification').append('<p>' + data['from'] + ' sent you a message</p>');
-    $('#badge').text('new');
+  socket.on("notif_chat", function (data) {
+    $("notification").append("<p>" + data["from"] + " sent you a message</p>");
+    $("#badge").text("new");
   });
 
-  socket.on('notif_view', function(data){
-    // alert(data['from'] + ' has viewed your profile');
-    $('#notification').append('<p>' + data['from'] + ' viewed your profile</p>');
-    $('#badge').text('new');
+  socket.on("notif_view", function (data) {
+    $("#notification").append(
+      "<p>" + data["from"] + " viewed your profile</p>"
+    );
+    $("#badge").text("new");
   });
 
-  $('#inbox').on('click', function () {
-    socket.emit('read', { "user": $('#username').text() });
-    $('#badge').text('');
+  $("#inbox").on("click", function () {
+    socket.emit("read", { user: $("#username").text() });
+    $("#badge").text("");
   });
-
 </script>
 {% endblock js %}

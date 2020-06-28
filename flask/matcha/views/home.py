@@ -7,7 +7,6 @@ import html
 
 main = Blueprint("main", __name__)
 
-
 # Create the route for the home page
 @main.route("/")
 @login_required
@@ -23,8 +22,6 @@ def home():
 @login_required
 @finish_profile
 def users():
-    # valid_users = []
-    # users = db.users({'_id' : { '$nin' : blocked }, {'completed' : 1})
     current_user = db.get_user({"username": session.get("username")})
     blocked = current_user["blocked"]
     opp_gen = "Male" if current_user["gender"] == "Female" else "Female"
@@ -83,7 +80,6 @@ def users():
         )
 
     global valid_users
-    current_user = db.get_user({"username": session.get("username")})
     # for user in users:
     #     if user['username'] != current_user['username']:
     #         if similarity_perc(current_user['interests'], user['interests']) > 49.0:
@@ -105,42 +101,36 @@ def users():
         search=True,
     )
 
-
-# @main.route('/users_not_blocked')
+# @main.route("/users/advance_search/search", methods=["POST"])
 # @login_required
 # @finish_profile
-# def users_not_blocked():
+# def search_age():
+#     global valid_users
+#     if request.method == "POST":
+#         print("Debug: ", request.form)
+#         return render_template(
+#             "user/users.html"
+#         )
 
-#     current_user = db.get_user({'username' : session.get('username')})
-#     blocked = current_user["blocked"]
-#     opp_gen = "Male" if current_user["gender"] == "Female" else "Female"
-#     gen = current_user["gender"]
+#     return redirect(url_for("main.users"))
 
-#     if current_user["sexual_orientation"] == "heterosexual":
-#         users = list(db.users( {'_id' : { '$nin' : blocked }, 'gender' : opp_gen, 'sexual_orientation' : { '$nin' : ["homosexual"]} } ))
-#     elif current_user["sexual_orientation"] == "homosexual":
-#         users = list(db.users( {'_id' : { '$nin' : blocked }, 'gender' : gen, 'sexual_orientation' : { '$nin' : ["heterosexual"]} } ))
-#     else:
-#         users = list(db.users({ '$and' : [ {'_id' : { '$nin' : blocked }}, {'$or': [ { 'sexual_orientation' : "bisexual" }, {'$or': [ { '$and': [ { 'sexual_orientation' : 'homosexual' } , { 'gender' : gen } ] } , { '$and': [ { 'sexual_orientation' : 'heterosexual' }, { 'gender' : opp_gen } ] } ] }]}]}) )
-
-#     return render_template('user/users_not_blocked.html', logged_in=session.get('username'), users=users, current_user=current_user)
-
-
-@main.route("/users/username/search", methods=["GET", "POST"])
+@main.route("/users/search_age/search", methods=["GET", "POST"])
 @login_required
 @finish_profile
-def search_username():
+def search_age():
     global valid_users
     if request.method == "POST":
-        username = request.form.get("username")
-        print(username)
+        age = request.form.get("age")
+
+        if not age.isnumeric():
+            flash("invalid input for age search", "danger")
+            return redirect(url_for("main.users"))
         current_user = db.get_user({"username": session.get("username")})
         blocked = current_user["blocked"]
-        valid_users = list(
-            db.users({"_id": {"$nin": blocked}, "completed": 1, "username": username})
-        )
+        users = db.users({"_id": {"$nin": blocked}, "gender": {"$ne": current_user['gender']}, "completed": 1})
+        age = int((age.replace(" ", "")).split(",")[0])
+        valid_users = filter_age(users, age)
 
-        # Add the filters stuff.
         return render_template(
             "user/users.html",
             logged_in=session.get("username"),
@@ -159,11 +149,29 @@ def search_interest():
     global valid_users
 
     if request.method == "POST":
-        interest = request.form.get("interest")
-        interest = (interest.replace(" ", "")).split(",")
+        interest = []
+        if request.form.get("Traveling"):
+            interest.append(request.form.get("Traveling"))
+        if request.form.get("Animals"):
+            interest.append(request.form.get("Animals"))
+        if request.form.get("Technology"):
+            interest.append(request.form.get("Technology"))
+        if request.form.get("Sky-diving"):
+            interest.append(request.form.get("Sky-diving"))
+        if request.form.get("Movies"):
+            interest.append(request.form.get("Movies"))
+        if request.form.get("Music"):
+            interest.append(request.form.get("Music"))
+        if request.form.get("Cooking"):
+            interest.append(request.form.get("Cooking"))
+        if request.form.get("Sports"):
+            interest.append(request.form.get("Sports"))
+        if request.form.get("Gaming"):
+            interest.append(request.form.get("Gaming"))
+
         current_user = db.get_user({"username": session.get("username")})
         blocked = current_user["blocked"]
-        users = db.users({"_id": {"$nin": blocked}, "completed": 1})
+        users = db.users({"_id": {"$nin": blocked}, "gender": {"$ne": current_user['gender']}, "completed": 1})
         valid_users = filter_interest(users, interest)
 
         # Add the filters stuff.
@@ -191,36 +199,6 @@ def search_location():
         blocked = current_user["blocked"]
         users = db.users({"_id": {"$nin": blocked}, "completed": 1})
         valid_users = filter_location(users, location[0])
-
-        # Add the filters stuff.
-        return render_template(
-            "user/users.html",
-            logged_in=session.get("username"),
-            users=valid_users,
-            current_user=current_user,
-            search=True,
-        )
-
-    return redirect(url_for("main.users"))
-
-
-@main.route("/users/age/search", methods=["GET", "POST"])
-@login_required
-@finish_profile
-def search_age():
-    global valid_users
-    if request.method == "POST":
-        age = request.form.get("age")
-
-        if not age.isnumeric():
-            flash("invalid input for age search", "danger")
-            return redirect(url_for("main.users"))
-        current_user = db.get_user({"username": session.get("username")})
-        blocked = current_user["blocked"]
-        users = db.users({"_id": {"$nin": blocked}, "completed": 1})
-        age = int((age.replace(" ", "")).split(",")[0])
-        print(age)
-        valid_users = filter_age(users, age)
 
         # Add the filters stuff.
         return render_template(

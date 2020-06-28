@@ -2,7 +2,6 @@ from flask import Blueprint, render_template, session, redirect, flash, request,
 from functools import wraps
 import os, secrets, re, html, pymongo, bcrypt
 
-# from werkzeug import secure_filename
 from PIL import Image
 from matcha import db, app, logged_in_users
 from matcha.utils import *
@@ -23,19 +22,9 @@ def profile():
     location = []
     blocked = user["blocked"]
     users = db.users({"_id": {"$nin": blocked}, "completed": 1})
-    # if user["completed"] == 1:
-    #     valid_users = [
-    #         check_user
-    #         for check_user in users
-    #         if check_user["completed"] == 1 and get_howfar(user, check_user) < 20
-    #     ]
-    # else:
-    #     valid_users = []
 
-    # update user details
     if request.method == "POST":
         if request.form.get("submit") == "update":
-            print(f"Debug {request.form}")
             username = html.escape(request.form.get("username"))
             email = html.escape(request.form.get("email"))
             firstname = html.escape(request.form.get("firstname"))
@@ -90,20 +79,15 @@ def profile():
             for error in errors:
                 flash(error, "danger")
 
-        # update user password
         if request.form.get("submitPwd") == "update":
-            # print(f"Debug {request.form}")
             password = html.escape(request.form.get("current_password"))
             new_password = html.escape(request.form.get("new_password"))
             check_new_password = html.escape(request.form.get("new_password_repeat"))
-            # print("Debug2 ", password, new_password, check_new_password)
             if not bcrypt.checkpw(password.encode("utf-8"), user["password"]):
                 errors.append("Incorrect password")
             elif new_password:
-                # fixme
-                # if not re.match(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,25}$", new_password):
-                #     print("Password error")
-                #     errors.append('The password must have an uppercase, lowercase and a digit')
+                if not re.match(r'^.*(?=.{8,10})(?=.*[a-zA-Z])(?=.*?[A-Z])(?=.*\d)[a-zA-Z0-9!@£$%^&*()_+={}?:~\[\]]+$', new_password):
+                    errors.append('The password must have an uppercase, lowercase and a digit')
                 if check_new_password != new_password:
                     errors.append("The two passwords do not match")
                 else:
@@ -112,14 +96,12 @@ def profile():
                     db.update_user(user["_id"], user)
 
             if not errors:
-                print("Updating password")
                 db.update_user(user["_id"], user)
                 flash("Password updated", "success")
             else:
                 for error in errors:
                     flash(error, "danger")
 
-        # update profile
         if request.form.get("submit") == "bioupdate":
             gender = request.form.get("gender")
             sexuality = request.form.get("sexo")
@@ -148,17 +130,7 @@ def profile():
                 user["interests"] = interests
                 user["completed"] = 1
                 location = request.form.get("location")
-                print(f"Location: {location}")
-                # latlon1 = request.form.get('latlon')
                 location = location.split(",")
-                # location_send = request.form.get('autocomplete')
-
-                # if location_send:
-                #     user['location'] = location_send.split(",")
-                #     print ('location',user['location'])
-                #     user['latlon'] = latlon1.split(",")
-                #     print('user latlon',user['latlon'])
-                # else:
                 lat = location.pop(3)
                 lon = location.pop(3)
                 user["location"] = location
@@ -171,7 +143,6 @@ def profile():
                 flash(error, "danger")
 
         if request.form.get("submit") == "Upload":
-            # print(valid_users)
             image_count = len(user["gallery"])
             if image_count < 4:
                 image = request.files.get("image3")
@@ -184,6 +155,8 @@ def profile():
             else:
                 flash("You can only have 4 pictures in your gallery", "danger")
 
+    bio = html.unescape(user['bio'])
+    user['bio'] = bio
     viewers = []
     for id in user["views"]:
         viewers.append(db.get_user({"_id": ObjectId(id)}))
@@ -207,6 +180,7 @@ def profile():
         "user/profile.html",
         logged_in=session.get('username'),
         current_user=user,
+        online_users=online_users,
         viewers=viewers,
         likes=likes,
         matched=matched,
@@ -224,10 +198,13 @@ def view_profile(user_id):
     user = db.get_user({"_id": id})
     user["fame-rating"] = int((user["fame-rating"] / 10) - 1)
     online_users = list(logged_in_users.keys())
+    bio = html.unescape(user['bio'])
+    user['bio'] = bio
     return render_template(
         "user/view_profile.html",
         logged_in=session.get('username'),
         user=user,
+        online_users=online_users,
         current_user=current_user
     )
 
