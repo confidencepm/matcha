@@ -116,9 +116,9 @@ def unlike(data):
         unlikes["_id"], {"liked": unlikes["liked"], "matched": unlikes["matched"]}
     )
 
-    sid = logged_in_users[data["to"]]
-    if sid:
-        socket.emit("Unlike", {"from": session.get("username")}, room=sid)
+    # sid = logged_in_users[data["to"]]
+    # if sid:
+    #     socket.emit("Unlike", {"from": session.get("username")}, room=sid)
 
     unlikes["notifications"].append(session.get("username") + " has unliked you.")
     db.update_likes(unlikes["_id"], {"notifications": unlikes["notifications"]})
