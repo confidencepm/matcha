@@ -196,7 +196,6 @@ def view_profile(user_id):
     current_user = db.get_user({"username": session.get("username")})
 
     user = db.get_user({"_id": id})
-    user["fame-rating"] = int((user["fame-rating"] / 10) - 1)
     online_users = list(logged_in_users.keys())
     bio = html.unescape(user['bio'])
     user['bio'] = bio
