@@ -3,11 +3,13 @@ from bson.objectid import ObjectId
 import urllib
 
 
+conn_string = ''
+
 class DB:
 
     def __init__(self):
-        # client = MongoClient("mongodb+srv://pmalope:martian143281@matcha-2ordl.mongodb.net/test?retryWrites=true&w=majority",connect=False,)
-        client = MongoClient("mongodb://localhost:27017", connect=False, )
+        #client = MongoClient("mongodb+srv://pmalope:martian143281@matcha-2ordl.mongodb.net/test?retryWrites=true&w=majority",connect=False,)
+        client = MongoClient('mongodb://localhost:27017/', connect=False, )
         db = client['Matcha']
         self.__users = db['users']
         self.__chats = db['chats']

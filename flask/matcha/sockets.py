@@ -3,6 +3,7 @@ from flask import session, request
 from flask_socketio import join_room, leave_room
 import secrets
 from bson.objectid import ObjectId
+from matcha.utils import calculate_fame
 
 
 @socket.on("connect")
@@ -25,7 +26,7 @@ def like(data):
     liked = db.get_user(
         {"username": data["to"]}, {"username": 1, "liked": 1, "notifications": 1}
     )
-
+    calculate_fame(liked)
     liker["likes"].append(liked["username"])
     liked["liked"].append(liker["username"])
 
@@ -34,7 +35,8 @@ def like(data):
 
     db.update_likes(liker["_id"], {"likes": liker["likes"]})
     db.update_likes(liked["_id"], {"liked": liked["liked"]})
-
+    
+    
     sid = logged_in_users.get(data["to"])
     if sid:
         socket.emit("flirt", {"from": session.get("username")}, room=sid)
