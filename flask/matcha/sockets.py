@@ -24,7 +24,7 @@ def like(data):
         {"username": session.get("username")}, {"username": 1, "likes": 1}
     )
     liked = db.get_user(
-        {"username": data["to"]}, {"username": 1, "liked": 1, "notifications": 1}
+        {"username": data["to"]}, {"username": 1, "likes": 1, "liked": 1, "notifications": 1}
     )
 
     liker["likes"].append(liked["username"])
@@ -33,9 +33,9 @@ def like(data):
     db.update_likes(liker["_id"], {"likes": liker["likes"]})
     db.update_likes(liked["_id"], {"liked": liked["liked"]})
     calculate_fame(liked)
-    sid = logged_in_users.get(data["to"])
-    if sid:
-        socket.emit("flirt", {"from": session.get("username")}, room=sid)
+    # sid = logged_in_users.get(data["to"])
+    # if sid:
+    #     socket.emit("flirt", {"from": session.get("username")}, room=sid)
 
     liked["notifications"].append(session.get("username") + " liked you")
     db.update_likes(liked["_id"], {"notifications": liked["notifications"]})
