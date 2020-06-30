@@ -2,7 +2,6 @@ from matcha import db, logged_in_users, valid_users
 from flask import Blueprint, render_template, session, redirect, flash, request, url_for
 from bson.objectid import ObjectId
 from functools import wraps, cmp_to_key
-import secrets, re, bcrypt, html
 from matcha.utils import similarity_perc, get_howfar, \
 filter_age, filter_interest, filter_location, login_required, \
 finish_profile, filter_fame
@@ -250,7 +249,8 @@ def search_location():
 def search_username():
     global valid_users
     if request.method == "POST":
-        username = html.escape(request.form.get('username'))
+        username = request.form.get('username')
+        print(username)
         current_user = db.get_user({'username' : session.get('username')})
         blocked = current_user["blocked"]
         valid_users = list(db.users({'_id' : { '$nin' : blocked }, 'completed' : 1, 'username': username}))
@@ -299,7 +299,8 @@ def sort_fame(value):
     global valid_users
     current_user = db.get_user({"username": session.get("username")})
 
-    if value == "Sort":
+    if value == "Sort_d":
+        print("calling the sort_d statemnt")
         sorted_users = valid_users[:]
         for i in range(len(sorted_users)):
             for k in range(len(sorted_users)):
@@ -311,6 +312,23 @@ def sort_fame(value):
             "user/users.html",
             logged_in=session.get("username"),
             users=sorted_users,
+            current_user=current_user,
+            search=True,
+        )
+    if value == "Sort_a":
+        print("calling the sort_a statemnt")
+        sorted_users = valid_users[:]
+        for i in range(len(sorted_users)):
+            for k in range(len(sorted_users)):
+                if sorted_users[i]["fame-rating"] < sorted_users[k]["fame-rating"]:
+                    sorted_users[i], sorted_users[k] = sorted_users[k], sorted_users[i]
+        [print(user["username"], user["fame-rating"]) for user in sorted_users]
+
+        a_sorted_users =  sorted_users
+        return render_template(
+            "user/users.html",
+            logged_in=session.get("username"),
+            users=a_sorted_users,
             current_user=current_user,
             search=True,
         )
@@ -331,6 +349,8 @@ def sort_fame(value):
         )
 
     return redirect(url_for("main.users"))
+
+
 
 
 @main.route("/users/sort/likes", methods=["GET", "POST"])

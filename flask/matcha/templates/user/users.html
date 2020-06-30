@@ -12,15 +12,16 @@
       Fame
     </button>
     <div class="dropdown-menu">
+    
       <a
         class="dropdown-item"
-        href="{{ url_for('main.sort_fame', value='Filter') }}"
-        >filter</a
+        href="{{ url_for('main.sort_fame', value='Sort_d') }}"
+        >sort by descending</a
       >
       <a
         class="dropdown-item"
-        href="{{ url_for('main.sort_fame', value='Sort') }}"
-        >sort</a
+        href="{{ url_for('main.sort_fame', value='Sort_a') }}"
+        >sort by ascending</a
       >
     </div>
   </div>
@@ -110,7 +111,10 @@
     />
     <div class="media-body">
       <div class="article-metadata border-bottom">
-        <small class="text-muted">Fame: {{user['fame-rating']}}% Age: {{ user['age'] }} Location: {{ user['location'][2]}}</small>
+        <small class="text-muted"
+          >Fame: {{user['fame-rating']}}% Age: {{ user['age'] }} Location: {{
+          user['location'][2]}}</small
+        >
         {% if logged_in in user['liked'] %}
         <div>
           {% if user['username'] in current_user['liked'] %}
@@ -159,11 +163,20 @@
           >Block</a
         >
       </div>
-          <small class="text-muted">Gender: {{ user['gender'] }} Sexual orientation: {{ user['sexual_orientation'] }}</small>
-        <h2>
-          <a class="mr-2" href="{{ url_for('profile.view_profile', user_id=user['_id'])}}">{{ user['username'] }}</a>
-        </h2>
-      <small class="text-muted">{{ user['firstname'] }} {{ user['lastname'] }}</small><br />
+      <small class="text-muted"
+        >Gender: {{ user['gender'] }} Sexual orientation: {{
+        user['sexual_orientation'] }}</small
+      >
+      <h2>
+        <a
+          class="mr-2"
+          href="{{ url_for('profile.view_profile', user_id=user['_id'])}}"
+          >{{ user['username'] }}</a
+        >
+      </h2>
+      <small class="text-muted"
+        >{{ user['firstname'] }} {{ user['lastname'] }}</small
+      ><br />
     </div>
   </article>
   {% endif %} {% endfor %}
