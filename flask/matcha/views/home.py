@@ -92,6 +92,7 @@ def users():
         and similarity_perc(current_user["interests"], user["interests"]) >= 0
         and user["completed"] == 1
         and user['location'][2] == current_user['location'][2]
+        and user['fame-rating'] >= 50
     ]
 
     return render_template(

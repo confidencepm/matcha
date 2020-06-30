@@ -16,10 +16,10 @@ socket = SocketIO(app, Threaded=True, cors_allowed_origins='*', SameSite=None)
 
 db = DB()
 
-from matcha.seed import *
+from matcha import seed
 
 if not db.get_user({'_id': ObjectId(b'bobisadmin!!')}, {'username': 1}):
-	seed_users()
+	seed.seed_users()
 
 valid_users = []
 
