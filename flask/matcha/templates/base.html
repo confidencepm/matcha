@@ -77,6 +77,14 @@
                     <h3>Search</h3>
                         <ul class="list-group">
                             <li class="list-group-item list-group-item-light">
+                                Username
+                                <form action="{{ url_for('main.search_username') }}" method='POST'>
+                                    <input class="form-control" type="text" name='username' placeholder="username">
+                                    <br />
+                                    <input type="submit" name='submit' value='search' class='btn btn-sm btn-outline-info'>
+                                </form>
+                            </li>
+                            <li class="list-group-item list-group-item-light">
                                 Age
                                 <form action="{{ url_for('main.search_age') }}" method='POST'>
                                     <select class="form-control" name="age" id="age">
@@ -125,7 +133,7 @@
                                 </form>
                             </li>
                             <li class="list-group-item list-group-item-light">
-                                interests
+                                Interests
                                 <form action="{{ url_for('main.search_interest') }}" method='POST'>
                                     <div class="form-group" id="test">
                                         <input type="checkbox" id="traveling" name="Traveling" value="Traveling">#Traveling<br>
@@ -141,11 +149,11 @@
                                     <input type="submit" name='submit' value='search' class='btn btn-sm btn-outline-info'>
                                 </form>
                             </li>
-                            <li class="list-group-item list-group-item-light">
+                            <!-- <li class="list-group-item list-group-item-light">
                                 Advance Search
                                 <br />
                                 <input type="submit" name="submit" value="search" id="advance_search" onclick="advance_search()" class='btn btn-sm btn-outline-info'>
-                            </li>
+                            </li> -->
                         </ul>
                         <br />
                     </p>

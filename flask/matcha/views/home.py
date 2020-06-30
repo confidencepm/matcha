@@ -242,6 +242,29 @@ def search_location():
 
     return redirect(url_for("main.users"))
 
+
+@main.route("/users/username/search", methods=["GET", "POST"])
+@login_required
+@finish_profile
+def search_username():
+    global valid_users
+    if request.method == "POST":
+        username = request.form.get('username')
+        print(username)
+        current_user = db.get_user({'username' : session.get('username')})
+        blocked = current_user["blocked"]
+        valid_users = list(db.users({'_id' : { '$nin' : blocked }, 'completed' : 1, 'username': username}))
+
+        return render_template(
+            "user/users.html",
+            logged_in=session.get("username"),
+            users=valid_users,
+            current_user=current_user,
+            search=True,
+        )
+
+    return redirect(url_for("main.users"))
+
 @main.route("/users/advance_search/search", methods=["GET", "POST"])
 @login_required
 @finish_profile
@@ -323,29 +346,6 @@ def sort_likes():
             if len(sorted_users[i]["flirted"]) > len(sorted_users[k]["flirted"]):
                 sorted_users[i], sorted_users[k] = sorted_users[k], sorted_users[i]
     [print(user["username"], len(user["flirted"])) for user in sorted_users]
-
-    return render_template(
-        "user/users.html",
-        logged_in=session.get("username"),
-        users=sorted_users,
-        current_user=current_user,
-        search=True,
-    )
-
-
-@main.route("/users/sort/liked", methods=["GET", "POST"])
-@login_required
-@finish_profile
-def sort_liked():
-    global valid_users
-
-    sorted_users = valid_users[:]
-    current_user = db.get_user({"username": session.get("username")})
-    for i in range(len(sorted_users)):
-        for k in range(len(sorted_users)):
-            if len(sorted_users[i]["flirts"]) > len(sorted_users[k]["flirts"]):
-                sorted_users[i], sorted_users[k] = sorted_users[k], sorted_users[i]
-    [print(user["username"], len(user["flirts"])) for user in sorted_users]
 
     return render_template(
         "user/users.html",
