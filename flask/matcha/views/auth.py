@@ -149,7 +149,8 @@ def logout():
     user = db.get_user({'username': session.get('username')}, {'last-seen': 1})
 
     user['last-seen'] = datetime.utcnow()
-    db.update_likes(user['_id'], {'last-seen': user['last-seen']})
+    # db.update_likes(user['_id'], {'last-seen': user['last-seen']})
+    db.update_user(user['_id'], {'last-seen': user['last-seen']})
 
     logged_in_users.pop(session.pop("username"), None)
 

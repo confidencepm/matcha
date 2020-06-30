@@ -249,14 +249,7 @@ def search_username():
 # @login_required
 # @finish_profile
 # def advance_search():
-    global valid_users
-    print("Debug ", request.json)
 
-    # Add the filters stuff.
-    return render_template(
-        "user/users.html",
-        search=True,
-    )
 
 
 @main.route("/users/sort/fame/<value>", methods=["GET", "POST"])
