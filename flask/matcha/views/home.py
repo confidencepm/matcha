@@ -434,15 +434,30 @@ def sort_location(value):
     global valid_users
     current_user = db.get_user({"username": session.get("username")})
 
-    if value == "Distance":
-        print("\n location: Distance\n")
+    if value == "Sort_d":
         sorted_users = valid_users[:]
         for i in range(len(sorted_users)):
             for k in range(len(sorted_users)):
-                if sorted_users[i]["fame-rating"] > sorted_users[k]["fame-rating"]:
+                if sorted_users[i]["location"][2] > sorted_users[k]["location"][2]:
                     sorted_users[i], sorted_users[k] = sorted_users[k], sorted_users[i]
-        [print(user["username"], user["fame-rating"]) for user in sorted_users]
+        [print(user["username"], user["location"][2]) for user in sorted_users]
 
+        return render_template(
+            "user/users.html",
+            logged_in=session.get("username"),
+            users=sorted_users,
+            current_user=current_user,
+            search=True,
+        )
+    if value == "Sort_a":
+        sorted_users = valid_users[:]
+        for i in range(len(sorted_users)):
+            for k in range(len(sorted_users)):
+                if sorted_users[i]["location"][2] < sorted_users[k]["location"][2]:
+                    sorted_users[i], sorted_users[k] = sorted_users[k], sorted_users[i]
+        [print(user["username"], user["location"][2]) for user in sorted_users]
+
+        a_sorted_users =  sorted_users
         return render_template(
             "user/users.html",
             logged_in=session.get("username"),
