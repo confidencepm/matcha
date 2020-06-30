@@ -58,7 +58,7 @@
                 <p class='text-muted text-secondary'>Last seen: {{ user['last-seen'].strftime("%H:%M %Y-%m-%d") }}</p>
             {% endif%}
             <h6 class='text-muted text-primary'>Interests:</h6>
-            {% for interest in current_user['interests']%}
+            {% for interest in user['interests']%}
                 <p>{{interest}}</p>
             {%endfor%}
         </div>
