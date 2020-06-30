@@ -157,19 +157,19 @@ def filter_fame(users, fame):
     elif fame == 20:
         valid_users = [user for user in users if user['fame-rating'] >= 10 and user['fame-rating'] < fame]
     elif fame == 30:
-        valid_users = [user for user in users if user['fame-rating'] >= 20 and user['famer-rating'] < fame]
+        valid_users = [user for user in users if user['fame-rating'] >= 20 and user['fame-rating'] < fame]
     elif fame == 40:
-        valid_users = [user for user in users if user['fame-rating'] >= 30 and user['famer-rating'] < fame]
+        valid_users = [user for user in users if user['fame-rating'] >= 30 and user['fame-rating'] < fame]
     elif fame == 50:
-        valid_users = [user for user in users if user['fame-rating'] >= 40 and user['famer-rating'] < fame]
+        valid_users = [user for user in users if user['fame-rating'] >= 40 and user['fame-rating'] < fame]
     elif fame == 60:
-        valid_users = [user for user in users if user['fame-rating'] >= 50 and user['famer-rating'] < fame]
+        valid_users = [user for user in users if user['fame-rating'] >= 50 and user['fame-rating'] < fame]
     elif fame == 70:
-        valid_users = [user for user in users if user['fame-rating'] >= 60 and user['famer-rating'] < fame]
+        valid_users = [user for user in users if user['fame-rating'] >= 60 and user['fame-rating'] < fame]
     elif fame == 80:
-        valid_users = [user for user in users if user['fame-rating'] >= 70 and user['famer-rating'] < fame]
+        valid_users = [user for user in users if user['fame-rating'] >= 70 and user['fame-rating'] < fame]
     elif fame == 90:
-        valid_users = [user for user in users if user['fame-rating'] >= 80 and user['famer-rating'] < fame]
+        valid_users = [user for user in users if user['fame-rating'] >= 80 and user['fame-rating'] < fame]
     elif fame == 100:
-        valid_users = [user for user in users if user['fame-rating'] >= 90 and user['famer-rating'] < fame]
+        valid_users = [user for user in users if user['fame-rating'] >= 90 and user['fame-rating'] < fame]
     return valid_users
