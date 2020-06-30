@@ -2,6 +2,7 @@ from matcha import db, logged_in_users, valid_users
 from flask import Blueprint, render_template, session, redirect, flash, request, url_for
 from bson.objectid import ObjectId
 from functools import wraps, cmp_to_key
+import secrets, re, bcrypt, html
 from matcha.utils import similarity_perc, get_howfar, \
 filter_age, filter_interest, filter_location, login_required, \
 finish_profile, filter_fame
@@ -249,8 +250,7 @@ def search_location():
 def search_username():
     global valid_users
     if request.method == "POST":
-        username = request.form.get('username')
-        print(username)
+        username = html.escape(request.form.get('username'))
         current_user = db.get_user({'username' : session.get('username')})
         blocked = current_user["blocked"]
         valid_users = list(db.users({'_id' : { '$nin' : blocked }, 'completed' : 1, 'username': username}))
