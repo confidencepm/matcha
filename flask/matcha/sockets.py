@@ -195,15 +195,15 @@ def view_user_profile(data):
             sid=logged_in_users[viewed_user["username"]],
         )
 
-    viewed_user["notifications"].append(viewer["username"] + " has viewed you profile")
+    if viewed_user['username'] != viewer['username']:
+        viewed_user["notifications"].append(viewer["username"] + " has viewed you profile")
+        viewed_user["views"].append(data["viewer"])
+        db.update_likes(
+            viewed_user["_id"],
+            {"views": viewed_user["views"], "notifications": viewed_user["notifications"]},
+        )
 
-    viewed_user["views"].append(data["viewer"])
-    db.update_likes(
-        viewed_user["_id"],
-        {"views": viewed_user["views"], "notifications": viewed_user["notifications"]},
-    )
-
-    print(data)
+    print("Debug: views", data)
 
 
 @socket.on("read")
