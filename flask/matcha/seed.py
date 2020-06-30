@@ -22,11 +22,11 @@ def seed_users():
     profile_pics = ['dummy1.png', 'dummy2.png', 'dummy3.png', 'dummy4.png', 'dummy5.png', 'dummy6.png', 'dummy7.png',
                     'dummy8.png', 'dummy9.png', 'dummy10.png']
 
-    for x in range(n):
+    for x in range(n + n):
         username = fake.user_name()
         usernames.append(username)
 
-    print("Debug ", len(usernames))
+    print("Debug usernames ", len(usernames))
     for i in range(n):
         salt = bcrypt.gensalt()
         details = {'username': usernames[i], 'firstname': fake.first_name(), 'lastname': fake.last_name(),
@@ -38,7 +38,7 @@ def seed_users():
                    'notifications': []}
 
         max_interests = fake.random_int(3, 9)
-        max_likes = fake.random_int(10, 80)
+        max_likes = fake.random_int(50, n + n)
         details['interests'] = random.sample(interests, max_interests)
         details['likes'] = random.sample(usernames, max_likes)
         details['fame-rating'] = fake.random_int(0, 80)
