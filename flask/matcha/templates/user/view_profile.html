@@ -128,19 +128,6 @@
             });
         });
 
-        $('.like').each(function () {
-            $(this).on('click', function (e) {
-                socket.emit('like', {
-                    'to': $(this).val()
-                });
-                $(this).removeClass('like');
-                $(this).addClass('disabled');
-                $(this).addClass('pending')
-                $(this).text('pending');
-                $(this).unbind('click', arguments.callee);
-            });
-        });
-
         $('.like-back').each(function () {
             $(this).on('click', function (e) {
                 socket.emit('like-back', { 'to': $(this).val() });
