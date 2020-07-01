@@ -33,7 +33,6 @@ class="rounded-circle account-img">
       class="btn btn-outline-primary btn-sm"
       type="button"
       id="send"
-      onClick="window.location.reload();"
       value="{{ logged_in }}"
     >
       Send
@@ -62,6 +61,7 @@ class="rounded-circle account-img">
       '<p class="alert-info">' + $("#message").val() + "</p>"
     );
     $("#message").val("");
+    location.reload();
   });
 
   socket.on("recieve", function (data) {
