@@ -1,13 +1,24 @@
 {% extends 'base.html' %} {% block content %}
-<small class="text-muted">Conversation between you and </small>
+<img src="{{ url_for('static', filename='profile_pics/' + user2['image_name'])}}" alt="profile"
+class="rounded-circle account-img">
+<small class="text-muted"> {{user2['username']}}</small>
 <p id="room" hidden>{{ room }}</p>
-<div class="content-section messages">
+  <div class="card bg-sohbet border-0 m-0 p-0" style="height: 70vh;">
+    <div id="sohbet" class="card border-0 m-0 p-0 position-relative bg-transparent"
+      style="overflow-y: auto; height: 100vh;">
   {% for chat in history %} {% if chat[0] == logged_in %}
-  <p class="alert-info">{{ chat[1] }}</p>
+  <!-- <p class="alert-info">{{ chat[1]}}</p> -->
+    <div class="balon1 p-2 m-0 position-relative">
+        <a class="float-right"> {{ chat[1] }}</a>
+    </div>
   {% else %}
-  <p class="alert-primary">{{ chat[1]}}</p>
+  <!-- <p class="alert-primary">{{ chat[1]}}</p> -->
+  <div class="balon2 p-2 m-0 position-relative">
+    <a class="float-left"> {{ chat[1] }}</a>
+  </div>
   {% endif %} {% endfor %}
-</div>
+    </div>
+  </div>
 <div class="input-group mb-3">
   <input
     type="text"
@@ -22,6 +33,7 @@
       class="btn btn-outline-primary btn-sm"
       type="button"
       id="send"
+      onClick="window.location.reload();"
       value="{{ logged_in }}"
     >
       Send
