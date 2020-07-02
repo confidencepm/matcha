@@ -57,8 +57,7 @@ def seed_users():
 
         db.register_user(details)
         # calculate_fame(details)
-        print(f"user {i} of {n}")
-    message = str(n) + ' users created'
+    message = 'users created'
     print(message)
 
     r = db.users()

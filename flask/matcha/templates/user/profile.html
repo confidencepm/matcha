@@ -485,5 +485,79 @@
 </script>
 <script>
     socket = io('http://localhost:5000');
+
+      $(".like").each(function () {
+            $(this).on("click", function (e) {
+                socket.emit("like", {
+                    to: $(this).val(),
+                });
+                $(this).removeClass("like");
+                $(this).addClass("disabled");
+                $(this).addClass("pending");
+                $(this).text("pending");
+                $(this).unbind("click", arguments.callee);
+            });
+        });
+
+        $(".like-back").each(function () {
+            $(this).on("click", function (e) {
+                socket.emit("like-back", { to: $(this).val() });
+                $(this).replaceWith(
+                    "<a href='#' class='btn btn-outline-info btn-sm sm-1 disabled'>Chat</a>"
+                );
+            });
+        });
+
+        $(".unlike").each(function () {
+            $(this).on("click", function (e) {
+                socket.emit("Unlike", { to: $(this).val() });
+                window.location.reload();
+            });
+        });
+
+        socket.on("like", function (data) {
+            alert(data["from"]);
+
+            $(".like").each(function () {
+                if ($(this).val() == data["from"]) {
+                    window.location.reload();
+                }
+            });
+        });
+
+        socket.on("matched", function (data) {
+            $(".pending").each(function () {
+                if ($(this).val() == data["from"]) {
+                    $(this).replaceWith(
+                        "<a href='#' class='btn btn-outline-info btn-sm sm-1 disabled'>Chat</a>"
+                    );
+                }
+            });
+        });
+
+        socket.on("Unlike", function (data) {
+            $(".like-back").each(function () {
+                if ($(this).val() == data["from"]) {
+                    window.location.reload();
+                }
+            });
+        });
+
+        socket.on("notif_chat", function (data) {
+            $("notification").append("<p>" + data["from"] + " sent you a message</p>");
+            $("#badge").text("new");
+        });
+
+        socket.on("notif_view", function (data) {
+            $("#notification").append(
+                "<p>" + data["from"] + " viewed your profile</p>"
+            );
+            $("#badge").text("new");
+        });
+
+        $("#inbox").on("click", function () {
+            socket.emit("read", { user: $("#username").text() });
+            $("#badge").text("");
+        });
 </script>
 {% endblock js %}
