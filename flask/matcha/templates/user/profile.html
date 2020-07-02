@@ -56,22 +56,22 @@
                 style="width: 250px; height:150px; margin: 0 auto">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img style="width: 100%; border: solid 2px black; box-shadow: 5px 9px 10px #888888" height="150px"
+                        <img style="width: 100%; border: solid 2px yellowgreen; box-shadow: 5px 9px 10px pink" height="150px"
                             width="250px" src="{{ url_for('static', filename='gallery_pics/' + current_user['gallery'][0])}}"
                             alt="slide">
                     </div>
                     <div class="carousel-item">
-                        <img style="width: 100%; border: solid 2px black; box-shadow: 5px 9px 10px #888888" height="150px"
+                        <img style="width: 100%; border: solid 2px yellowgreen; box-shadow: 5px 9px 10px pink" height="150px"
                             width="250px" src="{{ url_for('static', filename='gallery_pics/' + current_user['gallery'][1])}}"
                             alt="slide">
                     </div>
                     <div class="carousel-item">
-                        <img style="width: 100%; border: solid 2px black; box-shadow: 5px 9px 10px #888888" height="150px"
+                        <img style="width: 100%; border: solid 2px yellowgreen; box-shadow: 5px 9px 10px pink" height="150px"
                             width="250px" src="{{ url_for('static', filename='gallery_pics/' + current_user['gallery'][2])}}"
                             alt="slide">
                     </div>
                     <div class="carousel-item">
-                        <img style="width: 100%; border: solid 2px black; box-shadow: 5px 9px 10px #888888" height="150px"
+                        <img style="width: 100%; border: solid 2px yellowgreen; box-shadow: 5px 9px 10px pink" height="150px"
                             width="250px" src="{{ url_for('static', filename='gallery_pics/' + current_user['gallery'][3])}}"
                             alt="slide">
                     </div>
@@ -89,13 +89,13 @@
         </div>
     </div>
     <div class="btn-group" role="group" aria-label="Basic example" style="width: 100%;">
-        <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#bio" aria-expanded="false" aria-controls="collapse">Profile details</button>
-        <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#user_details" aria-expanded="false" aria-controls="collapse">Account details</button>
-        <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#gallery" aria-expanded="false" aria-controls="collapse">Gallery</button>
-        <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#viewers" aria-expanded="false" aria-controls="collapse">Profile viewers</button>
-        <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#likes" aria-expanded="false" aria-controls="collapse">Profile likes</button>
-        <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#match" aria-expanded="false" aria-controls="collapse">Profile Match</button>
-        <button style="border: 1px solid white;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#blocked" aria-expanded="false" aria-controls="collapse">Blocked Profiles</button>
+        <button style="border: 1px solid darkorchid;" class="btn btn-info" type="button" data-toggle="collapse" data-target="#bio" aria-expanded="false" aria-controls="collapse">Profile details</button>
+        <button style="border: 1px solid darkorchid;" class="btn btn-info" type="button" data-toggle="collapse" data-target="#user_details" aria-expanded="false" aria-controls="collapse">Account details</button>
+        <button style="border: 1px solid darkorchid;" class="btn btn-info" type="button" data-toggle="collapse" data-target="#gallery" aria-expanded="false" aria-controls="collapse">Gallery</button>
+        <button style="border: 1px solid darkorchid;" class="btn btn-info" type="button" data-toggle="collapse" data-target="#viewers" aria-expanded="false" aria-controls="collapse">Profile viewers</button>
+        <button style="border: 1px solid darkorchid;" class="btn btn-info" type="button" data-toggle="collapse" data-target="#likes" aria-expanded="false" aria-controls="collapse">Profile likes</button>
+        <button style="border: 1px solid darkorchid;" class="btn btn-info" type="button" data-toggle="collapse" data-target="#match" aria-expanded="false" aria-controls="collapse">Profile Match</button>
+        <button style="border: 1px solid darkorchid;" class="btn btn-info" type="button" data-toggle="collapse" data-target="#blocked" aria-expanded="false" aria-controls="collapse">Blocked Profiles</button>
     </div>
 </div>
 
@@ -268,7 +268,7 @@
             <hr>
             <input id='location' type='text' value='' name="location" style='display: none'>
             <input id='latlon' type='text' value='' name="latlon" style='display: none;'>
-            <button type="submit" class="btn btn-outline-info btn-md" name='submit' value='bioupdate'>Update</button>
+            <button type="submit" class="btn btn-outline-info" name='submit' value='bioupdate'>Update</button>
         </div>
 
     </form>
