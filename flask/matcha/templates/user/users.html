@@ -74,17 +74,17 @@
           {% if user['username'] in current_user['liked'] %}
           <a
             href="{{ url_for('chat.chat_room', room=user['rooms'][logged_in]) }}"
-            class="btn btn-outline-info btn-sm m-1"
+            class="btn btn btn-outline-info"
             >Chat</a
           >
           {% else %}
-          <a href="#" class="pending btn btn-secondary btn-sm m-1 disabled"
+          <a href="#" class="pending btn btn-outline-info"
             >Pending</a
           >
           {% endif %}
           <button
             type="button"
-            class="unlike btn btn-secondary btn-sm m1"
+            class="unlike btn btn-outline-info"
             value="{{ user['username'] }}"
           >
             unlike
@@ -96,7 +96,7 @@
           <button
             type="button"
             value="{{ user['username'] }}"
-            class="like-back btn btn-secondary btn-sm m-1"
+            class="like-back btn btn-outline-info"
           >
             Like Back
           </button>
@@ -104,7 +104,7 @@
           <button
             type="button"
             value='{{ user["username"] }}'
-            class="like btn btn-secondary btn-sm m-1"
+            class="like btn btn btn-outline-info"
           >
             Like
           </button>
@@ -113,7 +113,7 @@
         {% endif %}
         <a
           href="{{ url_for('main.block_user', b_id=user['_id']) }}"
-          class="btn btn-secondary btn-sm m-1"
+          class="btn btn btn-outline-info"
           >Block</a
         >
       </div>
