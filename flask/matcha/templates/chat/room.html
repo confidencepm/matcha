@@ -1,18 +1,14 @@
 {% extends 'base.html' %} {% block content %}
-<img src="{{ url_for('static', filename='profile_pics/' + user2['image_name'])}}" alt="profile"
-class="rounded-circle account-img">
-<small class="text-muted"> {{user2['username']}}</small>
 <p id="room" hidden>{{ room }}</p>
   <div class="card bg-sohbet border-0 m-0 p-0" style="height: 70vh;">
     <div id="sohbet" class="card border-0 m-0 p-0 position-relative bg-transparent"
       style="overflow-y: auto; height: 100vh;">
   {% for chat in history %} {% if chat[0] == logged_in %}
-  <!-- <p class="alert-info">{{ chat[1]}}</p> -->
     <div class="balon1 p-2 m-0 position-relative">
-        <a class="float-right"> {{ chat[1] }}</a>
+        <a class="float-right"> {{ chat[1] }}
+        </a>
     </div>
   {% else %}
-  <!-- <p class="alert-primary">{{ chat[1]}}</p> -->
   <div class="balon2 p-2 m-0 position-relative">
     <a class="float-left"> {{ chat[1] }}</a>
   </div>
@@ -69,5 +65,22 @@ class="rounded-circle account-img">
       '<p class="alert-primary">' + data["message"] + "</p>"
     );
   });
+
+  socket.on("notif_chat", function (data) {
+      $("notification").append("<p>" + data["from"] + " sent you a message</p>");
+      $("#badge").text("new");
+    });
+
+    socket.on("notif_view", function (data) {
+      $("#notification").append(
+        "<p>" + data["from"] + " viewed your profile</p>"
+      );
+      $("#badge").text("new");
+    });
+
+    $("#inbox").on("click", function () {
+      socket.emit("read", { user: $("#username").text() });
+      $("#badge").text("");
+    });
 </script>
 {% endblock js %}

@@ -37,6 +37,9 @@ def finish_profile(f):
         if user['completed'] == 0:
             flash("Please finish your profile first", 'info')
             return redirect( url_for('profile.profile', next=request.url))
+        if len(user['gallery']) != 4:
+            flash("Please add more images", 'info')
+            return redirect( url_for('profile.profile', next=request.url))
         return f(*args, **kwargs)
     return wrapper
 

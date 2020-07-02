@@ -19,6 +19,7 @@ def chat():
 def chat_room(room):
     history = db.get_chat(room)
     chats = []
+    username = ""
     
     if not history:
         db.create_history(room)
@@ -29,11 +30,11 @@ def chat_room(room):
             data = list([key, value])
             if key != session.get('username'):
                 print("Pass", key)
-                username = key
+                # username = key
             chats.append(data)
-        user1 = db.get_user({'username': session.get('username')})
-        user2 = db.get_user({'username': username})
-    print("user1: ", user1['username'])
-    print("user2: ", user2['username'])
+        # user1 = db.get_user({'username': session.get('username')})
+        # user2 = db.get_user({'username': username})
+    # print("user1: ", user1['username'])
+    print("Debug: ", chats)
 
-    return render_template('chat/room.html', logged_in=session.get('username'), history=chats, room=room, user1=user1, user2=user2)
+    return render_template('chat/room.html', logged_in=session.get('username'), history=chats, room=room)
