@@ -3,7 +3,7 @@ from matcha import db, logged_in_users
 from bson import ObjectId
 from functools import wraps
 import secrets, re, bcrypt, html
-from matcha.utils import calculate_fame
+from matcha.utils import calculate_popularity
 from faker import Faker
 import random
 from datetime import datetime
@@ -22,7 +22,7 @@ def seed_users():
     profile_pics = ['dummy1.png', 'dummy2.png', 'dummy3.png', 'dummy4.png', 'dummy5.png', 'dummy6.png', 'dummy7.png',
                     'dummy8.png', 'dummy9.png', 'dummy10.png']
 
-    for x in range(n + n):
+    for x in range(n):
         username = fake.user_name()
         usernames.append(username)
 
@@ -38,10 +38,10 @@ def seed_users():
                    'notifications': []}
 
         max_interests = fake.random_int(3, 9)
-        max_likes = fake.random_int(50, n + n)
+        max_likes = fake.random_int(50, n)
         details['interests'] = random.sample(interests, max_interests)
-        details['likes'] = random.sample(usernames, max_likes)
-        details['fame-rating'] = fake.random_int(0, 80)
+        details['likes'] = random.sample(usernames, 1)
+        details['fame-rating'] = fake.random_int(0, max_likes)
         details['location'].append(''.join([str(fake.random_int(1, 500)), ' ', fake.word(), ' street']))
         details['location'].append(''.join([fake.word(), 'cliff']))
         details['location'].append(random.choice(city))
@@ -56,13 +56,13 @@ def seed_users():
             index += 1
 
         db.register_user(details)
-        # calculate_fame(details)
+        
     message = 'users created'
     print(message)
 
     r = db.users()
     for user in r:
-        calculate_fame(user)
+        calculate_popularity(user)
 
     if not db.get_user({'username': "admin"}, {'username': 1}):
         salt = bcrypt.gensalt()

@@ -1,12 +1,12 @@
 from flask import Blueprint, render_template, session, redirect, flash, request, url_for
-from matcha.utils import login_required, finish_profile
+from matcha.utils import login_required, complete_user_profile
 from matcha import db
 
 chatting = Blueprint('chat', __name__)
 
 @chatting.route('/chat')
 @login_required
-@finish_profile
+@complete_user_profile
 def chat():
     users = db.users()
     current_user = db.get_user({'username': session.get('username')}, {'matched': 1})
@@ -15,7 +15,7 @@ def chat():
 
 @chatting.route('/room/<room>')
 @login_required
-@finish_profile
+@complete_user_profile
 def chat_room(room):
     history = db.get_chat(room)
     chats = []
