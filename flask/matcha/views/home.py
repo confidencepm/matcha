@@ -245,12 +245,6 @@ def search_username():
 
     return redirect(url_for("main.users"))
 
-# @main.route("/users/advance_search/search", methods=["GET", "POST"])
-# @login_required
-# @finish_profile
-# def advance_search():
-
-
 
 @main.route("/users/sort/fame/<value>", methods=["GET", "POST"])
 @login_required
@@ -343,106 +337,6 @@ def sort_age(value):
     return redirect(url_for("main.users"))
 
 
-@main.route("/users/sort/location/<value>", methods=["GET", "POST"])
-@login_required
-@finish_profile
-def sort_location(value):
-    global valid_users
-    current_user = db.get_user({"username": session.get("username")})
-
-    if value == "Sort_d":
-        sorted_users = valid_users[:]
-        for i in range(len(sorted_users)):
-            for k in range(len(sorted_users)):
-                if sorted_users[i]["location"][2] > sorted_users[k]["location"][2]:
-                    sorted_users[i], sorted_users[k] = sorted_users[k], sorted_users[i]
-        [print(user["username"], user["location"][2]) for user in sorted_users]
-
-        return render_template(
-            "user/users.html",
-            logged_in=session.get("username"),
-            users=sorted_users,
-            current_user=current_user,
-            search=True,
-        )
-    if value == "Sort_a":
-        sorted_users = valid_users[:]
-        for i in range(len(sorted_users)):
-            for k in range(len(sorted_users)):
-                if sorted_users[i]["location"][2] < sorted_users[k]["location"][2]:
-                    sorted_users[i], sorted_users[k] = sorted_users[k], sorted_users[i]
-        [print(user["username"], user["location"][2]) for user in sorted_users]
-
-        a_sorted_users = sorted_users
-        return render_template(
-            "user/users.html",
-            logged_in=session.get("username"),
-            users=a_sorted_users,
-            current_user=current_user,
-            search=True,
-        )
-
-    return redirect(url_for("main.users"))
-
-
-@main.route("/users/sort/interest/<value>", methods=["GET", "POST"])
-@login_required
-@finish_profile
-def sort_interests(value):
-    global valid_users
-    current_user = db.get_user({"username": session.get("username")})
-
-    if value == "Sort_d":
-        sorted_users = valid_users[:]
-        for i in range(len(sorted_users)):
-            for k in range(len(sorted_users)):
-                if (
-                    similarity_perc(
-                        current_user["interests"], sorted_users[i]["interests"]
-                    )
-                ) <= (
-                    similarity_perc(
-                        current_user["interests"], sorted_users[k]["interests"]
-                    )
-                ):
-                    sorted_users[i], sorted_users[k] = sorted_users[k], sorted_users[i]
-        [print(user["username"], user["fame-rating"]) for user in sorted_users]
-
-        return render_template(
-            "user/users.html",
-            logged_in=session.get("username"),
-            users=sorted_users,
-            current_user=current_user,
-            search=True,
-        )
-    if value == "Sort_a":
-        sorted_users = valid_users[:]
-        for i in range(len(sorted_users)):
-            for k in range(len(sorted_users)):
-                if (
-                    similarity_perc(
-                        current_user["interests"], sorted_users[i]["interests"]
-                    )
-                ) >= (
-                    similarity_perc(
-                        current_user["interests"], sorted_users[k]["interests"]
-                    )
-                ):
-                    sorted_users[i], sorted_users[k] = sorted_users[k], sorted_users[i]
-        [print(user["username"], user["fame-rating"]) for user in sorted_users]
-
-        a_sorted_users = sorted_users
-        return render_template(
-            "user/users.html",
-            logged_in=session.get("username"),
-            users=a_sorted_users,
-            current_user=current_user,
-            search=True,
-        )
-
-    return redirect(url_for("main.users"))
-
-
 @main.route("/user/<b_id>/block", methods=["GET", "POST"])
 @login_required
 @finish_profile
@@ -460,16 +354,11 @@ def block_user(b_id):
 @login_required
 @finish_profile
 def block_for_all(b_id):
-    # bob_id = ObjectId(b'bobisadmin!!')
-    # print(bob_id)
-    # users = db.users({'_id' : { '$ne' : bob_id}})
     users = db.users()
     ob_id = ObjectId(b_id)
     for user in users:
-        # print (user['username'])
         if not ob_id in user["blocked"]:
             user["blocked"].append(ob_id)
-            # print (user['blocked'])
             db.update_user(user["_id"], user)
 
     return redirect(url_for("main.blocked"))

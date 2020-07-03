@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, session, redirect, flash, request, url_for
 from functools import wraps
 import os, secrets, re, html, pymongo, bcrypt
-
 from PIL import Image
 from matcha import db, app, logged_in_users
 from matcha.utils import save_picture, save_gallery, login_required, finish_profile
@@ -173,7 +172,6 @@ def profile():
     blocked = []
     for user_id in user['blocked']:
         blocked.append(db.get_user({"_id": user_id}))
-
 
     online_users = list(logged_in_users.keys())
     return render_template(
