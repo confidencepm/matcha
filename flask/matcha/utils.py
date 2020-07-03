@@ -96,7 +96,7 @@ def send_mail(reciever, subject='email confirmation', text=None, html=None):
     port = 465
     password = 'C108629d'
 
-    sender_email = "emanana@student.wethinkcode.co.za"
+    sender_email = "cmukwind@student.wethinkcode.co.za"
     receiver_email = user['email']
     message = MIMEMultipart("alternative")
     message["Subject"] = subject

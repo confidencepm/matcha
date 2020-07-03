@@ -11,7 +11,7 @@ from datetime import datetime
 
 def seed_users():
     print("Creating fake users please wait...")
-    n = 250  # number of users you want to create
+    n = 250
     fake = Faker()
     usernames = []
     gender = ['Male', 'Female']
