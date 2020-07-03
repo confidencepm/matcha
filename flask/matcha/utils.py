@@ -11,15 +11,26 @@ from geopy.geocoders import *
 from geopy.distance import *
 
 def get_user_location(current_user):
+    """ Get the latitude and longitude of a user
+
+    ARGS:
+    current_user : dictionary. a list containing information that pertains the user
+
+    returns:
+    Location of a user(you can also explain)
+    """
     user_location = (current_user['latlon'][0], current_user['latlon'][1])
     return user_location
 
 def get_howfar(current_user, users):
+    """ Get the distance between two
+    """
     return (geodesic(get_user_location(current_user), get_user_location(users)).km)
 
 # get access to a route
 def login_required(f):
     @wraps(f)
+    #extend the functionalioty of the function f, use as @login_required decorator.
     def wrapper(*args, **kwargs):
         if session.get('username') is None:
             flash("Please login in first", 'info')
@@ -29,7 +40,7 @@ def login_required(f):
 
 # needed to force the user to finish creating their bio before anything.
 def finish_profile(f):
-    @wraps(f)
+    @wraps(f)#extend the functionalioty of the function f, use as @login_required decorator.
     def wrapper(*args, **kwargs):
         user = db.get_user({'username': session.get('username')})
         if user is None:
@@ -69,12 +80,23 @@ def save_gallery(form_pic):
     return pic_fn
 
 def send_mail(reciever, subject='email confirmation', text=None, html=None):
+    """ send and Auth email for account registration
+
+    ARGS:
+    reciever: string. username of the new account the email is sent to
+    subject : string. subject of the verification email "email confirmation by default"
+    text    : string. the email body  
+
+    returns: nothing.
+        uses the smtplib.SMTP_SSL() as a server to send a verification email
+        to a newly registered user.
+    """
     user = db.get_user({'username' : reciever}, {'username' :1 , 'email': 1})
 
     port = 465
     password = 'C108629d'
 
-    sender_email = "cmukwind@student.wethinkcode.co.za"
+    sender_email = "emanana@student.wethinkcode.co.za"
     receiver_email = user['email']
     message = MIMEMultipart("alternative")
     message["Subject"] = subject
@@ -110,16 +132,36 @@ def send_mail(reciever, subject='email confirmation', text=None, html=None):
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver_email, message.as_string())
 
-# Calculation the percentage similarity of the two lists.
+
 def similarity_perc(list1, list2):
+    """ computation of the similar interest between user
+        check if list1 is not in list two. else return a number counting
+        similar interest
+
+    ARGS:
+    list1: list. a list containing the interest of user 1
+    list2: list containing interest of user 2
+
+    return : int.
+        if the users have similar interest, return a count, that tallys the interest
+    """
     if not list1 or not list2:
         return 0
     res = len(set(list1) & set(list2)) / float(len(set(list1) | set(list2))) * 100
     return res
 
 
-# Calculate the users fame rating
 def calculate_fame(user):
+    """ compute the the users populariy.
+        if no one liked th user fame or popolarity is 0
+        otherwise compute the (mean of likes )* 100
+
+        Args:
+        user : dict. dictionary/object of users info.
+
+        returns:
+            updates the fame/populariry rating in the databse
+    """
     account_count = db.count_users()
     user_liked = len(user['likes'])
     if user_liked == 0:
@@ -134,6 +176,15 @@ def calculate_fame(user):
 
 # filter out the user with the specific interest.
 def filter_interest(users, interest):
+    """ filter users in A"users" common interest A"interest
+
+    Args: 
+    users: list. An iterable containing data that pertains the user
+    interest: iterable(list) . an iterable of desired interest.
+
+    return:
+        a list of users with desired interest
+    """
     valid_users = [user for user in users if set(interest).issubset(set(user['interests']))]
     return valid_users
 
@@ -152,8 +203,15 @@ def filter_age(users, age):
         valid_users = [user for user in users if user['age'] >= 40 and user['age'] <= age]
     return valid_users
 
-# Filter out users based on the given fame
 def filter_fame(users, fame):
+    """Filter out users based on the given fame
+
+        Args:
+        users: list. An iterable containing data that pertains the user
+        fame : int . a number denoting the popularity of a user.
+        returns:
+        a list users based on the given fame
+    """
     print("Fame: ", fame)
     if fame == 10:
         valid_users = [user for user in users if user['fame-rating'] >= 0 and user['fame-rating'] < fame]
