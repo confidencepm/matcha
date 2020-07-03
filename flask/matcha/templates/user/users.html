@@ -3,7 +3,7 @@
   <div class="btn-group">
     <button
       type="button"
-      class="btn btn-danger dropdown-toggle btn-sm"
+      class="btn dropdown-toggle btn-sm"
       data-toggle="dropdown"
       aria-haspopup="true"
       aria-expanded="false"
@@ -27,7 +27,7 @@
   <div class="btn-group">
     <button
       type="button"
-      class="btn btn-danger dropdown-toggle btn-sm"
+      class="btn dropdown-toggle btn-sm"
       data-toggle="dropdown"
       aria-haspopup="true"
       aria-expanded="false"
@@ -57,6 +57,9 @@
 
 <div class="content-sections">
   {% for user in users %} {% if logged_in != user['username'] %}
+  <h3>
+    <a class="mr-2" href="{{ url_for('profile.view_profile', user_id=user['_id'])}}">{{ user['username'] }}</a>
+  </h3>
   <article class="media content-section">
     <img
       class="article-img rounded"
@@ -78,13 +81,13 @@
             >Chat</a
           >
           {% else %}
-          <a href="#" class="pending btn btn-outline-info"
+          <a href="#" class="pending btn"
             >Pending</a
           >
           {% endif %}
           <button
             type="button"
-            class="unlike btn btn-outline-info"
+            class="unlike btn"
             value="{{ user['username'] }}"
           >
             unlike
@@ -96,7 +99,7 @@
           <button
             type="button"
             value="{{ user['username'] }}"
-            class="like-back btn btn-outline-info"
+            class="like-back btn"
           >
             Like Back
           </button>
@@ -104,7 +107,7 @@
           <button
             type="button"
             value='{{ user["username"] }}'
-            class="like btn btn btn-outline-info"
+            class="like btn"
           >
             Like
           </button>
@@ -113,17 +116,10 @@
         {% endif %}
         <a
           href="{{ url_for('main.block_user', b_id=user['_id']) }}"
-          class="btn btn btn-outline-info"
+          class="btn"
           >Block</a
         >
       </div>
-      <h2>
-        <a
-          class="mr-2"
-          href="{{ url_for('profile.view_profile', user_id=user['_id'])}}"
-          >{{ user['username'] }}</a
-        >
-      </h2>
     </div>
   </article>
   {% endif %} {% endfor %}
