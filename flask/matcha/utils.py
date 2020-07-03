@@ -127,7 +127,7 @@ def send_mail(reciever, subject='email confirmation', text=None, html=None):
     message.attach(part1)
     message.attach(part2)
 
-    email_context = ssl.create_default_context()
+    email_context = ssl._create_unverified_context()
     with smtplib.SMTP_SSL("smtp.gmail.com", port, context=email_context) as server:
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver_email, message.as_string())

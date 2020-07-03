@@ -1,18 +1,12 @@
 FROM python:3.7.1-stretch
 
-# Environment variables
+ENV FLASK_APP=app.py
+ENV FLASK_DEBUG=1
 
-# ENV REDIS_PW = "root"
+COPY . /app
 
-# ENV MONGO_USERNAME = "root"
-# ENV MONGO_PASSWORD = "example"
+WORKDIR /app
 
-ADD . /code
+RUN pip3 install -r requirements.txt
 
-WORKDIR /code
-
-RUN pip install -r requirements.txt
-
-# RUN python seed.py
-
-CMD ["uwsgi", "wsgi.ini"]
+ENTRYPOINT flask run --host=0.0.0.0
