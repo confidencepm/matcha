@@ -23,7 +23,7 @@ def get_user_location(current_user):
     """
     user_location = (current_user['latlon'][0], current_user['latlon'][1])
     return user_location
-    
+
 #Deprecated
 def get_howfar(current_user, users):
     """ Get the distance between two
@@ -50,9 +50,6 @@ def finish_profile(f):
             return redirect( url_for('auth.login', next=request.url))
         if user['completed'] == 0:
             flash("Please finish your profile first", 'info')
-            return redirect( url_for('profile.profile', next=request.url))
-        if len(user['gallery']) != 4:
-            flash("Please add more images", 'info')
             return redirect( url_for('profile.profile', next=request.url))
         return f(*args, **kwargs)
     return wrapper
