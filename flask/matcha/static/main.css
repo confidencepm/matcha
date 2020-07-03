@@ -1,11 +1,38 @@
 body {
-    background: #fafafa;
+    background-color: #fff;
     color: #333333;
     margin-top: 5rem;
     background-size: 265%;
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
+    background-size: cover;
+    position: relative;
+}
+
+button {
+    background-color: rosybrown;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }
+  
+#btn {
+    border: 1px solid rgb(44, 36, 0);
+}
+
+.btn {
+    color: rgb(105, 100, 100);
+    border-color: rosybrown !important;
+}
+
+.btn:hover {
+    color: #fff;
+    background-color: rosybrown !important;
 }
 
 .footer {
@@ -17,14 +44,6 @@ body {
     color: white;
     text-align: center;
     height: 3%;
-}
-
-.content-section {
-    background: #ffffff;
-    padding: 10px 20px;
-    border: 1px solid #dddddd;
-    border-radius: 3px;
-    margin-bottom: 20px;
 }
 
 .account-img {
@@ -67,7 +86,7 @@ body {
 }
 
 a.article-title:hover {
-    color: #428bca;
+    color: palevioletred;
     text-decoration: none;
 }
 
@@ -76,7 +95,7 @@ a.article-title:hover {
 }
 
 .side-bar-link {
-    color: grey;
+    color:hotpink;
     text-decoration: none;
 }
 
@@ -98,7 +117,7 @@ a.article-title:hover {
 
 .notification {
     /* background-color: #555; */
-    color: white;
+    color: whitesmoke;
     text-decoration: none;
     /* padding: 15px 26px; */
     position: relative;
@@ -106,8 +125,22 @@ a.article-title:hover {
     border-radius: 2px;
 }
 
+.chats {
+    /* background-color: #555; */
+    color: palevioletred;
+    text-decoration: none;
+    /* padding: 15px 26px; */
+    position: relative;
+    display: inline-block;
+    border-radius: 2px;
+}
+
+.chats:hover {
+    background: lightskyblue;
+}
+
 .notification:hover {
-    background: white;
+    background: lightskyblue;
 }
 
 .notification .badge {
@@ -130,7 +163,7 @@ a.article-title:hover {
 
 .balon1 a {
 
-	background: #42a5f5;
+	background: palevioletred;
 	color: #fff !important;
 	border-radius: 20px 20px 3px 20px;
 	display: block;

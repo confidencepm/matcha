@@ -9,18 +9,18 @@
         <a href="{{ url_for('chat.chat_room', room=user['rooms'][logged_in]) }}"
             class='btn btn-outline-info btn-sm m-1'>Chat</a>
                 {% else %}
-                <a href="#" class='pending btn btn-secondary btn-sm m-1 disabled'>Pending</a>
+                <a href="#" class='pending btn btn-outline-info disabled'>Pending</a>
                 {% endif %}
-                <button type='button' class='unlike btn btn-secondary btn-sm m1' value="{{ user['username'] }}">unlike</button>
+                <button type='button' class='unlike btn btn-outline-info' value="{{ user['username'] }}">unlike</button>
             {% else %}
                 {% if user['username'] in current_user['liked'] %}
-                <button type='button' value="{{ user['username'] }}" class='like-back btn btn-secondary btn-sm m-1'>Like
+                <button type='button' value="{{ user['username'] }}" class='like-back btn btn-outline-info'>Like
                     Back</button>
                 {% else%}
-                <button type='button' value='{{ user["username"] }}' class='like btn btn-secondary btn-sm m-1'>Like</button>
+                <button type='button' value='{{ user["username"] }}' class='like btn btn-outline-info'>Like</button>
                 {% endif %}
             {% endif %}
-            <a href="{{ url_for('main.block_user', b_id=user['_id']) }}" class='btn btn-secondary btn-sm m-1'>Block</a>
+            <a href="{{ url_for('main.block_user', b_id=user['_id']) }}" class='btn btn-outline-info'>Block</a>
         </div>
     </div>
     <div class="row">
@@ -88,7 +88,7 @@
                             src="{{ url_for('static', filename='gallery_pics/' + user['gallery'][2])}}" alt="slide">
                     </div>
                     <div class="carousel-item">
-                        <img style="width: 100%; border: solid 2px black; box-shadow: 5px 9px 10px #888888" height="150px"
+                        <img style="width: 100%; border: solid 2px lightcoral; box-shadow: 5px 9px 10px burlywood" height="150px"
                             width="250px"
                             src="{{ url_for('static', filename='gallery_pics/' + user['gallery'][3])}}" alt="slide">
                     </div>
