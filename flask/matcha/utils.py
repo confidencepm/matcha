@@ -10,6 +10,8 @@ from email.mime.multipart import MIMEMultipart
 from geopy.geocoders import *
 from geopy.distance import *
 
+
+#Deprecated
 def get_user_location(current_user):
     """ Get the latitude and longitude of a user
 
@@ -21,7 +23,8 @@ def get_user_location(current_user):
     """
     user_location = (current_user['latlon'][0], current_user['latlon'][1])
     return user_location
-
+    
+#Deprecated
 def get_howfar(current_user, users):
     """ Get the distance between two
     """
