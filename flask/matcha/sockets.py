@@ -180,7 +180,6 @@ def view_user_profile(data):
     viewed_user = db.get_user({"_id": ObjectId(data["viewed"])})
     viewer = db.get_user({"_id": ObjectId(data["viewer"])}, {"username": 1})
 
-    print(viewed_user["username"])
     if (
         data["viewer"] in viewed_user["views"]
         or viewer["_id"] in viewed_user["blocked"]
@@ -188,7 +187,6 @@ def view_user_profile(data):
         return False
 
     if viewed_user["username"] in logged_in_users:
-        print(data["viewed"], " is online")
         socket.emit(
             "notif_view",
             {"from": viewer["username"]},
