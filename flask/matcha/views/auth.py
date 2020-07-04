@@ -3,7 +3,7 @@ from matcha import db, logged_in_users
 from bson import ObjectId
 from functools import wraps
 import secrets, re, bcrypt, html
-from matcha.utils import calculate_fame, send_mail
+from matcha.utils import calculate_popularity, send_registration_email
 from datetime import datetime
 
 auth = Blueprint('auth', __name__)
@@ -81,7 +81,7 @@ def register():
             salt = bcrypt.gensalt()
             details['password'] = bcrypt.hashpw(details['password'].encode('utf-8'), salt)
             db.register_user(details)
-            send_mail(details['username'])
+            send_registration_email(details['username'])
             flash("Please check your email for confirmation", 'success')
             return redirect(url_for('auth.login'))
 
@@ -136,7 +136,7 @@ def login():
             flash('Successful login', 'success')
             if not details['username'] in logged_in_users:
                 logged_in_users[details['username']] = ''
-            calculate_fame(user)
+            calculate_popularity(user)
             return redirect(url_for('main.users'))
         for error in errors:
             flash(error, 'danger')
@@ -193,7 +193,7 @@ def forgot_password():
                     </body>
                     </html>
                     """.format(user['username'], user['_id'])
-            send_mail(username, subject, text, html)
+            send_registration_email(username, subject, text, html)
             flash('Please check your email to reset your password', 'success')
         for error in errors:
             flash(error, 'danger')

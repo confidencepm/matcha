@@ -3,7 +3,7 @@ from functools import wraps
 import os, secrets, re, html, pymongo, bcrypt
 from PIL import Image
 from matcha import db, app, logged_in_users
-from matcha.utils import save_picture, save_gallery, login_required, finish_profile
+from matcha.utils import save_image, save_image_to_gallery, login_required, complete_user_profile
 from bson.objectid import ObjectId
 
 from datetime import date
@@ -67,7 +67,7 @@ def profile():
                 user["lastname"] = lastname
 
             if image:
-                pic_name = save_picture(image)
+                pic_name = save_image(image)
                 user["image_name"] = pic_name
 
             if not errors:
@@ -117,7 +117,7 @@ def profile():
                 user["bio"] = bio
 
             if image:
-                pic_name = save_picture(image)
+                pic_name = save_image(image)
                 user["image_name"] = pic_name
 
             elif user["image_name"] == "default.png":
@@ -146,7 +146,7 @@ def profile():
             if image_count < 4:
                 image = request.files.get("image3")
                 if image:
-                    gallery_img = save_gallery(image)
+                    gallery_img = save_image_to_gallery(image)
                     user["gallery"].append(gallery_img)
 
                     db.update_user(user["_id"], user)
@@ -188,7 +188,7 @@ def profile():
 
 @user.route("/profile/view/<user_id>")
 @login_required
-@finish_profile
+@complete_user_profile
 def view_profile(user_id):
     id = ObjectId(user_id)
     current_user = db.get_user({"username": session.get("username")})

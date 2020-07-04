@@ -1,5 +1,5 @@
 from matcha import socket, logged_in_users, db
-from matcha.utils import calculate_fame, send_mail
+from matcha.utils import calculate_popularity, send_registration_email
 from flask import session, request
 from flask_socketio import join_room, leave_room
 import secrets
@@ -32,7 +32,7 @@ def like(data):
 
     db.update_likes(liker["_id"], {"likes": liker["likes"]})
     db.update_likes(liked["_id"], {"liked": liked["liked"]})
-    calculate_fame(liked)
+    calculate_popularity(liked)
     # sid = logged_in_users.get(data["to"])
     # if sid:
     #     socket.emit("flirt", {"from": session.get("username")}, room=sid)
