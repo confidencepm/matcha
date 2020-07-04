@@ -21,7 +21,7 @@ from matcha import seed
 if not db.get_user({'_id': ObjectId(b'bobisadmin!!')}, {'username': 1}):
 	seed.create_fakes()
 
-valid_users = []
+filter_users = []
 
 
 from matcha.views.profile import user
