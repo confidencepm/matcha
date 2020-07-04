@@ -20,8 +20,8 @@ class DB:
 
         return user
 
-    def register_user(self, details):
-        self.__users.insert_one(details)
+    def register_user(self, user_info):
+        self.__users.insert_one(user_info)
 
     def users(self, query={}):
         return self.__users.find(query)

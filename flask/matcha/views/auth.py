@@ -12,7 +12,7 @@ auth = Blueprint('auth', __name__)
 def register():
     # blocked = db.get_user(db.get_user({'_id': ObjectId(b'admin')}, {'blocked': 1}))["blocked"]
     errors = []
-    details = {
+    user_info = {
         'username': '',
         'firstname': '',
         'lastname': '',
@@ -43,52 +43,52 @@ def register():
     }
 
     if request.method == 'POST':
-        details['username'] = html.escape(request.form.get('username'))
-        details['firstname'] = html.escape(request.form.get("firstname"))
-        details['lastname'] = html.escape(request.form.get('lastname'))
-        details['email'] = html.escape(request.form.get('email'))
-        details['password'] = html.escape(request.form.get('password'))
+        user_info['username'] = html.escape(request.form.get('username'))
+        user_info['firstname'] = html.escape(request.form.get("firstname"))
+        user_info['lastname'] = html.escape(request.form.get('lastname'))
+        user_info['email'] = html.escape(request.form.get('email'))
+        user_info['password'] = html.escape(request.form.get('password'))
         passwd_confirm = html.escape(request.form.get('password_confirm'))
 
-        if not details['username']:
+        if not user_info['username']:
             errors.append('The username cannot be empty')
-        if not re.match('^[A-Za-z][A-Za-z0-9]{2,49}$', details['username']):
+        if not re.match('^[A-Za-z][A-Za-z0-9]{2,49}$', user_info['username']):
             errors.append(
                 'The username must be an alpha numeric value beginning with a letter, 3 - 50 characters long.')
-        if db.get_user({'username': details['username']}):
+        if db.get_user({'username': user_info['username']}):
             errors.append('The username is already taken')
-        if db.get_user({'email': details['email']}):
+        if db.get_user({'email': user_info['email']}):
             errors.append('The email is already taken!')
-        if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,100}$', details['email']):
+        if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,100}$', user_info['email']):
             errors.append('invalid email format')
-        if not re.match(r'^.*(?=.{8,10})(?=.*[a-zA-Z])(?=.*?[A-Z])(?=.*\d)[a-zA-Z0-9!@£$%^&*()_+={}?:~\[\]]+$', details['password']):
-            print(f"Debug password: {details['password']}")
+        if not re.match(r'^.*(?=.{8,10})(?=.*[a-zA-Z])(?=.*?[A-Z])(?=.*\d)[a-zA-Z0-9!@£$%^&*()_+={}?:~\[\]]+$', user_info['password']):
+            print(f"Debug password: {user_info['password']}")
             errors.append('The password must have an uppercase, lowercase and a digit, 5 - 25 characters long.')
-        if passwd_confirm != details['password']:
+        if passwd_confirm != user_info['password']:
             errors.append('The two passwords do not match')
-        if not re.match('^[A-Z][a-zA-Z-]{1,24}$', details['firstname']):
+        if not re.match('^[A-Z][a-zA-Z-]{1,24}$', user_info['firstname']):
             errors.append('A name must start with a capital letter, and a have no more than 25 characters')
         try:
-            details['age'] = int(request.form.get('age'))
-            if details['age'] < 18 or details['age'] > 100:
+            user_info['age'] = int(request.form.get('age'))
+            if user_info['age'] < 18 or user_info['age'] > 100:
                 errors.append("You need to be between 18 and 100 to use this site")
         except ValueError:
             errors.append("Age needs to be a number")
-        if not re.match('^[A-Z][ a-zA-Z-]{1,24}$', details['lastname']):
+        if not re.match('^[A-Z][ a-zA-Z-]{1,24}$', user_info['lastname']):
             errors.append('The lastname must start with a capital letter, and have 2-24 charaters')
 
         if not errors:
             salt = bcrypt.gensalt()
-            details['password'] = bcrypt.hashpw(details['password'].encode('utf-8'), salt)
-            db.register_user(details)
-            send_registration_email(details['username'])
+            user_info['password'] = bcrypt.hashpw(user_info['password'].encode('utf-8'), salt)
+            db.register_user(user_info)
+            send_registration_email(user_info['username'])
             flash("Please check your email for confirmation", 'success')
             return redirect(url_for('auth.login'))
 
         for error in errors:
             flash(error, 'danger')
 
-    return render_template('auth/register.html', details=details)
+    return render_template('auth/register.html', user_info=user_info)
 
 
 @auth.route('/confirm', methods=['GET', 'POST'])
@@ -114,34 +114,34 @@ def confirm():
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     errors = []
-    details = {
+    user_info = {
         'username': '',
         'password': ''
     }
 
     if request.method == 'POST':
-        details['username'] = html.escape(request.form.get('username'))
-        details['password'] = html.escape(request.form.get('password'))
-        user = db.get_user({'username': details['username']})
+        user_info['username'] = html.escape(request.form.get('username'))
+        user_info['password'] = html.escape(request.form.get('password'))
+        user = db.get_user({'username': user_info['username']})
 
         if not user:
             errors.append("Incorrect username or password")
         elif not user['email_confirmed']:
             errors.append('Please check your email for confirmation')
-        elif not bcrypt.checkpw(details['password'].encode('utf-8'), user['password']):
+        elif not bcrypt.checkpw(user_info['password'].encode('utf-8'), user['password']):
             errors.append('Incorrect username or password')
 
         if not errors:
-            session['username'] = details['username']
+            session['username'] = user_info['username']
             flash('Successful login', 'success')
-            if not details['username'] in logged_in_users:
-                logged_in_users[details['username']] = ''
+            if not user_info['username'] in logged_in_users:
+                logged_in_users[user_info['username']] = ''
             calculate_popularity(user)
             return redirect(url_for('main.users'))
         for error in errors:
             flash(error, 'danger')
 
-    return render_template('auth/login.html', details=details)
+    return render_template('auth/login.html', user_info=user_info)
 
 
 @auth.route('/logout')
@@ -161,7 +161,7 @@ def logout():
 @auth.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():
     errors = []
-    details = {
+    user_info = {
         'username': ''
     }
     if request.method == 'POST':
@@ -198,7 +198,7 @@ def forgot_password():
         for error in errors:
             flash(error, 'danger')
 
-    return render_template('auth/forgot_password.html', details=details)
+    return render_template('auth/forgot_password.html', user_info=user_info)
 
 
 @auth.route('/reset_password', methods=['GET', 'POST'])

@@ -7,11 +7,12 @@ import secrets, re, bcrypt, html
 from faker import Faker
 import random
 from datetime import datetime
+import time
+import sys
 
-
-def seed_users():
-    print("Creating fake users please wait...")
-    n = 500
+def create_fakes():
+    n = 100
+    print("Be Patient while we create {} fake profiles....".format(n))
     fake = Faker()
     gender = ['Male', 'Female']
     sexo = ['bisexual', 'heterosexual', 'homosexual']
@@ -20,10 +21,17 @@ def seed_users():
     interests = ['Traveling', 'Animals', 'Technology', 'Sky-diving', 'Movies', 'Music', 'Cooking', 'Sports', 'Gaming']
     profile_pics = ['dummy1.png', 'dummy2.png', 'dummy3.png', 'dummy4.png', 'dummy5.png', 'dummy6.png', 'dummy7.png',
                     'dummy8.png', 'dummy9.png', 'dummy10.png']
+    # setup toolbar
+    sys.stdout.write("[%s]" % (" " * n))
+    sys.stdout.flush()
+    sys.stdout.write("\b" * (n+1)) # return to start of line, after '['
 
-    for _ in range(n):
+    for i in range(n):
+        
+        sys.stdout.write("#")
+        sys.stdout.flush()
         salt = bcrypt.gensalt()
-        details = {'username': fake.user_name(), 'firstname': fake.first_name(), 'lastname': fake.last_name(),
+        user_info = {'username': fake.user_name(), 'firstname': fake.first_name(), 'lastname': fake.last_name(),
                    'email': fake.email(), 'password': bcrypt.hashpw('Password1'.encode('utf-8'), salt),
                    'gender': random.choice(gender), 'sexual_orientation': random.choice(sexo), 'bio': fake.text(), 'interests': [],
                    'likes': [], 'liked': [], 'matched': [], 'blocked': [], 'views': [], 'rooms': {},
@@ -32,19 +40,21 @@ def seed_users():
                    'notifications': []}
 
         max_interests = fake.random_int(3, 9)
-        details['interests'] = random.sample(interests, max_interests)
-        details['fame-rating'] = fake.random_int(0, 80)
-        details['location'].append(''.join([str(fake.random_int(1, 500)), ' ', fake.word(), ' street']))
-        details['location'].append(''.join([fake.word(), 'cliff']))
-        details['location'].append(random.choice(city))
-        details['location'].append('South Africa')
-        details['latlon'] = fake.local_latlng(country_code="ZA", coords_only=True)
-        details['age'] = fake.random_int(18, 80)
-        details['image_name'] = random.choice(profile_pics)
+        user_info['interests'] = random.sample(interests, max_interests)
+        user_info['fame-rating'] = fake.random_int(0, 80)
+        user_info['location'].append(''.join([str(fake.random_int(1, 500)), ' ', fake.word(), ' street']))
+        user_info['location'].append(''.join([fake.word(), 'cliff']))
+        user_info['location'].append(random.choice(city))
+        user_info['location'].append('South Africa')
+        user_info['latlon'] = fake.local_latlng(country_code="ZA", coords_only=True)
+        user_info['age'] = fake.random_int(18, 80)
+        user_info['image_name'] = random.choice(profile_pics)
 
-        db.register_user(details)
-
+        db.register_user(user_info)
+    sys.stdout.write("]\n")
+    print("Done Creating Fake profiles")
     if not db.get_user({'username': "admin"}, {'username': 1}):
+        print("Creating Fake Admin")
         salt = bcrypt.gensalt()
         Admin = {
             '_id': ObjectId(b'bobisadmin!!'),
@@ -76,4 +86,4 @@ def seed_users():
             'notifications': []
         }
         db.register_user(Admin)
-        print("Admin Created")
+        print("Done Creating Fake Admin")
