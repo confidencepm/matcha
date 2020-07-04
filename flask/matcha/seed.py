@@ -3,7 +3,7 @@ from matcha import db, logged_in_users
 from bson import ObjectId
 from functools import wraps
 import secrets, re, bcrypt, html
-from matcha.utils import calculate_fame
+#from matcha.utils import calculate_fame
 from faker import Faker
 import random
 from datetime import datetime
