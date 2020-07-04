@@ -2,16 +2,16 @@ from matcha import db, logged_in_users, valid_users
 from flask import Blueprint, render_template, session, redirect, flash, request, url_for
 from bson.objectid import ObjectId
 from functools import wraps, cmp_to_key
-from matcha.utils import similarity_perc, get_howfar, \
+from matcha.utils import common_interest, \
 filter_age, filter_interest, filter_location, login_required, \
-finish_profile, filter_fame
+complete_user_profile, filter_fame
 
 main = Blueprint("main", __name__)
 
 # Create the route for the home page
 @main.route("/")
 @login_required
-@finish_profile
+@complete_user_profile
 def home():
     user = db.get_user({"username": session.get("username")}, {"notifications": 1})
     return render_template(
@@ -21,7 +21,7 @@ def home():
 
 @main.route("/users")
 @login_required
-@finish_profile
+@complete_user_profile
 def users():
     current_user = db.get_user({"username": session.get("username")})
     blocked = current_user["blocked"]
@@ -85,7 +85,7 @@ def users():
         user
         for user in users
         if user["username"] != current_user["username"]
-        and similarity_perc(current_user["interests"], user["interests"]) >= 0
+        and common_interest(current_user["interests"], user["interests"]) >= 0
         and user["completed"] == 1
         and user['location'][2] == current_user['location'][2]
         and user['fame-rating'] >= 50
@@ -102,7 +102,7 @@ def users():
 
 @main.route("/users/search_age/search", methods=["GET", "POST"])
 @login_required
-@finish_profile
+@complete_user_profile
 def search_age():
     global valid_users
     if request.method == "POST":
@@ -129,7 +129,7 @@ def search_age():
 
 @main.route("/users/search_fame/search", methods=["GET", "POST"])
 @login_required
-@finish_profile
+@complete_user_profile
 def search_fame():
     global valid_users
     if request.method == "POST":
@@ -158,7 +158,7 @@ def search_fame():
 
 @main.route("/users/interest/search", methods=["GET", "POST"])
 @login_required
-@finish_profile
+@complete_user_profile
 def search_interest():
     global valid_users
 
@@ -201,7 +201,7 @@ def search_interest():
 
 @main.route("/users/location/search", methods=["GET", "POST"])
 @login_required
-@finish_profile
+@complete_user_profile
 def search_location():
     global valid_users
     print("Debug location ", request.form.get("location"))
@@ -225,7 +225,7 @@ def search_location():
 
 @main.route("/users/username/search", methods=["GET", "POST"])
 @login_required
-@finish_profile
+@complete_user_profile
 def search_username():
     global valid_users
     if request.method == "POST":
@@ -248,7 +248,7 @@ def search_username():
 
 @main.route("/users/sort/fame/<value>", methods=["GET", "POST"])
 @login_required
-@finish_profile
+@complete_user_profile
 def sort_fame(value):
     global valid_users
     current_user = db.get_user({"username": session.get("username")})
@@ -290,7 +290,7 @@ def sort_fame(value):
 
 @main.route("/users/sort/age/<value>", methods=["GET", "POST"])
 @login_required
-@finish_profile
+@complete_user_profile
 def sort_age(value):
     global valid_users
     current_user = db.get_user({"username": session.get("username")})
@@ -339,7 +339,7 @@ def sort_age(value):
 
 @main.route("/user/<b_id>/block", methods=["GET", "POST"])
 @login_required
-@finish_profile
+@complete_user_profile
 def block_user(b_id):
 
     current_user = db.get_user({"username": session.get("username")})
@@ -352,7 +352,7 @@ def block_user(b_id):
 
 @main.route("/user/<b_id>/block_for_all", methods=["GET", "POST"])
 @login_required
-@finish_profile
+@complete_user_profile
 def block_for_all(b_id):
     users = db.users()
     ob_id = ObjectId(b_id)
@@ -366,7 +366,7 @@ def block_for_all(b_id):
 
 @main.route("/blocked", methods=["GET", "POST"])
 @login_required
-@finish_profile
+@complete_user_profile
 def blocked():
     users = list(db.users({"completed": 1}))
 

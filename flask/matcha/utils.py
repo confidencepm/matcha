@@ -41,45 +41,34 @@ def login_required(f):
         return f(*args, **kwargs)
     return wrapper
 
-# needed to force the user to finish creating their bio before anything.
-def finish_profile(f):
-    @wraps(f)#extend the functionalioty of the function f, use as @login_required decorator.
-    def wrapper(*args, **kwargs):
-        user = db.get_user({'username': session.get('username')})
-        if user is None:
-            return redirect( url_for('auth.login', next=request.url))
-        if user['completed'] == 0:
-            flash("Please finish your profile first", 'info')
-            return redirect( url_for('profile.profile', next=request.url))
-        return f(*args, **kwargs)
-    return wrapper
+# save image
+def save_image(form_pic):
 
-def save_picture(form_pic):
-    rand_hex = secrets.token_hex(8)
-    _, f_ext = os.path.splitext(secure_filename(form_pic.filename))
-    pic_fn =  rand_hex + f_ext
-    pic_path = os.path.join(app.root_path, 'static/profile_pics', pic_fn)
+    random_str = secrets.token_hex(8)
+    _, file_extention = os.path.splitext(secure_filename(form_pic.filename))
+    image_nf =  random_str + file_extention
+    image_path = os.path.join(app.root_path, 'static/profile_pics', image_nf)
 
-    # form_pic.save(pic_path)
-    i = Image.open(form_pic.stream)
-    i.thumbnail((200,200))
+    image = Image.open(form_pic.stream)
+    image.thumbnail((200,200))
 
-    i.save(pic_path)
-    return pic_fn
+    image.save(image_path)
+    return image_nf
 
-def save_gallery(form_pic):
-    rand_hex = secrets.token_hex(8)
-    _, f_ext = os.path.splitext(secure_filename(form_pic.filename))
-    pic_fn =  rand_hex + f_ext
-    pic_path = os.path.join(app.root_path, 'static/gallery_pics', pic_fn)
+def save_image_to_gallery(form_pic):
+    
+    random_str = secrets.token_hex(8)
+    _, file_extention = os.path.splitext(secure_filename(form_pic.filename))
+    image_nf =  random_str + file_extention
+    image_path = os.path.join(app.root_path, 'static/gallery_pics', image_nf)
 
-    i = Image.open(form_pic.stream)
-    i.thumbnail((200,200))
+    image = Image.open(form_pic.stream)
+    image.thumbnail((200,200))
 
-    i.save(pic_path)
-    return pic_fn
+    image.save(image_path)
+    return image_nf
 
-def send_mail(reciever, subject='email confirmation', text=None, html=None):
+def send_registration_email(receiver, subject='email confirmation', text=None, html=None):
     """ send and Auth email for account registration
 
     ARGS:
@@ -91,88 +80,98 @@ def send_mail(reciever, subject='email confirmation', text=None, html=None):
         uses the smtplib.SMTP_SSL() as a server to send a verification email
         to a newly registered user.
     """
-    user = db.get_user({'username' : reciever}, {'username' :1 , 'email': 1})
-
+    user = db.get_user({'username' : receiver}, {'username' :1 , 'email': 1})
     port = 465
     password = 'C108629d'
-
-    sender_email = "cmukwind@student.wethinkcode.co.za"
-    receiver_email = user['email']
+    senders_email = "cmukwind@student.wethinkcode.co.za"
+    receivers_email = user['email']
     message = MIMEMultipart("alternative")
     message["Subject"] = subject
-    message["From"] = sender_email
-    message["To"] = receiver_email
+    message["From"] = senders_email
+    message["To"] = receivers_email
 
     if not text:
         text = """\
-        Hi,{}
+        Hello lover!!,{}
         Welcome to Matcha.
-        Copy the URL below to confirm your email:
+        Don't keep your soulmate waiting, click the link and confirm your registration:
         http://localhost:5000/confirm?jrr={}""".format(user['username'],user['_id'])
         
     if not html:
         html = """\
         <html>
         <body>
-            <p>Hi,{}<br>
+            <p>Hello lovera!!,{}<br>
             Welcome to Matcha.<br>
-            Click the link below to confirm your email:
+            Don't keep your soulmate waiting, click the link and confirm your registration:
             <a href="http://localhost:5000/confirm?jrr={}">Confirm Email</a>
             </p>
         </body>
         </html>
         """.format(user['username'],user['_id'])
-    part1 = MIMEText(text, "plain")
-    part2 = MIMEText(html, "html")
-    message.attach(part1)
-    message.attach(part2)
+    
+    _html = MIMEText(html, "html")
+    plain = MIMEText(text, "plain")
+    message.attach(_html)
+    message.attach(plain)
 
-    email_context = ssl._create_unverified_context()
-    with smtplib.SMTP_SSL("smtp.gmail.com", port, context=email_context) as server:
-        server.login(sender_email, password)
-        server.sendmail(sender_email, receiver_email, message.as_string())
+    email_body = ssl._create_unverified_context()
+    with smtplib.SMTP_SSL("smtp.gmail.com", port, context=email_body) as server:
+        server.login(senders_email, password)
+        server.sendmail(senders_email, receivers_email, message.as_string())
 
 
-def similarity_perc(list1, list2):
+def common_interest(interest1, interest2):
     """ computation of the similar interest between user
-        check if list1 is not in list two. else return a number counting
+        check if interest1 is not in the list of interest two. else return a number counting
         similar interest
 
     ARGS:
-    list1: list. a list containing the interest of user 1
-    list2: list containing interest of user 2
+    interest1: list. a list containing the interest of user 1
+    interest2: list containing interest of user 2
 
     return : int.
         if the users have similar interest, return a count, that tallys the interest
     """
-    if not list1 or not list2:
+    if not interest1 or not interest2:
         return 0
-    res = len(set(list1) & set(list2)) / float(len(set(list1) | set(list2))) * 100
-    return res
+    common_interest_count = len(set(interest1) & set(interest2)) / float(len(set(interest1) | set(interest2))) * 100
+    return common_interest_count
 
 
-def calculate_fame(user):
+def calculate_popularity(user):
     """ compute the the users populariy.
-        if no one liked th user fame or popolarity is 0
+        if no one liked th user or popolarity is 0
         otherwise compute the (mean of likes )* 100
 
         Args:
         user : dict. dictionary/object of users info.
 
         returns:
-            updates the fame/populariry rating in the databse
+            updates the populariry rating in the databse
     """
-    account_count = db.count_users()
-    user_liked = len(user['likes'])
-    if user_liked == 0:
-        fame_rate = 0
+    total_likes = len(user['likes'])
+    total_users = db.count_users()
+    if total_likes == 0:
+        popularity = 0
     else:
-        fame_rate = (user_liked / account_count) * 100
+        popularity = (total_likes / total_users) * 100
 
-    user['fame-rating'] = int(fame_rate)
+    user['fame-rating'] = int(popularity)
     db.update_user(user['_id'], user)
 
-
+# needed to force the user to finish creating their bio before anything.
+def complete_user_profile(f):
+    @wraps(f)#extend the functionalioty of the function f, use as @complete_user_profile decorator.
+    def wrapper(*args, **kwargs):
+        user = db.get_user({'username': session.get('username')})
+        if user is None:
+            return redirect( url_for('auth.login', next=request.url))
+        if user['completed'] == 0:
+            flash("you must first complete your profile", 'danger')
+            return redirect( url_for('profile.profile', next=request.url))
+        return f(*args, **kwargs)
+    return wrapper
 
 # filter out the user with the specific interest.
 def filter_interest(users, interest):
