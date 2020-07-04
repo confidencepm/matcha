@@ -72,7 +72,7 @@ def profile():
 
             if not errors:
                 db.update_user(user["_id"], user)
-                flash("User details updated", "success")
+                flash("User user_info updated", "success")
                 return redirect(url_for("profile.profile"))
 
             for error in errors:

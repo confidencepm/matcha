@@ -1,4 +1,4 @@
-from matcha import db, logged_in_users, valid_users
+from matcha import db, logged_in_users, filter_users
 from flask import Blueprint, render_template, session, redirect, flash, request, url_for
 from bson.objectid import ObjectId
 from functools import wraps, cmp_to_key
@@ -80,8 +80,8 @@ def users():
             )
         )
 
-    global valid_users
-    valid_users = [
+    global filter_users
+    filter_users = [
         user
         for user in users
         if user["username"] != current_user["username"]
@@ -94,7 +94,7 @@ def users():
     return render_template(
         "user/users.html",
         logged_in=session.get("username"),
-        users=valid_users,
+        users=filter_users,
         current_user=current_user,
         search=True,
     )
@@ -104,7 +104,7 @@ def users():
 @login_required
 @complete_user_profile
 def search_age():
-    global valid_users
+    global filter_users
     if request.method == "POST":
         age = request.form.get("age")
 
@@ -115,12 +115,12 @@ def search_age():
         blocked = current_user["blocked"]
         users = db.users({"_id": {"$nin": blocked}, "gender": {"$ne": current_user['gender']}, "completed": 1})
         age = int((age.replace(" ", "")).split(",")[0])
-        valid_users = filter_age(users, age)
+        filter_users = filter_age(users, age)
 
         return render_template(
             "user/users.html",
             logged_in=session.get("username"),
-            users=valid_users,
+            users=filter_users,
             current_user=current_user,
             search=True,
         )
@@ -131,7 +131,7 @@ def search_age():
 @login_required
 @complete_user_profile
 def search_fame():
-    global valid_users
+    global filter_users
     if request.method == "POST":
         print("Debug 1", request.form.get("fame"))
         fame = request.form.get("fame")
@@ -143,12 +143,12 @@ def search_fame():
         blocked = current_user["blocked"]
         users = db.users({"_id": {"$nin": blocked}, "gender": {"$ne": current_user['gender']}, "completed": 1})
         fame = int((fame.replace(" ", "")).split(",")[0])
-        valid_users = filter_fame(users, fame)
+        filter_users = filter_fame(users, fame)
 
         return render_template(
             "user/users.html",
             logged_in=session.get("username"),
-            users=valid_users,
+            users=filter_users,
             current_user=current_user,
             search=True,
         )
@@ -160,7 +160,7 @@ def search_fame():
 @login_required
 @complete_user_profile
 def search_interest():
-    global valid_users
+    global filter_users
 
     if request.method == "POST":
         interest = []
@@ -186,12 +186,12 @@ def search_interest():
         current_user = db.get_user({"username": session.get("username")})
         blocked = current_user["blocked"]
         users = db.users({"_id": {"$nin": blocked}, "gender": {"$ne": current_user['gender']}, "completed": 1})
-        valid_users = filter_interest(users, interest)
+        filter_users = filter_interest(users, interest)
 
         return render_template(
             "user/users.html",
             logged_in=session.get("username"),
-            users=valid_users,
+            users=filter_users,
             current_user=current_user,
             search=True,
         )
@@ -203,19 +203,19 @@ def search_interest():
 @login_required
 @complete_user_profile
 def search_location():
-    global valid_users
+    global filter_users
     print("Debug location ", request.form.get("location"))
     if request.method == "POST":
         location = request.form.get("location")
         current_user = db.get_user({"username": session.get("username")})
         blocked = current_user["blocked"]
         users = db.users({"_id": {"$nin": blocked}, "completed": 1})
-        valid_users = filter_location(users, location)
+        filter_users = filter_location(users, location)
 
         return render_template(
             "user/users.html",
             logged_in=session.get("username"),
-            users=valid_users,
+            users=filter_users,
             current_user=current_user,
             search=True,
         )
@@ -227,18 +227,18 @@ def search_location():
 @login_required
 @complete_user_profile
 def search_username():
-    global valid_users
+    global filter_users
     if request.method == "POST":
         username = request.form.get('username')
         print(username)
         current_user = db.get_user({'username' : session.get('username')})
         blocked = current_user["blocked"]
-        valid_users = list(db.users({'_id' : { '$nin' : blocked }, 'completed' : 1, 'username': username}))
+        filter_users = list(db.users({'_id' : { '$nin' : blocked }, 'completed' : 1, 'username': username}))
 
         return render_template(
             "user/users.html",
             logged_in=session.get("username"),
-            users=valid_users,
+            users=filter_users,
             current_user=current_user,
             search=True,
         )
@@ -250,11 +250,11 @@ def search_username():
 @login_required
 @complete_user_profile
 def sort_fame(value):
-    global valid_users
+    global filter_users
     current_user = db.get_user({"username": session.get("username")})
 
     if value == "Sort_d":
-        sorted_users = valid_users[:]
+        sorted_users = filter_users[:]
         for i in range(len(sorted_users)):
             for k in range(len(sorted_users)):
                 if sorted_users[i]["fame-rating"] > sorted_users[k]["fame-rating"]:
@@ -269,7 +269,7 @@ def sort_fame(value):
             search=True,
         )
     if value == "Sort_a":
-        sorted_users = valid_users[:]
+        sorted_users = filter_users[:]
         for i in range(len(sorted_users)):
             for k in range(len(sorted_users)):
                 if sorted_users[i]["fame-rating"] < sorted_users[k]["fame-rating"]:
@@ -292,11 +292,11 @@ def sort_fame(value):
 @login_required
 @complete_user_profile
 def sort_age(value):
-    global valid_users
+    global filter_users
     current_user = db.get_user({"username": session.get("username")})
 
     if value == "Sort_d":
-        sorted_users = valid_users[:]
+        sorted_users = filter_users[:]
         for i in range(len(sorted_users)):
             for k in range(len(sorted_users)):
                 if sorted_users[i]["age"] > sorted_users[k]["age"]:
@@ -310,7 +310,7 @@ def sort_age(value):
             search=True,
         )
     if value == "Sort_a":
-        sorted_users = valid_users[:]
+        sorted_users = filter_users[:]
         for i in range(len(sorted_users)):
             for k in range(len(sorted_users)):
                 if sorted_users[i]["age"] < sorted_users[k]["age"]:
@@ -329,7 +329,7 @@ def sort_age(value):
         return render_template(
             "user/users.html",
             logged_in=session.get("username"),
-            users=valid_users,
+            users=filter_users,
             current_user=current_user,
             search=True,
         )

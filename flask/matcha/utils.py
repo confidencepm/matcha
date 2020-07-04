@@ -184,23 +184,23 @@ def filter_interest(users, interest):
     return:
         a list of users with desired interest
     """
-    valid_users = [user for user in users if set(interest).issubset(set(user['interests']))]
-    return valid_users
+    filter_users = [user for user in users if set(interest).issubset(set(user['interests']))]
+    return filter_users
 
 # Filter out the users with a specific location.
 def filter_location(users, location):
-    valid_users = [user for user in users if location in user['location'][2]]
-    return valid_users
+    filter_users = [user for user in users if location in user['location'][2]]
+    return filter_users
 
 # Filter out users based on the given age
 def filter_age(users, age):
     if age == 29:
-        valid_users = [user for user in users if user['age'] >= 18 and user['age'] <= age]
+        filter_users = [user for user in users if user['age'] >= 18 and user['age'] <= age]
     elif age == 39:
-        valid_users = [user for user in users if user['age'] >= 30 and user['age'] <= age]
+        filter_users = [user for user in users if user['age'] >= 30 and user['age'] <= age]
     elif age == 100:
-        valid_users = [user for user in users if user['age'] >= 40 and user['age'] <= age]
-    return valid_users
+        filter_users = [user for user in users if user['age'] >= 40 and user['age'] <= age]
+    return filter_users
 
 def filter_fame(users, fame):
     """Filter out users based on the given fame
@@ -213,23 +213,23 @@ def filter_fame(users, fame):
     """
     print("Fame: ", fame)
     if fame == 10:
-        valid_users = [user for user in users if user['fame-rating'] >= 0 and user['fame-rating'] < fame]
+        filter_users = [user for user in users if user['fame-rating'] >= 0 and user['fame-rating'] < fame]
     elif fame == 20:
-        valid_users = [user for user in users if user['fame-rating'] >= 10 and user['fame-rating'] < fame]
+        filter_users = [user for user in users if user['fame-rating'] >= 10 and user['fame-rating'] < fame]
     elif fame == 30:
-        valid_users = [user for user in users if user['fame-rating'] >= 20 and user['fame-rating'] < fame]
+        filter_users = [user for user in users if user['fame-rating'] >= 20 and user['fame-rating'] < fame]
     elif fame == 40:
-        valid_users = [user for user in users if user['fame-rating'] >= 30 and user['fame-rating'] < fame]
+        filter_users = [user for user in users if user['fame-rating'] >= 30 and user['fame-rating'] < fame]
     elif fame == 50:
-        valid_users = [user for user in users if user['fame-rating'] >= 40 and user['fame-rating'] < fame]
+        filter_users = [user for user in users if user['fame-rating'] >= 40 and user['fame-rating'] < fame]
     elif fame == 60:
-        valid_users = [user for user in users if user['fame-rating'] >= 50 and user['fame-rating'] < fame]
+        filter_users = [user for user in users if user['fame-rating'] >= 50 and user['fame-rating'] < fame]
     elif fame == 70:
-        valid_users = [user for user in users if user['fame-rating'] >= 60 and user['fame-rating'] < fame]
+        filter_users = [user for user in users if user['fame-rating'] >= 60 and user['fame-rating'] < fame]
     elif fame == 80:
-        valid_users = [user for user in users if user['fame-rating'] >= 70 and user['fame-rating'] < fame]
+        filter_users = [user for user in users if user['fame-rating'] >= 70 and user['fame-rating'] < fame]
     elif fame == 90:
-        valid_users = [user for user in users if user['fame-rating'] >= 80 and user['fame-rating'] < fame]
+        filter_users = [user for user in users if user['fame-rating'] >= 80 and user['fame-rating'] < fame]
     elif fame == 100:
-        valid_users = [user for user in users if user['fame-rating'] >= 90 and user['fame-rating'] < fame]
-    return valid_users
+        filter_users = [user for user in users if user['fame-rating'] >= 90 and user['fame-rating'] < fame]
+    return filter_users
