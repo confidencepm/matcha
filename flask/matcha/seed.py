@@ -11,9 +11,8 @@ from datetime import datetime
 
 def seed_users():
     print("Creating fake users please wait...")
-    n = 250
+    n = 500
     fake = Faker()
-    usernames = []
     gender = ['Male', 'Female']
     sexo = ['bisexual', 'heterosexual', 'homosexual']
     city = ['Johannesburg', 'Cape Town', 'Durban', 'Pretoria', 'Polokwane']
@@ -22,25 +21,18 @@ def seed_users():
     profile_pics = ['dummy1.png', 'dummy2.png', 'dummy3.png', 'dummy4.png', 'dummy5.png', 'dummy6.png', 'dummy7.png',
                     'dummy8.png', 'dummy9.png', 'dummy10.png']
 
-    for x in range(n + n):
-        username = fake.user_name()
-        usernames.append(username)
-
-    print("Debug usernames ", len(usernames))
-    for i in range(n):
+    for _ in range(n):
         salt = bcrypt.gensalt()
-        details = {'username': usernames[i], 'firstname': fake.first_name(), 'lastname': fake.last_name(),
+        details = {'username': fake.user_name(), 'firstname': fake.first_name(), 'lastname': fake.last_name(),
                    'email': fake.email(), 'password': bcrypt.hashpw('Password1'.encode('utf-8'), salt),
                    'gender': random.choice(gender), 'sexual_orientation': random.choice(sexo), 'bio': fake.text(), 'interests': [],
-                   'liked': [], 'matched': [], 'blocked': [], 'views': [], 'rooms': {},
+                   'likes': [], 'liked': [], 'matched': [], 'blocked': [], 'views': [], 'rooms': {},
                    'fame-rating': 0, 'location': [], 'latlon': '', 'age': 18, 'image_name': 'dummy1.png', 'gallery': [],
                    'token': secrets.token_hex(16), 'completed': 1, 'email_confirmed': 1, 'last-seen': datetime.utcnow(),
                    'notifications': []}
 
         max_interests = fake.random_int(3, 9)
-        max_likes = fake.random_int(50, n + n)
         details['interests'] = random.sample(interests, max_interests)
-        details['likes'] = random.sample(usernames, max_likes)
         details['fame-rating'] = fake.random_int(0, 80)
         details['location'].append(''.join([str(fake.random_int(1, 500)), ' ', fake.word(), ' street']))
         details['location'].append(''.join([fake.word(), 'cliff']))
@@ -50,19 +42,7 @@ def seed_users():
         details['age'] = fake.random_int(18, 80)
         details['image_name'] = random.choice(profile_pics)
 
-        index = 0
-        while index < 4:
-            details['gallery'].append(random.choice(gallery))
-            index += 1
-
         db.register_user(details)
-        # calculate_fame(details)
-    message = 'users created'
-    print(message)
-
-    r = db.users()
-    for user in r:
-        calculate_fame(user)
 
     if not db.get_user({'username': "admin"}, {'username': 1}):
         salt = bcrypt.gensalt()
