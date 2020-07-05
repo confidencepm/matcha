@@ -9,9 +9,10 @@ import random
 from datetime import datetime
 import time
 import sys
+from tqdm import tqdm
 
 def create_fakes():
-    n = 100
+    n = 500
     print("Be Patient while we create {} fake profiles....".format(n))
     fake = Faker()
     gender = ['Male', 'Female']
@@ -22,14 +23,13 @@ def create_fakes():
     profile_pics = ['dummy1.png', 'dummy2.png', 'dummy3.png', 'dummy4.png', 'dummy5.png', 'dummy6.png', 'dummy7.png',
                     'dummy8.png', 'dummy9.png', 'dummy10.png']
     # setup toolbar
-    sys.stdout.write("[%s]" % (" " * n))
-    sys.stdout.flush()
-    sys.stdout.write("\b" * (n+1)) # return to start of line, after '['
+    # sys.stdout.write("[%s]" % (" " * n))
+    # sys.stdout.flush()
+    # sys.stdout.write("\b" * (n+1)) # return to start of line, after '['
 
-    for i in range(n):
-        
-        sys.stdout.write("#")
-        sys.stdout.flush()
+    for i in tqdm(range(n)):
+        # sys.stdout.write("#")
+        # sys.stdout.flush()
         salt = bcrypt.gensalt()
         user_info = {'username': fake.user_name(), 'firstname': fake.first_name(), 'lastname': fake.last_name(),
                    'email': fake.email(), 'password': bcrypt.hashpw('Password1'.encode('utf-8'), salt),
@@ -51,7 +51,7 @@ def create_fakes():
         user_info['image_name'] = random.choice(profile_pics)
 
         db.register_user(user_info)
-    sys.stdout.write("]\n")
+    # sys.stdout.write("]\n")
     print("Done Creating Fake profiles")
     if not db.get_user({'username': "admin"}, {'username': 1}):
         print("Creating Fake Admin")
