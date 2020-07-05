@@ -41,7 +41,7 @@ def create_fakes():
 
         max_interests = fake.random_int(3, 9)
         user_info['interests'] = random.sample(interests, max_interests)
-        user_info['fame-rating'] = fake.random_int(0, 80)
+        user_info['fame-rating'] = fake.random_int(5, 90)
         user_info['location'].append(''.join([str(fake.random_int(1, 500)), ' ', fake.word(), ' street']))
         user_info['location'].append(''.join([fake.word(), 'cliff']))
         user_info['location'].append(random.choice(city))
