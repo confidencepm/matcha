@@ -170,6 +170,9 @@ def complete_user_profile(f):
         if user['completed'] == 0:
             flash("you must first complete your profile", 'danger')
             return redirect( url_for('profile.profile', next=request.url))
+        if not user['gallery']:
+            flash("you must add 4 images to your gallery", 'danger')
+            return redirect( url_for('profile.profile', next=request.url))
         return f(*args, **kwargs)
     return wrapper
 
