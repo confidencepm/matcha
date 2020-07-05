@@ -34,3 +34,4 @@ tree==0.2.4
 uWSGI==2.0.17.1
 werkzeug==1.0.1
 wrapt==1.12.1
+tqdm
