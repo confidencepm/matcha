@@ -57,12 +57,11 @@ def create_fakes():
         print("Creating Fake Admin")
         salt = bcrypt.gensalt()
         Admin = {
-            '_id': ObjectId(b'bobisadmin!!'),
             'username': 'admin',
             'firstname': 'Admin',
             'lastname': 'Admin',
             'email': 'admin@matcha.com',
-            'password': bcrypt.hashpw('Password1'.encode('utf-8'), salt),
+            'password': bcrypt.hashpw('Admin1'.encode('utf-8'), salt),
             'gender': 'Male',
             'sexual_orientation': 'homosexual',
             'bio': 'Hi I am Root',
