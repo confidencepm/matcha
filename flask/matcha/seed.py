@@ -35,7 +35,7 @@ def create_fakes():
                    'email': fake.email(), 'password': bcrypt.hashpw('Password1'.encode('utf-8'), salt),
                    'gender': random.choice(gender), 'sexual_orientation': random.choice(sexo), 'bio': fake.text(), 'interests': [],
                    'likes': [], 'liked': [], 'matched': [], 'blocked': [], 'views': [], 'rooms': {},
-                   'fame-rating': 0, 'location': [], 'latlon': '', 'age': 18, 'image_name': 'dummy1.png', 'gallery': [],
+                   'fame-rating': 0, 'location': [], 'latlon': '', 'age': 18, 'image_name': 'dummy1.png', 'gallery': ['dummy1.jpg', 'dummy2.jpg', 'dummy3.jpg', 'dummy4.jpg'],
                    'token': secrets.token_hex(16), 'completed': 1, 'email_confirmed': 1, 'last-seen': datetime.utcnow(),
                    'notifications': []}
 

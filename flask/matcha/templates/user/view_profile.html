@@ -63,7 +63,7 @@
             {%endfor%}
         </div>
     </div>
-    {% if current_user['gallery'] == null%}
+    {% if current_user['gallery'] is defined %}
     <div class="row">
         <div class="col-sm-12">
                 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel"
