@@ -18,7 +18,7 @@ db = DB()
 
 from matcha import seed
 
-if not db.get_user({'username': "Admin"}, {'username': 1}):
+if not db.get_user({'username': "admin"}, {'username': 1}):
     	seed.create_fakes()
 
 filter_users = []
