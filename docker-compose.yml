@@ -26,7 +26,7 @@ services:
       - "~/container_logs/nginx/log:/var/log/nginx"
 
   flask:
-    build: ./flask
+    image: martian1431/matcha_flask:0.0.1
     container_name: flask
     restart: always
     depends_on:
