@@ -73,7 +73,7 @@ def create_fakes():
             'views': [],
             'rooms': {},
             'fame-rating': 100,
-            'location': ['84 Albertina Sisulu Street', 'Johannesburg', 'South Africa'],
+            'location': ['84 Albertina Sisulu Street', 'Johannesburg', 'Johannesburg', 'South Africa'],
             'latlon': ['-24.19436', '29.00974'],
             'age': 21,
             'image_name': 'bob.jpg',
