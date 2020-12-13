@@ -6,8 +6,8 @@ import urllib
 class DB:
 
     def __init__(self):
-        # client = MongoClient("mongodb+srv://pmalope:martian143281@matcha-2ordl.mongodb.net/test?retryWrites=true&w=majority",connect=False,) #connect to cloud mongodb
-        client = MongoClient("mongodb://localhost:27017", connect=False, ) #connect to local mongodb
+        client = MongoClient("mongodb+srv://pmalope:martian143281@matcha-2ordl.mongodb.net/test?retryWrites=true&w=majority",connect=False,) #connect to cloud mongodb
+        # client = MongoClient("mongodb://localhost:27017", connect=False, ) #connect to local mongodb
         #client = MongoClient("mongodb://mongo:27017", connect=False, ) #connect mongodb container
         db = client['Matcha']
         self.__users = db['users']

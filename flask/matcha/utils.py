@@ -82,8 +82,8 @@ def send_registration_email(receiver, subject='email confirmation', text=None, h
     """
     user = db.get_user({'username' : receiver}, {'username' :1 , 'email': 1})
     port = 465
-    password = 'C108629d'
-    senders_email = "cmukwind@student.wethinkcode.co.za"
+    password = 'wethinkcode1431@'
+    senders_email = "matcha14311@gmail.com"
     receivers_email = user['email']
     message = MIMEMultipart("alternative")
     message["Subject"] = subject
